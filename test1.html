@@ -1,0 +1,122 @@
+<!DOCTYPE html>  
+<html lang="zh">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>我的个人主页</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 0;  
+            padding: 0;  
+        }  
+          
+        header {  
+            background-color: #333;  
+            color: white;  
+            padding: 10px;  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+        }  
+          
+        header h1 {  
+            margin: 0;  
+        }  
+          
+        header nav ul {  
+            list-style: none;  
+            margin: 0;  
+            padding: 0;  
+        }  
+          
+        header nav ul li {  
+            display: inline-block;  
+            margin-left: 10px;  
+        }  
+          
+        header nav ul li a {  
+            color: white;  
+            text-decoration: none;  
+        }  
+          
+        main {  
+            padding: 20px;  
+        }  
+          
+        footer {  
+            background-color: #333;  
+            color: white;  
+            text-align: center;  
+            padding: 10px;  
+            position: fixed;  
+            left: 0;  
+            bottom: 0;  
+            width: 100%;  
+        }  
+          
+        #current-time {  
+            margin-top: 10px;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <header>  
+        <h1>我的个人主页</h1>  
+        <nav>  
+            <ul>  
+                <li><a href="#about">关于我</a></li>  
+                <li><a href="#skills">我的技能</a></li>  
+                <li><a href="#projects">我的项目</a></li>  
+                <li><a href="#contact">联系我</a></li>  
+            </ul>  
+        </nav>  
+    </header>  
+      
+    <main>  
+        <div id="current-time"></div>  
+          
+        <h2 id="about">关于我</h2>  
+        <p>我是一名软件工程师，对Web开发充满热情。我喜欢学习新技术，并努力将其应用于实际项目中。</p>  
+          
+        <h2 id="skills">我的技能</h2>  
+        <ul>  
+            <li>HTML/CSS</li>  
+            <li>JavaScript</li>  
+            <li>React</li>  
+            <li>Node.js</li>  
+            <li>数据库管理（MySQL, MongoDB）</li>  
+        </ul>  
+          
+        <h2 id="projects">我的项目</h2>  
+        <p>这里可以列出你参与或主导的一些项目，并提供相应的链接或描述。</p>  
+          
+        <h2 id="contact">联系我</h2>  
+        <p>邮箱：example@email.com</p>  
+        <p>电话：1234567890</p>  
+    </main>  
+      
+    <footer>  
+        <p>版权所有 &copy; 2023 我的个人主页</p>  
+    </footer>  
+  
+    <script>  
+        function displayCurrentTime() {  
+            var now = new Date();  
+            var hours = now.getHours();  
+            var minutes = now.getMinutes();  
+            var seconds = now.getSeconds();  
+  
+            hours = (hours < 10) ? "0" + hours : hours;  
+            minutes = (minutes < 10) ? "0" + minutes : minutes;  
+            seconds = (seconds < 10) ? "0" + seconds : seconds;  
+  
+            var time = hours + ":" + minutes + ":" + seconds;  
+            document.getElementById("current-time").innerHTML = "当前时间: " + time;  
+        }  
+  
+        displayCurrentTime(); // 显示当前时间  
+        setInterval(displayCurrentTime, 1000); // 每秒更新一次时间  
+    </script>  
+</body>  
+</html>

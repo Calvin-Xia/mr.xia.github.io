@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计时器</title>
+    <style>
+        #timer {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 显示计时器 -->
+    <div id="timer">00:00:00</div>
+    <!-- 添加控制按钮 -->
+    <button id="start">开始</button>
+    <button id="pause">暂停</button>
+    <button id="reset">重置</button>
+    <script>
+        let timer = document.getElementById('timer'); // 获取计时器元素
+        let seconds = 0; // 初始化秒数为0
+        let minutes = 0; // 初始化分钟数为0
+        let hours = 0; // 初始化小时数为0
+        let intervalId = null; // 用于存储计时器ID
+
+        // 定义更新计时器的函数
+        function updateTimer() {
+            seconds++; // 每秒秒数加1
+            if (seconds >= 60) { // 如果秒数大于等于60
+                seconds = 0; // 重置秒数为0
+                minutes++; // 分钟数加1
+            }
+            if (minutes >= 60) { // 如果分钟数大于等于60
+                minutes = 0; // 重置分钟数为0
+                hours++; // 小时数加1
+            }
+            // 更新计时器显示的文本
+            timer.textContent = (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        }
+
+        // 定义开始计时器的函数
+        function startTimer() {
+            if (!intervalId) { // 如果计时器未启动
+                intervalId = setInterval(updateTimer, 1000); // 启动计时器
+                document.getElementById('start').disabled = true; // 禁用开始按钮
+                document.getElementById('pause').disabled = false; // 启用暂停按钮
+            }
+        }
+
+        // 定义暂停计时器的函数
+        function pauseTimer() {
+            if (intervalId) { // 如果计时器已启动
+                clearInterval(intervalId); // 暂停计时器
+                intervalId = null; // 清空计时器ID
+                document.getElementById('start').disabled = false; // 启用开始按钮
+                document.getElementById('pause').disabled = true; // 禁用暂停按钮
+            }
+        }
+
+        // 定义重置计时器的函数
+        function resetTimer() {
+            clearInterval(intervalId); // 停止计时器（如果已启动）
+            intervalId = null; // 清空计时器ID
+            seconds = 0; // 重置秒数为0
+            minutes = 0; // 重置分钟数为0
+            hours = 0; // 重置小时数为0
+            timer.textContent = '00:00:00'; // 更新计时器显示的文本
+            document.getElementById('start').disabled = false; // 启用开始按钮
+            document.getElementById('pause').disabled = true; // 禁用暂停按钮
+        }
+
+        // 绑定按钮事件
+        document.getElementById('start').addEventListener('click', startTimer);
+        document.getElementById('pause').addEventListener('click', pauseTimer);
+        document.getElementById('reset').addEventListener('click', resetTimer);
+    </script>
+</body>
+</html>

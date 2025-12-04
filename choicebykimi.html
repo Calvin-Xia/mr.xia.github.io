@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机选择器</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .input-container {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .options-container {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .option-item {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .option-item input {
+            flex-grow: 1;
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .file-upload {
+            margin: 20px 0;
+            text-align: left;
+        }
+        #file-input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>随机选择器 by kimi（功能不全）</h1>
+    
+    <div class="input-container">
+        <input type="text" id="new-option" placeholder="输入新选项">
+        <button id="add-option">添加选项</button>
+    </div>
+    
+    <div class="options-container" id="options-container">
+        <!-- 选项将在这里动态添加 -->
+    </div>
+    
+    <div>
+        <button id="randomize">随机选择</button>
+        <button id="clear-all">清空所有选项</button>
+    </div>
+    
+    <div class="result hidden" id="result">
+        结果: <span id="selected-option"></span>
+    </div>
+
+    <!-- 添加文件上传功能 -->
+    <div class="file-upload">
+        <h3>从文件导入选项</h3>
+        <p>支持的文件格式：TXT、DOCX、Markdown</p>
+        <input type="file" id="file-input" accept=".txt,.docx,.md">
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const newOptionInput = document.getElementById('new-option');
+        const addOptionBtn = document.getElementById('add-option');
+        const optionsContainer = document.getElementById('options-container');
+        const randomizeBtn = document.getElementById('randomize');
+        const clearAllBtn = document.getElementById('clear-all');
+        const resultDiv = document.getElementById('result');
+        const selectedOptionSpan = document.getElementById('selected-option');
+        const fileInput = document.getElementById('file-input');
+        // 存储选项的数组
+        let options = [];
+        
+        // 添加选项函数
+        function addOption() {
+            const optionText = newOptionInput.value.trim();
+            
+            if (optionText === '') {
+                alert('请输入选项内容！');
+                return;
+            }
+            
+            options.push(optionText);
+            renderOptions();
+            newOptionInput.value = '';
+        }
+        
+        // 渲染所有选项
+        function renderOptions() {
+            optionsContainer.innerHTML = '';
+            
+            options.forEach((option, index) => {
+                const optionItem = document.createElement('div');
+                optionItem.className = 'option-item';
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = option;
+                input.onchange = function() {
+                    options[index] = this.value;
+                };
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = '删除';
+                removeBtn.onclick = function() {
+                    options.splice(index, 1);
+                    renderOptions();
+                    resultDiv.classList.add('hidden');
+                };
+                
+                optionItem.appendChild(input);
+                optionItem.appendChild(removeBtn);
+                optionsContainer.appendChild(optionItem);
+            });
+        }
+        
+        // 随机选择选项
+        function randomize() {
+            if (options.length === 0) {
+                alert('请至少添加一个选项！');
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * options.length);
+            const selectedOption = options[randomIndex];
+            
+            selectedOptionSpan.textContent = selectedOption;
+            resultDiv.classList.remove('hidden');
+        }
+        
+        // 清空所有选项
+        function clearAll() {
+            if (options.length > 0) {
+                if (confirm('确定要清空所有选项吗？')) {
+                    options = [];
+                    renderOptions();
+                    resultDiv.classList.add('hidden');
+                }
+            }
+        }
+        
+        // 从文件导入选项
+        function importFromText(file) {
+             const fileReader = new FileReader();
+             fileReader.onload = function(event) {
+                 const fileContent = event.target.result;
+                 const newOptions = fileContent.split(/\r?\n/).filter(line => line.trim() !== '');
+                 if (newOptions.length > 0) {
+                     if (confirm(`即将导入 ${newOptions.length} 个选项，这将替换现有选项。确定要继续吗？`)) {
+                         options = newOptions;
+                         renderOptions();
+                         resultDiv.classList.add('hidden');
+                     }
+                 } else {
+                     alert('文件内容为空或格式不正确！');
+                 }
+             };
+             fileReader.onerror = function() {
+                 alert('读取文件时出错！');
+             };
+             fileReader.readAsText(file);
+         }
+
+         function importFromDocx(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                try {
+                    if (!window.mammoth) {
+                        loadMammoth();
+                    }
+                    window.mammoth.convertToHtml({ arrayBuffer })
+                        .then(function(result) {
+                            const docText = result.value.replace(/<[^>]+>/g, '\n');
+                            const newOptions = docText.split(/\r?\n/).filter(line => line.trim() !== '');
+                            if (newOptions.length > 0) {
+                                if (confirm(`即将导入 ${newOptions.length} 个选项，这将替换现有选项。确定要继续吗？`)) {
+                                    options = newOptions;
+                                    renderOptions();
+                                    resultDiv.classList.add('hidden');
+                                }
+                            } else {
+                                alert('文件内容为空或格式不正确！');
+                            }
+                        })
+                        .catch(function(err) {
+                            alert('解析docx文件时出错！');
+                            console.error(err);
+                        });
+                } catch (error) {
+                    alert('读取文件时出错！');
+                    console.error(error);
+                }
+            };
+            reader.onerror = function() {
+                alert('读取文件时出错！');
+            };
+            reader.readAsArrayBuffer(file);
+         }
+        
+         function importFromMarkdown(file) {
+             const fileReader = new FileReader();
+             fileReader.onload = function(event) {
+                 const fileContent = event.target.result;
+                 const newOptions = fileContent.split(/\r?\n/).filter(line => line.trim() !== '');
+                 if (newOptions.length > 0) {
+                     if (confirm(`即将导入 ${newOptions.length} 个选项，这将替换现有选项。确定要继续吗？`)) {
+                         // 提取markdown中的文本内容
+                         const textContent = newOptions.map(line => {
+                             // 简单处理标题和列表
+                             if (line.startsWith('#')) {
+                                 return line.replace(/^#+\s*/, '');
+                             } else if (line.startsWith('- ') || line.startsWith('* ')) {
+                                 return line.replace(/^[*-]\s*/, '');
+                             }
+                             return line;
+                         });
+                         options = textContent;
+                         renderOptions();
+                         resultDiv.classList.add('hidden');
+                     }
+                 } else {
+                     alert('文件内容为空或格式不正确！');
+                 }
+             };
+             fileReader.onerror = function() {
+                 alert('读取文件时出错！');
+             };
+             fileReader.readAsText(file);
+         }
+        
+         fileInput.addEventListener('change', function(e) {
+             const file = e.target.files[0];
+             if (!file) return;
+             const fileName = file.name.toLowerCase();
+             if (fileName.endsWith('.txt')) {
+                 importFromText(file);
+             } else if (fileName.endsWith('.docx')) {
+                 importFromDocx(file);
+             } else if (fileName.endsWith('.md')) {
+                 importFromMarkdown(file);
+             } else {
+                 alert('不支持的文件格式！');
+             }
+         });
+        
+         // 添加事件监听器
+         addOptionBtn.addEventListener('click', addOption);
+         randomizeBtn.addEventListener('click', randomize);
+         clearAllBtn.addEventListener('click', clearAll);
+        
+         // 允许按回车键添加选项
+         newOptionInput.addEventListener('keypress', function(e) {
+             if (e.key === 'Enter') {
+                 addOption();
+             }
+         });
+
+         function loadMammoth() {
+             return new Promise((resolve) => {
+                 const script = document.createElement('script');
+                 script.src = "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.15/mammoth.browser.min.js";
+                 script.onload = resolve;
+                 document.body.appendChild(script);
+             });
+         }
+    </script>
+</body>
+</html>
