@@ -20,6 +20,8 @@ mr.xia/
 │   └── style.css          # 统一样式表
 ├── js/
 │   └── main.js            # 主脚本文件
+├── UpdateLog/             # 更新日志目录
+│   ├── fingerprint-app-update-log.html  # 指纹验证应用更新日志
 ├── index.html             # 首页
 ├── Works.html             # 作品展示页
 ├── timetable.html         # 计时器工具页

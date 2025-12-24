@@ -16,6 +16,8 @@ mr.xia/
 │   └── style.css          # 统一样式表，包含所有页面的样式
 ├── js/                     # 脚本文件目录
 │   └── main.js            # 主脚本文件，模块化设计
+├── UpdateLog/             # 更新日志目录
+│   ├── fingerprint-app-update-log.html  # 指纹验证应用更新日志
 ├── index.html             # 首页
 ├── Works.html             # 作品展示页
 ├── timetable.html         # 工具页，包含计时器
