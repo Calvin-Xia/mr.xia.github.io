@@ -55,10 +55,11 @@ const TimeDisplay = {
 
 // ===== 计时器模块 =====
 const Timer = {
-    seconds: 0,
-    minutes: 0,
-    hours: 0,
+    startTime: null, // 计时器开始时间戳
+    elapsedTime: 0, // 已经经过的时间（毫秒）
+    targetTime: 0, // 目标时间（毫秒）
     intervalId: null,
+    isRunning: false, // 计时器是否正在运行
 
     /**
      * 初始化计时器
@@ -67,37 +68,151 @@ const Timer = {
         const startBtn = document.getElementById('start');
         const pauseBtn = document.getElementById('pause');
         const resetBtn = document.getElementById('reset');
+        const setTimeBtn = document.getElementById('set-time');
 
-        if (startBtn && pauseBtn && resetBtn) {
+        // 初始化显示
+        const timerElement = document.getElementById('timer-display');
+        if (timerElement) {
+            timerElement.textContent = this.formatTime(0);
+        }
+
+        // 初始化进度条
+        this.updateProgress();
+
+        // 为每个按钮单独添加事件监听器，而不是一次性检查所有按钮
+        if (startBtn) {
             startBtn.addEventListener('click', () => this.start());
+        }
+        
+        if (pauseBtn) {
             pauseBtn.addEventListener('click', () => this.pause());
-            resetBtn.addEventListener('click', () => this.reset());
-            
             // 初始状态
             pauseBtn.disabled = true;
         }
+        
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => this.reset());
+        }
+
+        // 绑定设置时间按钮事件
+        if (setTimeBtn) {
+            setTimeBtn.addEventListener('click', () => this.setTimeFromInputs());
+        }
+
+        // 绑定输入框变化事件
+        const timeInputs = ['hours', 'minutes', 'seconds'];
+        timeInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', () => this.validateTimeInput(input));
+            }
+        });
+    },
+
+    /**
+     * 验证时间输入
+     */
+    validateTimeInput(input) {
+        const min = parseInt(input.min);
+        const max = parseInt(input.max);
+        let value = parseInt(input.value) || 0;
+        
+        // 确保值在有效范围内
+        value = Math.max(min, Math.min(max, value));
+        input.value = value;
+    },
+
+    /**
+     * 从输入框设置时间
+     */
+    setTimeFromInputs() {
+        const hours = parseInt(document.getElementById('hours').value) || 0;
+        const minutes = parseInt(document.getElementById('minutes').value) || 0;
+        const seconds = parseInt(document.getElementById('seconds').value) || 0;
+        
+        const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+        this.targetTime = totalSeconds * 1000;
+        this.elapsedTime = 0;
+        this.isRunning = false;
+        
+        // 更新显示
+        const timerElement = document.getElementById('timer-display');
+        if (timerElement) {
+            timerElement.textContent = this.formatTime(totalSeconds);
+        }
+        
+        // 更新进度条
+        this.updateProgress();
+        
+        // 更新按钮状态，单独检查每个按钮
+        const startBtn = document.getElementById('start');
+        const pauseBtn = document.getElementById('pause');
+        if (startBtn) {
+            startBtn.disabled = false;
+        }
+        if (pauseBtn) {
+            pauseBtn.disabled = true;
+        }
+    },
+
+    /**
+     * 格式化时间（将总秒数转换为 HH:MM:SS 格式）
+     */
+    formatTime(totalSeconds) {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     },
 
     /**
      * 更新计时器显示
      */
     update() {
-        this.seconds++;
+        if (!this.startTime) return;
         
-        if (this.seconds >= 60) {
-            this.seconds = 0;
-            this.minutes++;
+        const now = Date.now();
+        let totalElapsed = this.elapsedTime + (now - this.startTime);
+        
+        // 如果达到或超过目标时间，停止计时
+        if (this.targetTime > 0 && totalElapsed >= this.targetTime) {
+            totalElapsed = this.targetTime;
+            this.pause();
+            // 可以在这里添加完成提示，如播放声音或显示提示
         }
         
-        if (this.minutes >= 60) {
-            this.minutes = 0;
-            this.hours++;
-        }
-
-        const timerElement = document.getElementById('timer');
+        // 转换为总秒数
+        const totalSeconds = Math.floor(totalElapsed / 1000);
+        
+        // 只使用正确的计时器显示元素ID
+        const timerElement = document.getElementById('timer-display');
         if (timerElement) {
-            const formatted = `${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}:${String(this.seconds).padStart(2, '0')}`;
-            timerElement.textContent = formatted;
+            timerElement.textContent = this.formatTime(totalSeconds);
+        }
+        
+        // 更新进度条
+        this.updateProgress(totalElapsed);
+    },
+
+    /**
+     * 更新进度条
+     */
+    updateProgress(elapsedTime = this.elapsedTime) {
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        if (!progressBar || !progressText) return;
+        
+        if (this.targetTime <= 0) {
+            // 如果没有设置目标时间，显示已用时间
+            progressBar.style.width = '0%';
+            progressText.textContent = `已用时间: ${this.formatTime(Math.floor(elapsedTime / 1000))}`;
+        } else {
+            // 计算进度百分比
+            const progress = Math.min(100, Math.floor((elapsedTime / this.targetTime) * 100));
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${progress}% 已完成`;
         }
     },
 
@@ -105,10 +220,22 @@ const Timer = {
      * 开始计时
      */
     start() {
-        if (!this.intervalId) {
-            this.intervalId = setInterval(() => this.update(), 1000);
-            document.getElementById('start').disabled = true;
-            document.getElementById('pause').disabled = false;
+        if (!this.isRunning) {
+            this.startTime = Date.now();
+            this.isRunning = true;
+            
+            // 提高更新频率，使显示更流畅
+            this.intervalId = setInterval(() => this.update(), 100);
+            
+            // 更新按钮状态，单独检查每个按钮
+            const startBtn = document.getElementById('start');
+            const pauseBtn = document.getElementById('pause');
+            if (startBtn) {
+                startBtn.disabled = true;
+            }
+            if (pauseBtn) {
+                pauseBtn.disabled = false;
+            }
         }
     },
 
@@ -116,11 +243,29 @@ const Timer = {
      * 暂停计时
      */
     pause() {
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-            document.getElementById('start').disabled = false;
-            document.getElementById('pause').disabled = true;
+        if (this.isRunning) {
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+            
+            if (this.startTime) {
+                const now = Date.now();
+                this.elapsedTime += (now - this.startTime);
+                this.startTime = null;
+            }
+            
+            this.isRunning = false;
+            
+            // 更新按钮状态，单独检查每个按钮
+            const startBtn = document.getElementById('start');
+            const pauseBtn = document.getElementById('pause');
+            if (startBtn) {
+                startBtn.disabled = false;
+            }
+            if (pauseBtn) {
+                pauseBtn.disabled = true;
+            }
         }
     },
 
@@ -129,17 +274,26 @@ const Timer = {
      */
     reset() {
         this.pause();
-        this.seconds = 0;
-        this.minutes = 0;
-        this.hours = 0;
+        this.elapsedTime = 0;
         
-        const timerElement = document.getElementById('timer');
+        // 更新显示
+        const timerElement = document.getElementById('timer-display');
         if (timerElement) {
-            timerElement.textContent = '00:00:00';
+            timerElement.textContent = this.formatTime(Math.floor(this.targetTime / 1000));
         }
         
-        document.getElementById('start').disabled = false;
-        document.getElementById('pause').disabled = true;
+        // 更新进度条
+        this.updateProgress();
+        
+        // 更新按钮状态，单独检查每个按钮
+        const startBtn = document.getElementById('start');
+        const pauseBtn = document.getElementById('pause');
+        if (startBtn) {
+            startBtn.disabled = false;
+        }
+        if (pauseBtn) {
+            pauseBtn.disabled = true;
+        }
     }
 };
 
@@ -157,10 +311,16 @@ const PageAnimations = {
      * 添加淡入动画
      */
     addFadeInAnimations() {
-        const elements = document.querySelectorAll('main > *');
+        // 避免设置inline opacity: 0，使用CSS类代替
+        const elements = document.querySelectorAll('main > section');
         elements.forEach((element, index) => {
-            element.style.opacity = '0';
-            element.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s forwards`;
+            // 先确保元素可见，再添加动画类
+            element.style.opacity = '';
+            element.style.animation = '';
+            // 延迟添加动画，确保元素已渲染
+            setTimeout(() => {
+                element.classList.add('fade-in-up');
+            }, index * 100);
         });
     },
 
@@ -168,19 +328,13 @@ const PageAnimations = {
      * 添加滚动动画
      */
     addScrollAnimations() {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in-up');
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        document.querySelectorAll('.card, .shadowbox').forEach(element => {
-            observer.observe(element);
+        // 只对shadowbox元素应用动画，避免与card元素冲突
+        // card元素已经通过其父级section获得了动画
+        document.querySelectorAll('.shadowbox').forEach((element, index) => {
+            // 延迟添加动画，确保元素已渲染
+            setTimeout(() => {
+                element.classList.add('fade-in-up');
+            }, index * 150);
         });
     }
 };

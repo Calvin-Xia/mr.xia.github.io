@@ -6,6 +6,57 @@
     <meta name="description" content="在线计时器工具">
     <title>计时器 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- 选项卡样式 -->
+    <style>
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: var(--radius-md);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--hover-color);
+            border-color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .tab-content {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
     <!-- 动态背景 -->
@@ -27,57 +78,135 @@
     <!-- 主内容 -->
     <main>
         <section>
-            <h1 style="text-align: center;">在线计时器 ⏱️</h1>
+            <h1 style="text-align: center;">工具集 🛠️</h1>
             <p style="text-align: center; color: var(--text-secondary); margin-bottom: var(--spacing-xl);">
-                简单实用的在线计时工具
+                实用工具集合，包括在线计时器和随机选择器
             </p>
         </section>
 
-        <!-- 计时器卡片 -->
-        <div class="card timer-container">
-            <!-- 时间显示 -->
-            <div id="timer" style="font-size: 4rem; font-weight: 700; font-family: 'Courier New', monospace; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.1em;">
-                00:00:00
-            </div>
-
-            <!-- 控制按钮 -->
-            <div class="timer-controls" style="display: flex; gap: var(--spacing-sm);">
-                <button id="start" class="btn">
-                    ▶️ 开始
-                </button>
-                <button id="pause" class="btn btn-secondary">
-                    ⏸️ 暂停
-                </button>
-                <button id="reset" class="btn btn-outline">
-                    🔄 重置
-                </button>
-            </div>
-
-            <!-- 使用说明 -->
-            <div style="margin-top: var(--spacing-lg); padding: var(--spacing-md); background: rgba(99, 102, 241, 0.05); border-radius: var(--radius-md); text-align: center;">
-                <p class="text-small">
-                    💡 提示：点击"开始"按钮开始计时，"暂停"暂停计时，"重置"清零计时器
-                </p>
-            </div>
+        <!-- 选项卡导航 -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="timer">在线计时器 ⏱️</button>
+            <button class="tab-btn" data-tab="random-selector">随机选择器 🎲</button>
         </div>
 
-        <!-- 功能说明 -->
-        <div class="shadowbox" style="margin-top: var(--spacing-xl);">
-            <h3>✨ 功能特点</h3>
-            <ul style="list-style: none; padding: 0; margin-top: var(--spacing-md);">
-                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                    ✓ 精确到秒的计时功能
-                </li>
-                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                    ✓ 支持暂停和继续计时
-                </li>
-                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                    ✓ 一键重置计时器
-                </li>
-                <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                    ✓ 简洁美观的界面设计
-                </li>
-            </ul>
+        <!-- 选项卡内容 -->
+        <div class="tab-content">
+            <!-- 计时器选项卡 -->
+            <div id="timer" class="tab-panel active">
+                <!-- 计时器容器 -->
+                <div class="card timer-container">
+                    <!-- 时间设置区域 -->
+                    <div class="timer-setup">
+                        <h3 style="margin-bottom: var(--spacing-md); text-align: center;">⏱️ 设置计时时间</h3>
+                        <div class="time-inputs">
+                            <div class="time-input-group">
+                                <label for="hours">小时</label>
+                                <div class="time-input-wrapper">
+                                    <button class="time-btn time-decrease" onclick="changeTime('hours', -1)">-</button>
+                                    <input type="number" id="hours" name="hours" min="0" max="99" value="0" class="time-input">
+                                    <button class="time-btn time-increase" onclick="changeTime('hours', 1)">+</button>
+                                </div>
+                            </div>
+                            <span class="time-separator">:</span>
+                            <div class="time-input-group">
+                                <label for="minutes">分钟</label>
+                                <div class="time-input-wrapper">
+                                    <button class="time-btn time-decrease" onclick="changeTime('minutes', -1)">-</button>
+                                    <input type="number" id="minutes" name="minutes" min="0" max="59" value="0" class="time-input">
+                                    <button class="time-btn time-increase" onclick="changeTime('minutes', 1)">+</button>
+                                </div>
+                            </div>
+                            <span class="time-separator">:</span>
+                            <div class="time-input-group">
+                                <label for="seconds">秒数</label>
+                                <div class="time-input-wrapper">
+                                    <button class="time-btn time-decrease" onclick="changeTime('seconds', -1)">-</button>
+                                    <input type="number" id="seconds" name="seconds" min="0" max="59" value="0" class="time-input">
+                                    <button class="time-btn time-increase" onclick="changeTime('seconds', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="set-time" class="btn btn-outline" style="margin-top: var(--spacing-md);">设置时间</button>
+                    </div>
+
+                    <!-- 时间显示 -->
+                    <div id="timer-display">
+                        00:00:00
+                    </div>
+
+                    <!-- 计时进度显示 -->
+                    <div class="timer-progress">
+                        <div class="progress-bar-container">
+                            <div id="progress-bar" class="progress-bar"></div>
+                        </div>
+                        <div class="progress-info">
+                            <span id="progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- 控制按钮 -->
+                    <div class="timer-controls">
+                        <button id="start" class="btn">
+                            ▶️ 开始
+                        </button>
+                        <button id="pause" class="btn btn-secondary">
+                            ⏸️ 暂停
+                        </button>
+                        <button id="reset" class="btn btn-outline">
+                            🔄 重置
+                        </button>
+                    </div>
+
+                    <!-- 使用说明 -->
+                    <div class="timer-info">
+                        <p class="text-small">
+                            💡 提示：设置计时时间后，点击"开始"按钮开始计时，"暂停"暂停计时，"重置"清零计时器
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 功能说明 -->
+                <div class="shadowbox">
+                    <h3>✨ 功能特点</h3>
+                    <ul style="list-style: none; padding: 0; margin-top: var(--spacing-md);">
+                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
+                            ✓ 精确到秒的计时功能
+                        </li>
+                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
+                            ✓ 支持暂停和继续计时
+                        </li>
+                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
+                            ✓ 一键重置计时器
+                        </li>
+                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
+                            ✓ 简洁美观的界面设计
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 随机选择器选项卡 -->
+            <div id="random-selector" class="tab-panel">
+                <div class="random-selector-container">
+                    <h2 style="text-align: center; color: var(--primary-color); margin-bottom: var(--spacing-lg);">随机选择器 By Copilot</h2>
+                    <div class="actions" style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md);">
+                        <input type="text" id="itemInput" placeholder="请输入选项，回车或点击添加" style="flex: 1 0 110px; min-width: 0; padding: var(--spacing-sm); font-size: 1em; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); outline: none; transition: border 0.2s;" />
+                        <button class="btn" onclick="addItem()">添加</button>
+                        <button class="btn" onclick="deleteAll()">清空</button>
+                    </div>
+                    <ul id="items" style="list-style: none; padding-left: 0; margin-bottom: var(--spacing-lg); min-height: 30px; width: 100%; max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: var(--spacing-sm);"></ul>
+                    <div class="actions" style="display: flex; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <button class="btn" onclick="chooseRandom()">随机抽取</button>
+                    </div>
+                    <span id="chosen" style="display: block; text-align: center; color: var(--primary-color); font-size: 1.25em; font-weight: 600; margin: var(--spacing-md) 0; min-height: 25px; letter-spacing: 1px;"></span>
+                    <div id="upload" style="text-align: center; margin-top: var(--spacing-md);">
+                        <input type="file" id="fileInput" accept=".txt,.md,.docx" multiple style="font-size: 1em; border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 5px; margin-bottom: var(--spacing-sm); background: var(--background-color);" />
+                        <button class="btn" onclick="handleFiles()">上传文档并自动填充</button>
+                        <div class="note" style="font-size: 0.92em; color: var(--text-secondary); margin-top: var(--spacing-xs);">支持TXT、Markdown、Word文档</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 返回首页 -->
@@ -90,5 +219,292 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.4/docx.min.js"></script>
+    <script>
+        // 选项卡切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 选项卡切换
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.getAttribute('data-tab');
+
+                    // 移除所有选项卡的激活状态
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanels.forEach(p => p.classList.remove('active'));
+
+                    // 激活当前选项卡
+                    btn.classList.add('active');
+                    const activePanel = document.getElementById(targetTab);
+                    activePanel.classList.add('active');
+                    
+                    // 如果切换到计时器选项卡，确保计时器状态正确
+                    if (targetTab === 'timer' && window.MrXiaApp && window.MrXiaApp.Timer) {
+                        const timer = window.MrXiaApp.Timer;
+                        const timerElement = document.getElementById('timer-display');
+                        
+                        // 确保计时器显示正确
+                        if (timerElement) {
+                            const totalSeconds = Math.floor(timer.elapsedTime / 1000);
+                            timerElement.textContent = timer.formatTime(totalSeconds);
+                        }
+                        
+                        // 确保按钮状态正确
+                        const startBtn = document.getElementById('start');
+                        const pauseBtn = document.getElementById('pause');
+                        if (startBtn && pauseBtn) {
+                            startBtn.disabled = timer.isRunning;
+                            pauseBtn.disabled = !timer.isRunning;
+                        }
+                    }
+                });
+            });
+        });
+
+        // 时间调整函数
+        function changeTime(type, delta) {
+            const input = document.getElementById(type);
+            if (!input) return;
+            
+            const min = parseInt(input.min);
+            const max = parseInt(input.max);
+            let value = parseInt(input.value) || 0;
+            
+            // 更新值
+            value += delta;
+            
+            // 处理边界情况
+            if (type === 'hours') {
+                value = Math.max(min, Math.min(max, value));
+            } else {
+                // 分钟和秒数的特殊处理，允许跨边界进位/借位
+                if (value < min) {
+                    if (type === 'minutes') {
+                        // 分钟借位到小时
+                        const hoursInput = document.getElementById('hours');
+                        if (hoursInput) {
+                            let hours = parseInt(hoursInput.value) || 0;
+                            if (hours > 0) {
+                                hours--;
+                                hoursInput.value = hours;
+                                value = max;
+                            } else {
+                                value = min;
+                            }
+                        }
+                    } else if (type === 'seconds') {
+                        // 秒数借位到分钟
+                        const minutesInput = document.getElementById('minutes');
+                        if (minutesInput) {
+                            let minutes = parseInt(minutesInput.value) || 0;
+                            if (minutes > 0) {
+                                minutes--;
+                                minutesInput.value = minutes;
+                                value = max;
+                            } else {
+                                value = min;
+                            }
+                        }
+                    }
+                } else if (value > max) {
+                    if (type === 'minutes') {
+                        // 分钟进位到小时
+                        const hoursInput = document.getElementById('hours');
+                        if (hoursInput) {
+                            let hours = parseInt(hoursInput.value) || 0;
+                            if (hours < parseInt(hoursInput.max)) {
+                                hours++;
+                                hoursInput.value = hours;
+                                value = min;
+                            } else {
+                                value = max;
+                            }
+                        }
+                    } else if (type === 'seconds') {
+                        // 秒数进位到分钟
+                        const minutesInput = document.getElementById('minutes');
+                        if (minutesInput) {
+                            let minutes = parseInt(minutesInput.value) || 0;
+                            if (minutes < parseInt(minutesInput.max)) {
+                                minutes++;
+                                minutesInput.value = minutes;
+                                value = min;
+                            } else {
+                                value = max;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            input.value = value;
+        }
+
+        // 随机选择器功能
+        let items = [];
+
+        function updateList() {
+            const ul = document.getElementById('items');
+            ul.innerHTML = '';
+            items.forEach((item, idx) => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.style.flex = '1 1 0%';
+                span.textContent = item;
+                li.appendChild(span);
+
+                const btn = document.createElement('button');
+                btn.textContent = '删除';
+                btn.className = 'remove-btn';
+                btn.onclick = () => { deleteItem(idx); };
+                li.appendChild(btn);
+
+                ul.appendChild(li);
+            });
+        }
+
+        function addItem() {
+            const input = document.getElementById('itemInput');
+            const value = input.value.trim();
+            if (value) {
+                items.push(value);
+                input.value = '';
+                updateList();
+            }
+        }
+
+        function deleteItem(idx) {
+            items.splice(idx, 1);
+            updateList();
+        }
+
+        function deleteAll() {
+            if (items.length === 0) return;
+            if (confirm('确定要清空所有选项吗？')) {
+                items = [];
+                updateList();
+                document.getElementById('chosen').textContent = '';
+            }
+        }
+
+        function chooseRandom() {
+            if (items.length === 0) {
+                document.getElementById('chosen').textContent = '请先添加选项';
+                document.getElementById('chosen').style.color = 'var(--error-color, #e05260)';
+                return;
+            }
+            const idx = Math.floor(Math.random() * items.length);
+            document.getElementById('chosen').textContent = '抽中：' + items[idx];
+            document.getElementById('chosen').style.color = 'var(--primary-color)';
+        }
+
+        async function handleFiles() {
+            const input = document.getElementById('fileInput');
+            for (const file of input.files) {
+                if (file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+                    const text = await file.text();
+                    fillFromText(text);
+                } else if (file.name.endsWith('.docx')) {
+                    const arrayBuffer = await file.arrayBuffer();
+                    await extractDocx(arrayBuffer);
+                }
+            }
+            updateList();
+            input.value = '';
+        }
+
+        function fillFromText(text) {
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+            lines.forEach(line => {
+                if (!items.includes(line)) items.push(line);
+            });
+        }
+
+        async function extractDocx(arrayBuffer) {
+            if (!window.mammoth) {
+                await loadMammoth();
+            }
+            window.mammoth.convertToHtml({arrayBuffer})
+                .then(result => {
+                    const docText = result.value.replace(/<[^>]+>/g, '\n');
+                    fillFromText(docText);
+                    updateList();
+                });
+        }
+
+        function loadMammoth() {
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js";
+                script.onload = resolve;
+                document.body.appendChild(script);
+            });
+        }
+
+        // 监听回车事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemInput = document.getElementById('itemInput');
+            if (itemInput) {
+                itemInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') addItem();
+                });
+            }
+        });
+    </script>
+    <!-- 随机选择器样式 -->
+    <style>
+        /* 随机选择器样式调整 */
+        .random-selector-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #items li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+            background: rgba(99, 102, 241, 0.05);
+            margin-bottom: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: 1em;
+            word-break: break-all;
+        }
+
+        .remove-btn {
+            color: var(--error-color, #e05260);
+            background: none;
+            border: none;
+            font-size: 0.98em;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-left: var(--spacing-sm);
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.18s ease;
+        }
+
+        .remove-btn:hover {
+            background: rgba(224, 82, 96, 0.1);
+            color: var(--error-color, #b6353e);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .actions {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            #itemInput, .btn, button {
+                width: 100%;
+                margin: 0;
+            }
+        }
+    </style>
 </body>
 </html>
