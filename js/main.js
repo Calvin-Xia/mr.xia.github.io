@@ -1,12 +1,12 @@
 /**
- * Mr.Xia ¸öÈËÍøÕ¾ - Ö÷½Å±¾ÎÄ¼ş
- * °üº¬Ê±¼äÏÔÊ¾¡¢¶¯»­Ğ§¹ûºÍ½»»¥¹¦ÄÜ
+ * Mr.Xia ä¸ªäººç½‘ç«™ - ä¸»è„šæœ¬æ–‡ä»¶
+ * åŒ…å«æ—¶é—´æ˜¾ç¤ºã€åŠ¨ç”»æ•ˆæœå’ŒåŠŸèƒ½æ¨¡å—
  */
 
-// ===== Ê±¼äÏÔÊ¾Ä£¿é =====
+// ===== æ—¶é—´æ˜¾ç¤ºæ¨¡å— =====
 const TimeDisplay = {
     /**
-     * ³õÊ¼»¯Ê±¼äÏÔÊ¾
+     * åˆå§‹åŒ–æ—¶é—´æ˜¾ç¤º
      */
     init() {
         this.updateTime();
@@ -14,7 +14,7 @@ const TimeDisplay = {
     },
 
     /**
-     * ¸üĞÂÊ±¼äÏÔÊ¾
+     * æ›´æ–°æ—¶é—´æ˜¾ç¤º
      */
     updateTime() {
         const now = new Date();
@@ -24,14 +24,14 @@ const TimeDisplay = {
         const timeElement = document.getElementById('currentTime');
         if (timeElement) {
             timeElement.innerHTML = `
-                <span style="font-size: 0.9em; opacity: 0.8;">?? ${dateString}</span>
-                <span style="font-weight: 700;">? ${timeString}</span>
+                <span style="font-size: 0.9em; opacity: 0.8;">ğŸ“… ${dateString}</span>
+                <span style="font-weight: 700;">â° ${timeString}</span>
             `;
         }
     },
 
     /**
-     * ¸ñÊ½»¯Ê±¼ä
+     * æ ¼å¼åŒ–æ—¶é—´
      */
     formatTime(date) {
         const hours = String(date.getHours()).padStart(2, '0');
@@ -41,19 +41,19 @@ const TimeDisplay = {
     },
 
     /**
-     * ¸ñÊ½»¯ÈÕÆÚ
+     * æ ¼å¼åŒ–æ—¥æœŸ
      */
     formatDate(date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        const weekdays = ['ÖÜÈÕ', 'ÖÜÒ»', 'ÖÜ¶ş', 'ÖÜÈı', 'ÖÜËÄ', 'ÖÜÎå', 'ÖÜÁù'];
+        const weekdays = ['æ˜ŸæœŸæ—¥', 'æ˜ŸæœŸä¸€', 'æ˜ŸæœŸäºŒ', 'æ˜ŸæœŸä¸‰', 'æ˜ŸæœŸå››', 'æ˜ŸæœŸäº”', 'æ˜ŸæœŸå…­'];
         const weekday = weekdays[date.getDay()];
         return `${year}-${month}-${day} ${weekday}`;
     }
 };
 
-// ===== ¼ÆÊ±Æ÷Ä£¿é =====
+// ===== è®¡æ—¶å™¨æ¨¡å— =====
 const Timer = {
     seconds: 0,
     minutes: 0,
@@ -61,7 +61,7 @@ const Timer = {
     intervalId: null,
 
     /**
-     * ³õÊ¼»¯¼ÆÊ±Æ÷
+     * åˆå§‹åŒ–è®¡æ—¶å™¨
      */
     init() {
         const startBtn = document.getElementById('start');
@@ -73,13 +73,13 @@ const Timer = {
             pauseBtn.addEventListener('click', () => this.pause());
             resetBtn.addEventListener('click', () => this.reset());
             
-            // ³õÊ¼×´Ì¬
+            // åˆå§‹çŠ¶æ€
             pauseBtn.disabled = true;
         }
     },
 
     /**
-     * ¸üĞÂ¼ÆÊ±Æ÷ÏÔÊ¾
+     * æ›´æ–°è®¡æ—¶å™¨æ˜¾ç¤º
      */
     update() {
         this.seconds++;
@@ -102,7 +102,7 @@ const Timer = {
     },
 
     /**
-     * ¿ªÊ¼¼ÆÊ±
+     * å¼€å§‹è®¡æ—¶
      */
     start() {
         if (!this.intervalId) {
@@ -113,7 +113,7 @@ const Timer = {
     },
 
     /**
-     * ÔİÍ£¼ÆÊ±
+     * æš‚åœè®¡æ—¶
      */
     pause() {
         if (this.intervalId) {
@@ -125,7 +125,7 @@ const Timer = {
     },
 
     /**
-     * ÖØÖÃ¼ÆÊ±Æ÷
+     * é‡ç½®è®¡æ—¶å™¨
      */
     reset() {
         this.pause();
@@ -143,10 +143,10 @@ const Timer = {
     }
 };
 
-// ===== Ò³Ãæ¶¯»­Ä£¿é =====
+// ===== é¡µé¢åŠ¨ç”»æ¨¡å— =====
 const PageAnimations = {
     /**
-     * ³õÊ¼»¯Ò³Ãæ¶¯»­
+     * åˆå§‹åŒ–é¡µé¢åŠ¨ç”»
      */
     init() {
         this.addFadeInAnimations();
@@ -154,7 +154,7 @@ const PageAnimations = {
     },
 
     /**
-     * Ìí¼Óµ­Èë¶¯»­
+     * æ·»åŠ æ·¡å…¥åŠ¨ç”»
      */
     addFadeInAnimations() {
         const elements = document.querySelectorAll('main > *');
@@ -165,7 +165,7 @@ const PageAnimations = {
     },
 
     /**
-     * Ìí¼Ó¹ö¶¯¶¯»­
+     * æ·»åŠ æ»šåŠ¨åŠ¨ç”»
      */
     addScrollAnimations() {
         const observer = new IntersectionObserver(
@@ -185,17 +185,17 @@ const PageAnimations = {
     }
 };
 
-// ===== µ¼º½¸ßÁÁÄ£¿é =====
+// ===== å¯¼èˆªæ¨¡å— =====
 const Navigation = {
     /**
-     * ³õÊ¼»¯µ¼º½
+     * åˆå§‹åŒ–å¯¼èˆª
      */
     init() {
         this.highlightCurrentPage();
     },
 
     /**
-     * ¸ßÁÁµ±Ç°Ò³Ãæ
+     * é«˜äº®å½“å‰é¡µé¢
      */
     highlightCurrentPage() {
         const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -211,10 +211,10 @@ const Navigation = {
     }
 };
 
-// ===== ¹¤¾ßº¯Êı =====
+// ===== å·¥å…·å‡½æ•° =====
 const Utils = {
     /**
-     * ´´½¨²¨ÎÆĞ§¹û
+     * åˆ›å»ºæ³¢çº¹æ•ˆæœ
      */
     createRipple(event) {
         const button = event.currentTarget;
@@ -234,32 +234,32 @@ const Utils = {
     },
 
     /**
-     * Æ½»¬¹ö¶¯µ½¶¥²¿
+     * å¹³æ»‘æ»šåŠ¨åˆ°é¡¶éƒ¨
      */
     scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 };
 
-// ===== Ò³Ãæ¼ÓÔØ³õÊ¼»¯ =====
+// ===== é¡µé¢åŠ è½½åˆå§‹åŒ– =====
 document.addEventListener('DOMContentLoaded', () => {
-    // ³õÊ¼»¯¸÷Ä£¿é
+    // åˆå§‹åŒ–å„ä¸ªæ¨¡å—
     TimeDisplay.init();
     Timer.init();
     PageAnimations.init();
     Navigation.init();
 
-    // ÎªËùÓĞ°´Å¥Ìí¼Ó²¨ÎÆĞ§¹û
+    // ä¸ºæ‰€æœ‰æŒ‰é’®æ·»åŠ æ³¢çº¹æ•ˆæœ
     document.querySelectorAll('.btn').forEach(button => {
         button.addEventListener('click', Utils.createRipple);
     });
 
-    // ¿ØÖÆÌ¨»¶Ó­ĞÅÏ¢
-    console.log('%c?? »¶Ó­À´µ½ Mr.Xia µÄ¸öÈËÍøÕ¾£¡', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-    console.log('%c? ÍøÕ¾²ÉÓÃÏÖ´ú»¯¼òÔ¼Éè¼Æ·ç¸ñ', 'color: #ec4899; font-size: 14px;');
+    // æ§åˆ¶å°æ¬¢è¿ä¿¡æ¯
+    console.log('%cğŸ‘‹ æ¬¢è¿è®¿é—® Mr.Xia çš„ä¸ªäººç½‘ç«™ï¼', 'color: #6366f1; font-size: 20px; font-weight: bold;');
+    console.log('%cğŸš€ ç½‘ç«™æ­£åœ¨æŒç»­å»ºè®¾å’Œæ›´æ–°ä¸­', 'color: #ec4899; font-size: 14px;');
 });
 
-// µ¼³öÄ£¿é¹©Íâ²¿Ê¹ÓÃ
+// æš´éœ²æ¨¡å—ä¾›å¤–éƒ¨ä½¿ç”¨
 window.MrXiaApp = {
     TimeDisplay,
     Timer,

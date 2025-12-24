@@ -3,113 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>��ʽָ�� - Mr.Xia</title>
+    <title>样式指南 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- ��̬���� -->
+    <!-- 动态背景 -->
     <div class="bg-img"></div>
 
-    <!-- ҳü���� -->
+    <!-- 页眉导航 -->
     <header>
         <nav>
             <div class="logo">Mr.Xia</div>
             <ul class="nav-links">
-                <li><a href="index.html">��ҳ</a></li>
-                <li><a href="Works.html">��Ʒ</a></li>
-                <li><a href="timetable.html">����</a></li>
-                <li><a href="statement.html">����</a></li>
-                <li><a href="styleguide.html">��ʽָ��</a></li>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="Works.html">作品</a></li>
+                <li><a href="timetable.html">工具</a></li>
+                <li><a href="statement.html">声明</a></li>
+                <li><a href="styleguide.html">样式指南</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- ������ -->
+    <!-- 主内容 -->
     <main>
-        <h1>?? ��ʽָ��</h1>
+        <h1>🎨 样式指南</h1>
         <p style="color: var(--text-secondary); margin-bottom: var(--spacing-xl);">
-            ��ҳ��չʾ��վ�������Ԫ�غ����
+            本页面展示网站的设计元素和规范
         </p>
 
-        <!-- ��ɫϵͳ -->
+        <!-- 色彩系统 -->
         <section>
-            <h2>ɫ��ϵͳ</h2>
+            <h2>色彩系统</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin: var(--spacing-lg) 0;">
                 <div style="background: var(--primary-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
-                    <div>��ɫ</div>
+                    <div>主色</div>
                     <small>#6366f1</small>
                 </div>
                 <div style="background: var(--secondary-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
-                    <div>��ɫ</div>
+                    <div>辅色</div>
                     <small>#ec4899</small>
                 </div>
                 <div style="background: var(--accent-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
-                    <div>ǿ��ɫ</div>
+                    <div>强调色</div>
                     <small>#f59e0b</small>
                 </div>
             </div>
         </section>
 
-        <!-- ������ʽ -->
+        <!-- 排版样式 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>�Ű�ϵͳ</h2>
+            <h2>排版系统</h2>
             <div class="card">
-                <h1>����һ������ H1</h1>
-                <h2>���Ƕ������� H2</h2>
-                <h3>������������ H3</h3>
-                <p>�������Ķ��䡣����ϵͳĬ�����壬�и�1.6��ȷ�����õĿɶ��ԡ�</p>
-                <p class="text-small">����С�����֣����ڴ�Ҫ��Ϣչʾ��</p>
+                <h1>这是一级标题 H1</h1>
+                <h2>这是二级标题 H2</h2>
+                <h3>这是三级标题 H3</h3>
+                <p>这是一段正文。使用系统默认字体，行高1.6确保良好的可读性。</p>
+                <p class="text-small">这是小号文本，用于次要信息展示。</p>
             </div>
         </section>
 
-        <!-- ��ť��ʽ -->
+        <!-- 按钮样式 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>��ť���</h2>
+            <h2>按钮样式</h2>
             <div class="card">
                 <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
-                    <button class="btn">��Ҫ��ť</button>
-                    <button class="btn btn-secondary">��Ҫ��ť</button>
-                    <button class="btn btn-outline">������ť</button>
+                    <button class="btn">主要按钮</button>
+                    <button class="btn btn-secondary">次要按钮</button>
+                    <button class="btn btn-outline">轮廓按钮</button>
                 </div>
             </div>
         </section>
 
-        <!-- ��Ƭ��ʽ -->
+        <!-- 卡片样式 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>��Ƭ���</h2>
+            <h2>卡片样式</h2>
             <div class="card">
-                <h3>��ͨ��Ƭ</h3>
-                <p>����һ����׼�Ŀ�Ƭ���������������Ч�������ͣʱ����ƽ�����ϸ�Ч������Ӱ�仯��</p>
+                <h3>普通卡片</h3>
+                <p>这是一个标准的卡片组件，包含标题和正文，悬停时会有平滑的阴影变化效果。</p>
             </div>
 
             <div class="shadowbox">
-                <h3>��Ӱ����</h3>
-                <p>����һ�������䶥��װ�ε���Ӱ���ӣ����������⶯��Ч����</p>
+                <h3>阴影盒</h3>
+                <p>这是一个带有特殊装饰效果的阴影盒组件，顶部有渐变动画效果。</p>
             </div>
         </section>
 
-        <!-- ʱ����ʾ�� -->
+        <!-- 时间显示组件 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>�������</h2>
+            <h2>时间组件</h2>
             <div class="card">
-                <h3>ʱ����ʾ��</h3>
-                <div id="currentTime">������...</div>
+                <h3>时间显示</h3>
+                <div id="currentTime">加载中...</div>
             </div>
         </section>
 
-        <!-- ������ʽ -->
+        <!-- 链接样式 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>������ʽ</h2>
+            <h2>链接样式</h2>
             <div class="card">
                 <p>
-                    ����һ�� <a href="#">��׼����</a>��������ͣЧ����
+                    这是一个 <a href="#">标准链接</a>，带有悬停效果。
                 </p>
             </div>
         </section>
 
-        <!-- ���ϵͳ -->
+        <!-- 间距系统 -->
         <section style="margin-top: var(--spacing-xl);">
-            <h2>���ϵͳ</h2>
+            <h2>间距系统</h2>
             <div class="card">
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
                     <div style="background: var(--primary-light); padding: var(--spacing-xs); border-radius: var(--radius-sm);">xs - 0.5rem</div>
@@ -121,10 +121,10 @@
             </div>
         </section>
 
-        <!-- ������ҳ -->
+        <!-- 返回首页 -->
         <div style="text-align: center; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
             <a href="index.html" class="btn btn-secondary">
-                �� ������ҳ
+                返回首页
             </a>
         </div>
     </main>

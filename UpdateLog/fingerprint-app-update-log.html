@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指纹验证应用 - 更新日志</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .update-log {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .version-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .version-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .update-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .update-content {
+            margin-left: 1rem;
+        }
+        .update-item {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .update-type {
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .type-new {
+            color: var(--accent-color);
+        }
+        .type-update {
+            color: var(--primary-color);
+        }
+        .type-fix {
+            color: var(--secondary-color);
+        }
+        .type-optimize {
+            color: var(--text-primary);
+        }
+        .type-cancel {
+            color: var(--text-secondary);
+        }
+        .bug-item {
+            color: var(--secondary-color);
+            margin-top: 0.5rem;
+        }
+        .note-item {
+            color: var(--primary-color);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 1rem 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .type-note {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态背景 -->
+    <div class="bg-img"></div>
+
+    <!-- 页眉导航 -->
+    <header>
+        <nav>
+            <div class="logo">Mr.Xia</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../Works.html">作品</a></li>
+                <li><a href="../timetable.html">工具</a></li>
+                <li><a href="../statement.html">声明</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 主内容 -->
+    <main>
+        <div class="update-log">
+            <h1 style="text-align: center; margin-bottom: 2rem;">🔄 指纹验证应用 - 更新日志</h1>
+            
+            <a href="../Works.html" class="back-link">
+                ← 返回作品页
+            </a>
+
+            <!-- 2.0.0 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v2.0.0</div>
+                    <div class="update-date">更新时间：2024.10.1 22:45</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-note">(借了个源码抄抄，于是有了更新)</span>
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>新版指纹验证(beta)
+                    </div>
+                    <div class="bug-item">
+                        <strong>已知bug：</strong>hyperOS老版验证频繁提示“手指移动过快”，目前未找到解决方案
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.4.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.4.1</div>
+                    <div class="update-date">更新时间：2024.2.15 13:00</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-update">更新：</span>作者个人网站地址
+                    </div>
+                    <div class="bug-item">
+                        <strong>已知可复现bug1：</strong>验证频繁触发后需要清除两次数据才可恢复
+                    </div>
+                    <div class="bug-item">
+                        <strong>已知bug2：</strong>清除数据功能无法清除验证频繁状态
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.4 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.4</div>
+                    <div class="update-date">更新时间：2024.2.10 13:00</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-fix">修复：</span>今日简报界面无法打开问题
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>更新日志内容及格式
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3.3.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3.3.1</div>
+                    <div class="update-date">更新时间：2024.2.10 11:00</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>弹窗文字
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-cancel">取消：</span>[联系QQ]功能
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3.3 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3.3</div>
+                    <div class="update-date">更新时间：2024.2.8 16:00</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>弹窗文字
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3.2 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3.2</div>
+                    <div class="update-date">更新时间：2023.8.20 18:00</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>存储权限申请
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3.1-fix -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3.1-fix</div>
+                    <div class="update-date">更新时间：2023.8.19</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-fix">紧急修复：</span>1.3.1未完成的bug修复
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3.1</div>
+                    <div class="update-date">更新时间：2023.8.19 14:30</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-update">更新：</span>部分文案内容
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-fix">修复：</span>1.3版本更新首次进入无弹窗的bug
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.3 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.3</div>
+                    <div class="update-date">更新时间：2023.6.17 18:30</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-note">(回坑（）但是水一版)</span>
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-update">更新：</span>源码注释内容
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>更新日志跳转注意事项时间优化
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.5 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.5</div>
+                    <div class="update-date">更新时间：2022.8.29 12:10</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>今日简报(alpha)
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.4 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.4</div>
+                    <div class="update-date">更新时间：2022.8.27 19:10</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>"验证频繁"后清除数据。
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>对话框文本
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.3 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.3</div>
+                    <div class="update-date">更新时间：2022.8.14 11:45</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-note">(水一版：更新更新日志（1.2.1.1与1.2.1.2的源码丢失）)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.2 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.2</div>
+                    <div class="update-date">更新时间：2022.8.14 10:30</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>加密后变量/函数名
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>软件升级为64bit应用
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.1.2 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.1.2</div>
+                    <div class="update-date">更新时间：2022.8.13 21:30</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>写入更新弹窗文件速度
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.1.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.1.1</div>
+                    <div class="update-date">更新时间：2022.8.13 19:07</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>一些加密后的变量/函数名
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.1</div>
+                    <div class="update-date">更新时间：2022.8.13 18:20</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>主题切换逻辑
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>一些加密后的变量/函数名（相信我你看不到doge）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.2.0 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.2.0</div>
+                    <div class="update-date">更新时间：2022.8.13 16:45</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>更改应用图标
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.9 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.9</div>
+                    <div class="update-date">更新时间：2022.8.7 17:05</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>删除一个print函数
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.8-fix -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.8-fix</div>
+                    <div class="update-date">更新时间：2022.8.7 10:57</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-fix">修复：</span>深色主题切换
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.8 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.8</div>
+                    <div class="update-date">更新时间：2022.8.7 10:40</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>深色主题切换
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.7 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.7</div>
+                    <div class="update-date">更新时间：2022.8.6 14:35</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-note">(氵)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.6 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.6</div>
+                    <div class="update-date">更新时间：2022.8.6 12:40</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>指纹验证时间
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>对话框内容（再水一版doge）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.5 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.5</div>
+                    <div class="update-date">更新时间：2022.8.6 10:25</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>退出程序时间（水一版doge）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.4 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.4</div>
+                    <div class="update-date">更新时间：2022.8.5 15:15</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>写入文件确认更新日志后直接弹出注意事项窗口
+                    </div>
+                    <div class="note-item">
+                        <strong>注：</strong>文件保存路径 sdcard/myapp.zhiwenyanzheng/history/
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.3 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.3</div>
+                    <div class="update-date">更新时间：2022.8.2 19:25</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>一处弹出消息
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>点击『开始验证』后验证指纹时间
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>指纹识别成功弹出消息
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>弹出更新日志后自动退出，需要用户重新进入。
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>获取存储权限以保存在用户本地
+                    </div>
+                    <div class="note-item">
+                        <strong>注：</strong>文件保存路径sdcard/myapp.zhiwenyanzheng/history/
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.3beta3 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.3beta3</div>
+                    <div class="update-date">更新时间：2022.8.2 19:16</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>弹出更新日志后自动退出，需要用户重新进入。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.3beta2.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.3beta2.1</div>
+                    <div class="update-date">更新时间：2022.8.2 18:57</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>第一次进入该版本软件自动弹出更新日志
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.3beta -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.3beta</div>
+                    <div class="update-date">更新时间：2022.8.1 19:41</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>一处弹出消息
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>点击『开始验证』后验证指纹时间
+                    </div>
+                    <div class="update-item">
+                        <span class="update-type type-optimize">优化：</span>指纹识别成功弹出消息
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.2-fix -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.2-fix</div>
+                    <div class="update-date">更新时间：2022.8.1 19:26</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-fix">紧急修复：</span>联系QQ功能
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.2 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.2</div>
+                    <div class="update-date">更新时间：2022.8.1 19:21</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>关于软件、更新日志，联系QQ
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.1.1 -->
+            <div class="version-section">
+                <div class="version-header">
+                    <div class="version-number">v1.1.1</div>
+                    <div class="update-date">更新时间：2022.8.1 18:30</div>
+                </div>
+                <div class="update-content">
+                    <div class="update-item">
+                        <span class="update-type type-new">新增：</span>注意事项
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+</body>
+</html>
