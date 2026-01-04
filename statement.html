@@ -46,6 +46,14 @@
                 📝 2025年度总结
             </h2>
 
+            <!-- 切换按钮 -->
+            <div style="text-align: center; margin-bottom: var(--spacing-md);">
+                <button id="toggle-preview" class="btn btn-outline" onclick="MarkdownRenderer.togglePreview()">
+                    <span id="toggle-icon">📖</span>
+                    <span id="toggle-text">展开全文</span>
+                </button>
+            </div>
+
             <!-- 渲染结果 -->
             <div id="markdown-output" class="markdown-content">
                 <p style="text-align: center; color: var(--text-secondary);">加载中...</p>
@@ -114,6 +122,9 @@
         const MarkdownRenderer = {
             init() {
                 this.outputElement = document.getElementById('markdown-output');
+                this.isCollapsed = true;
+                this.fullContent = '';
+                this.collapsedContent = '';
 
                 if (!this.outputElement) {
                     console.error('Markdown output element not found');
@@ -150,9 +161,21 @@
 
             render(markdownText) {
                 console.log('Rendering markdown...');
+                this.fullContent = markdownText;
+                
                 const html = marked.parse(markdownText);
                 this.outputElement.innerHTML = html;
                 console.log('Markdown rendered, HTML length:', html.length);
+
+                // 生成折叠预览内容
+                this.generateCollapsedPreview();
+
+                // 默认显示折叠状态
+                if (this.isCollapsed) {
+                    this.showCollapsed();
+                } else {
+                    this.showExpanded();
+                }
 
                 // 渲染数学公式
                 this.renderMath();
@@ -164,6 +187,67 @@
                 this.processImages();
 
                 console.log('Markdown rendering complete');
+            },
+
+            generateCollapsedPreview() {
+                const lines = this.fullContent.split('\n');
+                let previewContent = '';
+                let firstImageAdded = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    
+                    if (line.startsWith('#')) {
+                        previewContent += line + '\n';
+                        if (i < 3) {
+                            previewContent += '\n';
+                        }
+                    } else if (line.trim() && !firstImageAdded) {
+                        previewContent += line + '\n';
+                        if (line.trim().length > 10) {
+                            break;
+                        }
+                    } else if (line.includes('<img') || line.includes('![')) {
+                        previewContent += line + '\n';
+                        firstImageAdded = true;
+                        break;
+                    }
+                }
+
+                this.collapsedContent = marked.parse(previewContent);
+            },
+
+            showCollapsed() {
+                this.outputElement.innerHTML = this.collapsedContent;
+                this.outputElement.classList.add('collapsed');
+                this.outputElement.classList.remove('expanded');
+                document.getElementById('toggle-icon').textContent = '📖';
+                document.getElementById('toggle-text').textContent = '展开全文';
+                
+                this.renderMath();
+                this.highlightCode();
+                this.processImages();
+            },
+
+            showExpanded() {
+                this.outputElement.innerHTML = marked.parse(this.fullContent);
+                this.outputElement.classList.remove('collapsed');
+                this.outputElement.classList.add('expanded');
+                document.getElementById('toggle-icon').textContent = '📖';
+                document.getElementById('toggle-text').textContent = '收起预览';
+                
+                this.renderMath();
+                this.highlightCode();
+                this.processImages();
+            },
+
+            togglePreview() {
+                this.isCollapsed = !this.isCollapsed;
+                if (this.isCollapsed) {
+                    this.showCollapsed();
+                } else {
+                    this.showExpanded();
+                }
             },
 
             renderMath() {
