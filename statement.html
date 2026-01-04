@@ -125,6 +125,9 @@
                 this.isCollapsed = true;
                 this.fullContent = '';
                 this.collapsedContent = '';
+                this.preloadedImages = new Set();
+                this.preloadTimeout = null;
+                this.hasPreloaded = false;
 
                 if (!this.outputElement) {
                     console.error('Markdown output element not found');
@@ -155,7 +158,9 @@
                     this.render(markdownText);
                 } catch (err) {
                     console.error('Markdown file load error:', err);
-                    this.outputElement.innerHTML = '<p style="color: var(--error-color); text-align: center;">文件加载失败，请确保markdown文件存在</p>';
+                    if (this.outputElement) {
+                        this.outputElement.innerHTML = '<p style="color: var(--error-color); text-align: center;">文件加载失败，请确保markdown文件存在</p>';
+                    }
                 }
             },
 
@@ -187,6 +192,99 @@
                 this.processImages();
 
                 console.log('Markdown rendering complete');
+            },
+
+            preloadImages() {
+                let imageUrls = [];
+                
+                try {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = marked.parse(this.fullContent);
+                    const images = tempDiv.querySelectorAll('img');
+                    imageUrls = Array.from(images).map(img => img.src);
+                    
+                    tempDiv.innerHTML = '';
+                } catch (err) {
+                    console.warn('Failed to extract image URLs using DOM parsing:', err);
+                    
+                    const singleQuotePattern = /src=['"]([^'"]+)['"]/g;
+                    const doubleQuotePattern = /src=["']([^"']+)["']/g;
+                    
+                    const singleQuoteUrls = this.fullContent.match(singleQuotePattern) || [];
+                    const doubleQuoteUrls = this.fullContent.match(doubleQuotePattern) || [];
+                    
+                    imageUrls = [...(singleQuoteUrls || []), ...(doubleQuoteUrls || [])];
+                }
+                
+                if (!imageUrls || imageUrls.length === 0) {
+                    console.log('No images found to preload');
+                    return;
+                }
+
+                console.log(`Found ${imageUrls.length} images to preload`);
+                
+                const connection = navigator.connection || { effectiveType: '4g' };
+                const isSlowConnection = connection.effectiveType === 'slow-2g' || 
+                                        connection.effectiveType === '2g' || 
+                                        connection.effectiveType === '3g';
+                
+                const preloadLimit = isSlowConnection ? 3 : imageUrls.length;
+                const loadingIndicator = document.getElementById('loading-indicator');
+                const loadingText = document.getElementById('loading-text');
+                
+                if (loadingIndicator && loadingText) {
+                    loadingIndicator.classList.add('active');
+                    loadingText.textContent = `正在预加载图片 (0/${preloadLimit})...`;
+                }
+                
+                let preloadedCount = 0;
+                
+                imageUrls.slice(0, preloadLimit).forEach((url, index) => {
+                    let cleanedUrl = url;
+                    
+                    cleanedUrl = cleanedUrl.replace(/%22/g, '').replace(/%22/g, '').trim();
+                    cleanedUrl = cleanedUrl.replace(/&quot;/g, '').replace(/&quot;/g, '').trim();
+                    cleanedUrl = decodeURIComponent(cleanedUrl);
+                    cleanedUrl = cleanedUrl.replace(/%22/g, '').replace(/%22/g, '').trim();
+                    
+                    if (!cleanedUrl) {
+                        console.warn(`Empty URL at index ${index}`);
+                        return;
+                    }
+                    
+                    const img = new Image();
+                    img.src = cleanedUrl;
+                    img.loading = 'eager';
+                    
+                    img.onload = () => {
+                        this.preloadedImages.add(cleanedUrl);
+                        preloadedCount++;
+                        console.log(`Preloaded image ${preloadedCount}/${preloadLimit}: ${cleanedUrl}`);
+                        
+                        if (loadingText) {
+                            loadingText.textContent = `正在预加载图片 (${preloadedCount}/${preloadLimit})...`;
+                        }
+                        
+                        if (preloadedCount === preloadLimit) {
+                            setTimeout(() => {
+                                if (loadingIndicator) {
+                                    loadingIndicator.classList.remove('active');
+                                }
+                            }, 500);
+                        }
+                    };
+                    
+                    img.onerror = () => {
+                        console.warn(`Failed to preload image: ${cleanedUrl}`);
+                    };
+                });
+                
+                this.preloadTimeout = setTimeout(() => {
+                    if (loadingIndicator && loadingIndicator.classList.contains('active')) {
+                        loadingIndicator.classList.remove('active');
+                        console.log('Preload timeout reached, hiding loading indicator');
+                    }
+                }, 3000);
             },
 
             generateCollapsedPreview() {
@@ -227,6 +325,11 @@
                 this.renderMath();
                 this.highlightCode();
                 this.processImages();
+                
+                if (!this.hasPreloaded) {
+                    this.preloadImages();
+                    this.hasPreloaded = true;
+                }
             },
 
             showExpanded() {
@@ -242,11 +345,17 @@
             },
 
             togglePreview() {
+                const wasCollapsed = this.isCollapsed;
                 this.isCollapsed = !this.isCollapsed;
+                
                 if (this.isCollapsed) {
                     this.showCollapsed();
                 } else {
                     this.showExpanded();
+                }
+                
+                if (wasCollapsed !== this.isCollapsed) {
+                    console.log(`Preview state changed: ${wasCollapsed ? 'collapsed' : 'expanded'} → ${this.isCollapsed ? 'collapsed' : 'expanded'}`);
                 }
             },
 
