@@ -20,3 +20,6 @@ Thumbs.db
 # 临时文件
 tmp/
 temp/
+
+# Tencent EdgeOne相关
+.well-known/
