@@ -16,11 +16,11 @@
         <nav>
             <div class="logo">Mr.Xia</div>
             <ul class="nav-links">
-                <li><a href="index.html">首页</a></li>
-                <li><a href="Works.html">作品</a></li>
-                <li><a href="timetable.html">工具</a></li>
-                <li><a href="statement.html">文章</a></li>
-                <li><a href="about.html">关于</a></li>
+                <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
+                <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
+                <li><a href="timetable.html" data-history="true" data-title="工具">工具</a></li>
+                <li><a href="statement.html" data-history="true" data-title="文章">文章</a></li>
+                <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
             </ul>
         </nav>
     </header>
@@ -111,7 +111,7 @@
 
         <!-- 返回首页 -->
         <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary">
+            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
                 ← 返回首页
             </a>
         </div>
@@ -126,5 +126,11 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    
+    <!-- 页面过渡指示器 -->
+    <div id="page-transition-indicator">
+        <div class="spinner"></div>
+    </div>
 </body>
 </html>

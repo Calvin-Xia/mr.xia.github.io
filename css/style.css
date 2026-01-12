@@ -992,3 +992,41 @@ a:hover {
         padding-left: var(--spacing-md);
     }
 }
+
+/* 页面过渡指示器 */
+#page-transition-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+#page-transition-indicator.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#page-transition-indicator .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -18,11 +18,11 @@
         <nav>
             <div class="logo">Mr.Xia</div>
             <ul class="nav-links">
-                <li><a href="index.html">首页</a></li>
-                <li><a href="Works.html">作品</a></li>
-                <li><a href="timetable.html">工具</a></li>
-                <li><a href="statement.html">文章</a></li>
-                <li><a href="about.html">关于</a></li>
+                <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
+                <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
+                <li><a href="timetable.html" data-history="true" data-title="工具">工具</a></li>
+                <li><a href="statement.html" data-history="true" data-title="文章">文章</a></li>
+                <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
             </ul>
         </nav>
     </header>
@@ -76,7 +76,7 @@
                 <p style="margin-bottom: var(--spacing-md);">
                     了解网站的详细声明、隐私政策和使用说明
                 </p>
-                <a href="about.html" class="btn btn-primary" style="display: inline-block; margin-right: var(--spacing-sm);">
+                <a href="about.html" class="btn btn-primary" style="display: inline-block; margin-right: var(--spacing-sm);" data-history="true" data-title="关于">
                     查看关于页面 →
                 </a>
             </div>
@@ -99,5 +99,11 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    
+    <!-- 页面过渡指示器 -->
+    <div id="page-transition-indicator">
+        <div class="spinner"></div>
+    </div>
 </body>
 </html>
