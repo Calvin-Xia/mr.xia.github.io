@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="独立Markdown转HTML工具 - 与statement.html渲染效果完全一致">
+    <title>Markdown转HTML工具</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #ec4899;
+            --accent-color: #f59e0b;
+            --error-color: #e05260;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --background-color: #ffffff;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-dark: #111827;
+            --border-color: #e5e7eb;
+            --hover-color: #f3f4f6;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition-fast: 150ms ease-in-out;
+            --transition-base: 300ms ease-in-out;
+            --transition-slow: 500ms ease-in-out;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            opacity: 0.05;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: var(--spacing-xl) auto;
+            padding: 0 var(--spacing-lg);
+            min-height: calc(100vh - 200px);
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .editor-panel {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 500px;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all var(--transition-base);
+            background: var(--bg-secondary);
+        }
+
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .preview-panel {
+            overflow: hidden;
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--text-secondary), var(--text-primary));
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error-color), #dc2626);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: var(--spacing-lg) 0;
+            padding: var(--spacing-md);
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .markdown-content {
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            opacity: 1 !important;
+            visibility: visible !important;
+            transition: opacity 0.3s ease;
+        }
+
+        .markdown-content.loading {
+            opacity: 0.7;
+        }
+
+        .image-caption {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 4px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .markdown-content.collapsed {
+            max-height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .markdown-content.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--bg-secondary));
+            pointer-events: none;
+        }
+
+        .markdown-content.expanded {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .loading-indicator {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .loading-indicator.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-weight: 500;
+        }
+
+        .markdown-content h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: var(--spacing-xl) 0 var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .markdown-content h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin: var(--spacing-lg) 0 var(--spacing-md);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .markdown-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: var(--spacing-md) 0 var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .markdown-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: var(--spacing-md) 0 var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .markdown-content h5 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: var(--spacing-sm) 0 var(--spacing-xs);
+            color: var(--text-primary);
+        }
+
+        .markdown-content h6 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: var(--spacing-sm) 0 var(--spacing-xs);
+            color: var(--text-secondary);
+        }
+
+        .markdown-content p {
+            margin: var(--spacing-md) 0;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .markdown-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .markdown-content a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .markdown-content strong {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .markdown-content em {
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        .markdown-content code {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 0.2em 0.4em;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .markdown-content pre {
+            background: #1e1e1e;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e6edf3;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: var(--spacing-md) 0;
+            padding-left: var(--spacing-lg);
+        }
+
+        .markdown-content li {
+            margin: var(--spacing-xs) 0;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .markdown-content ul ul,
+        .markdown-content ol ol,
+        .markdown-content ul ol,
+        .markdown-content ol ul {
+            margin: var(--spacing-xs) 0;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--text-secondary);
+        }
+
+        .markdown-content blockquote blockquote {
+            border-left-color: var(--secondary-color);
+            margin-left: var(--spacing-sm);
+        }
+
+        .markdown-content hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid var(--border-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        .markdown-content tr:nth-child(even) {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .markdown-content tr:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin: var(--spacing-md) 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .markdown-content input[type="checkbox"] {
+            margin-right: var(--spacing-xs);
+            cursor: pointer;
+        }
+
+        .markdown-content details {
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-md);
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .markdown-content summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            transition: background var(--transition-fast);
+        }
+
+        .markdown-content summary:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .markdown-content .katex {
+            font-size: 1.1em;
+        }
+
+        .markdown-content .katex-display {
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+            padding: var(--spacing-sm);
+        }
+
+        .help-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            margin: var(--spacing-lg) 0;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .help-section h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .help-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: var(--spacing-lg) 0 var(--spacing-md);
+            color: var(--text-primary);
+        }
+
+        .help-section p {
+            margin: var(--spacing-sm) 0;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .help-section code {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 0.2em 0.4em;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .help-section pre {
+            background: #1e1e1e;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .help-section pre code {
+            background: transparent;
+            padding: 0;
+            color: #e6edf3;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: var(--spacing-sm) 0;
+            padding-left: var(--spacing-lg);
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .test-cases {
+            margin-top: var(--spacing-lg);
+        }
+
+        .test-case {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .test-case h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 1024px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+
+            main {
+                padding: 0 var(--spacing-md);
+            }
+
+            .editor-panel {
+                padding: var(--spacing-md);
+            }
+
+            textarea {
+                min-height: 300px;
+            }
+
+            .markdown-content h1 {
+                font-size: 1.875rem;
+            }
+
+            .markdown-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .markdown-content h3 {
+                font-size: 1.25rem;
+            }
+
+            .markdown-content table {
+                font-size: 0.9em;
+            }
+
+            .markdown-content th,
+            .markdown-content td {
+                padding: var(--spacing-xs) var(--spacing-sm);
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 0 var(--spacing-sm);
+            }
+
+            .editor-panel,
+            .help-section {
+                padding: var(--spacing-md);
+            }
+
+            .markdown-content {
+                padding: var(--spacing-md);
+            }
+
+            .markdown-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .markdown-content h2 {
+                font-size: 1.25rem;
+            }
+
+            .markdown-content pre {
+                padding: var(--spacing-sm);
+            }
+
+            .markdown-content ul,
+            .markdown-content ol {
+                padding-left: var(--spacing-md);
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-md);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-img"></div>
+
+    <header>
+        <h1>📝 Markdown转HTML工具</h1>
+    </header>
+
+    <main>
+        <div class="editor-container">
+            <div class="editor-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Markdown输入</span>
+                    <div class="panel-actions">
+                        <button class="btn btn-outline" onclick="loadSample()">加载示例</button>
+                        <button class="btn btn-danger" onclick="clearEditor()">清空</button>
+                    </div>
+                </div>
+                <textarea id="markdown-input" placeholder="在此输入Markdown内容..."></textarea>
+            </div>
+
+            <div class="editor-panel preview-panel">
+                <div class="panel-header">
+                    <span class="panel-title">HTML预览</span>
+                    <div class="panel-actions">
+                        <button class="btn btn-outline" onclick="togglePreview()" id="toggle-btn">折叠</button>
+                    </div>
+                </div>
+                <div class="preview-content">
+                    <div id="markdown-output" class="markdown-content">
+                        <p style="text-align: center; color: var(--text-secondary);">预览区域</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button class="btn" onclick="renderMarkdown()">🔄 渲染</button>
+            <button class="btn btn-secondary" onclick="exportHTML()">📥 导出HTML</button>
+            <button class="btn btn-outline" onclick="copyHTML()">📋 复制HTML</button>
+        </div>
+
+        <div class="help-section">
+            <h2>📖 使用说明</h2>
+            
+            <h3>功能特性</h3>
+            <ul class="feature-list">
+                <li>支持完整的Markdown语法（GFM）</li>
+                <li>代码语法高亮（highlight.js + github-dark主题）</li>
+                <li>数学公式渲染（KaTeX，支持 $ 和 $$ 分隔符）</li>
+                <li>图片自动添加备注文本（从alt属性提取）</li>
+                <li>折叠/展开预览功能</li>
+                <li>图片智能预加载</li>
+                <li>导出为独立HTML文件</li>
+                <li>响应式设计，支持移动端</li>
+            </ul>
+
+            <h3>使用方法</h3>
+            <p>1. 在左侧输入框中输入或粘贴Markdown内容</p>
+            <p>2. 点击"渲染"按钮或使用快捷键（Ctrl+Enter）进行渲染</p>
+            <p>3. 右侧预览区域将显示渲染后的HTML效果</p>
+            <p>4. 点击"导出HTML"可将结果保存为独立HTML文件</p>
+            <p>5. 点击"复制HTML"可将HTML代码复制到剪贴板</p>
+
+            <h3>文本换行说明</h3>
+            <p>本工具使用标准Markdown语法，文本换行需要使用<strong>两个空格+换行</strong>：</p>
+            <pre><code>这是第一行  
+这是第二行</code></pre>
+            <p>注意：单个换行符不会产生换行效果，需要使用两个空格+换行来实现。</p>
+
+            <h3>支持的Markdown语法</h3>
+            <div class="test-cases">
+                <div class="test-case">
+                    <h4>标题</h4>
+                    <pre><code># 一级标题
+## 二级标题
+### 三级标题</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>文本格式</h4>
+                    <pre><code>**粗体文本**
+*斜体文本*
+~~删除线~~
+`行内代码`</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>列表</h4>
+                    <pre><code>- 无序列表项1
+- 无序列表项2
+
+1. 有序列表项1
+2. 有序列表项2</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>代码块</h4>
+                    <pre><code>```javascript
+function hello() {
+    console.log("Hello, World!");
+}
+```</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>链接和图片</h4>
+                    <pre><code>[链接文本](https://example.com)
+![图片描述](https://example.com/image.jpg)</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>引用</h4>
+                    <pre><code>> 这是一段引用文本</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>表格</h4>
+                    <pre><code>| 列1 | 列2 | 列3 |
+|-----|-----|-----|
+| 数据1 | 数据2 | 数据3 |</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>数学公式</h4>
+                    <pre><code>行内公式：$E = mc^2$
+
+块级公式（单行）：
+$$
+\int_{a}^{b} f(x) dx = F(b) - F(a)
+$$
+
+块级公式（多行）：
+$$
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+$$
+
+复杂公式：
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$</code></pre>
+                </div>
+
+                <div class="test-case">
+                    <h4>分割线</h4>
+                    <pre><code>---</code></pre>
+                </div>
+            </div>
+
+            <h3>快捷键</h3>
+            <ul class="feature-list">
+                <li>Ctrl + Enter: 渲染Markdown</li>
+                <li>Ctrl + S: 导出HTML</li>
+                <li>Ctrl + C: 复制HTML</li>
+            </ul>
+
+            <h3>注意事项</h3>
+            <ul class="feature-list">
+                <li>图片链接必须是有效的URL</li>
+                <li>数学公式使用KaTeX语法</li>
+                <li>文本换行需要使用两个空格+换行（标准Markdown语法）</li>
+                <li>导出的HTML文件包含所有必要的样式和脚本</li>
+                <li>建议在现代浏览器中使用以获得最佳体验</li>
+            </ul>
+        </div>
+    </main>
+
+    <div id="loading-indicator" class="loading-indicator">
+        <div class="loading-spinner"></div>
+        <span id="loading-text">加载中...</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+
+    <script>
+        const MarkdownRenderer = {
+            init() {
+                this.inputElement = document.getElementById('markdown-input');
+                this.outputElement = document.getElementById('markdown-output');
+                this.isCollapsed = false;
+                this.fullContent = '';
+                this.collapsedContent = '';
+                this.preloadedImages = new Set();
+                this.hasPreloaded = false;
+
+                marked.setOptions({
+                    breaks: false,
+                    gfm: true
+                });
+
+                this.setupEventListeners();
+            },
+
+            setupEventListeners() {
+                this.inputElement.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        e.preventDefault();
+                        this.render();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 's') {
+                        e.preventDefault();
+                        this.exportHTML();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'c' && document.activeElement !== this.inputElement) {
+                        e.preventDefault();
+                        this.copyHTML();
+                    }
+                });
+            },
+
+            render() {
+                const markdownText = this.inputElement.value;
+                if (!markdownText.trim()) {
+                    this.outputElement.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">请输入Markdown内容</p>';
+                    return;
+                }
+
+                this.fullContent = markdownText;
+                const html = marked.parse(markdownText);
+                this.outputElement.innerHTML = html;
+
+                this.generateCollapsedPreview();
+                this.renderMath();
+                this.highlightCode();
+                this.processImages();
+
+                if (this.isCollapsed) {
+                    this.showCollapsed();
+                } else {
+                    this.showExpanded();
+                }
+
+                this.showLoading('渲染完成', 1000);
+            },
+
+            generateCollapsedPreview() {
+                const lines = this.fullContent.split('\n');
+                let previewContent = '';
+                let firstImageAdded = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    
+                    if (line.startsWith('#')) {
+                        previewContent += line + '\n';
+                        if (i < 3) {
+                            previewContent += '\n';
+                        }
+                    } else if (line.trim() && !firstImageAdded) {
+                        previewContent += line + '\n';
+                        if (line.trim().length > 10) {
+                            break;
+                        }
+                    } else if (line.includes('<img') || line.includes('![')) {
+                        previewContent += line + '\n';
+                        firstImageAdded = true;
+                        break;
+                    }
+                }
+
+                this.collapsedContent = marked.parse(previewContent);
+            },
+
+            showCollapsed() {
+                this.outputElement.innerHTML = this.collapsedContent;
+                this.outputElement.classList.add('collapsed');
+                this.outputElement.classList.remove('expanded');
+                document.getElementById('toggle-btn').textContent = '展开';
+                
+                this.renderMath();
+                this.highlightCode();
+                this.processImages();
+            },
+
+            showExpanded() {
+                this.outputElement.innerHTML = marked.parse(this.fullContent);
+                this.outputElement.classList.remove('collapsed');
+                this.outputElement.classList.add('expanded');
+                document.getElementById('toggle-btn').textContent = '折叠';
+                
+                this.renderMath();
+                this.highlightCode();
+                this.processImages();
+            },
+
+            togglePreview() {
+                this.isCollapsed = !this.isCollapsed;
+                
+                if (this.isCollapsed) {
+                    this.showCollapsed();
+                } else {
+                    this.showExpanded();
+                }
+            },
+
+            renderMath() {
+                try {
+                    renderMathInElement(this.outputElement, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ],
+                        throwOnError: false
+                    });
+                } catch (err) {
+                    console.warn('Math rendering error:', err);
+                }
+            },
+
+            highlightCode() {
+                try {
+                    this.outputElement.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                } catch (err) {
+                    console.warn('Code highlighting error:', err);
+                }
+            },
+
+            processImages(element = this.outputElement) {
+                const flexWrappers = element.querySelectorAll('div[style*="flex"]');
+                
+                flexWrappers.forEach(wrapper => {
+                    const flexImages = wrapper.querySelectorAll('img');
+                    
+                    flexImages.forEach(img => {
+                        const altText = img.getAttribute('alt');
+                        if (altText) {
+                            const originalStyle = img.getAttribute('style') || '';
+                            const widthMatch = originalStyle.match(/width:\s*([\d.]+)%/);
+                            const widthPercent = widthMatch ? widthMatch[1] + '%' : 'auto';
+                            
+                            const wrapperDiv = document.createElement('div');
+                            wrapperDiv.style.cssText = `display: flex; flex-direction: column; align-items: center; width: ${widthPercent}; box-sizing: border-box;`;
+                            
+                            img.parentNode.insertBefore(wrapperDiv, img);
+                            wrapperDiv.appendChild(img);
+                            
+                            const imgStyle = originalStyle.replace(/width:\s*[\d.]+%[^;]*;?\s*/g, '').trim();
+                            if (imgStyle) {
+                                img.setAttribute('style', imgStyle);
+                            } else {
+                                img.removeAttribute('style');
+                            }
+                            
+                            const caption = document.createElement('div');
+                            caption.className = 'image-caption';
+                            caption.textContent = altText;
+                            caption.style.marginTop = '4px';
+                            caption.style.marginBottom = '0';
+                            wrapperDiv.appendChild(caption);
+                        }
+                    });
+                });
+                
+                const standaloneImages = element.querySelectorAll('img');
+                standaloneImages.forEach(img => {
+                    if (!img.closest('[style*="flex"]')) {
+                        const altText = img.getAttribute('alt');
+                        if (altText && !img.nextElementSibling?.classList.contains('image-caption')) {
+                            const caption = document.createElement('div');
+                            caption.className = 'image-caption';
+                            caption.textContent = altText;
+                            caption.style.marginTop = '4px';
+                            caption.style.marginBottom = '16px';
+                            
+                            if (img.parentNode) {
+                                img.parentNode.insertBefore(caption, img.nextSibling);
+                            }
+                        }
+                    }
+                });
+            },
+
+            exportHTML() {
+                const markdownText = this.inputElement.value;
+                if (!markdownText.trim()) {
+                    alert('请先输入Markdown内容');
+                    return;
+                }
+
+                const html = marked.parse(markdownText);
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                this.processImages(tempDiv);
+                const processedHTML = tempDiv.innerHTML;
+                
+                const fullHTML = this.generateFullHTML(processedHTML);
+                
+                const blob = new Blob([fullHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'markdown-output.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                this.showLoading('导出成功', 1000);
+            },
+
+            generateFullHTML(content) {
+                return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown渲染结果</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-secondary: #f9fafb;
+            --border-color: #e5e7eb;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            padding: var(--spacing-xl);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .markdown-content {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        .markdown-content h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: var(--spacing-xl) 0 var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .markdown-content h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin: var(--spacing-lg) 0 var(--spacing-md);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .markdown-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: var(--spacing-md) 0 var(--spacing-sm);
+            color: var(--text-primary);
+        }
+        .markdown-content p {
+            margin: var(--spacing-md) 0;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        .markdown-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .markdown-content a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        .markdown-content strong {
+            font-weight: 700;
+        }
+        .markdown-content code {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .markdown-content pre {
+            background: #1e1e1e;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+        }
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            color: #e6edf3;
+        }
+        .markdown-content ul, .markdown-content ol {
+            margin: var(--spacing-md) 0;
+            padding-left: var(--spacing-lg);
+        }
+        .markdown-content li {
+            margin: var(--spacing-xs) 0;
+            line-height: 1.8;
+        }
+        .markdown-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--text-secondary);
+        }
+        .markdown-content hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: var(--spacing-xl) 0;
+        }
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-md) 0;
+        }
+        .markdown-content th, .markdown-content td {
+            border: 1px solid var(--border-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: left;
+        }
+        .markdown-content th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .markdown-content tr:nth-child(even) {
+            background: rgba(99, 102, 241, 0.05);
+        }
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin: var(--spacing-md) 0;
+        }
+        .image-caption {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 4px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .markdown-content .katex {
+            font-size: 1.1em;
+        }
+        .markdown-content .katex-display {
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+            padding: var(--spacing-sm);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-md);
+            }
+            .markdown-content h1 {
+                font-size: 1.875rem;
+            }
+            .markdown-content h2 {
+                font-size: 1.5rem;
+            }
+            .markdown-content h3 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="markdown-content">
+        ${content}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"><\/script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    <\/script>
+</body>
+</html>`;
+            },
+
+            copyHTML() {
+                const markdownText = this.inputElement.value;
+                if (!markdownText.trim()) {
+                    alert('请先输入Markdown内容');
+                    return;
+                }
+
+                const html = marked.parse(markdownText);
+                navigator.clipboard.writeText(html).then(() => {
+                    this.showLoading('复制成功', 1000);
+                }).catch(err => {
+                    alert('复制失败: ' + err);
+                });
+            },
+
+            showLoading(text, duration = 2000) {
+                const indicator = document.getElementById('loading-indicator');
+                const loadingText = document.getElementById('loading-text');
+                loadingText.textContent = text;
+                indicator.classList.add('active');
+                setTimeout(() => {
+                    indicator.classList.remove('active');
+                }, duration);
+            }
+        };
+
+        function renderMarkdown() {
+            MarkdownRenderer.render();
+        }
+
+        function togglePreview() {
+            MarkdownRenderer.togglePreview();
+        }
+
+        function exportHTML() {
+            MarkdownRenderer.exportHTML();
+        }
+
+        function copyHTML() {
+            MarkdownRenderer.copyHTML();
+        }
+
+        function clearEditor() {
+            if (confirm('确定要清空输入内容吗？')) {
+                document.getElementById('markdown-input').value = '';
+                document.getElementById('markdown-output').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">预览区域</p>';
+            }
+        }
+
+        function loadSample() {
+            const sampleMarkdown = `# 欢迎使用Markdown转HTML工具
+
+这是一个功能强大的Markdown渲染工具，支持完整的GFM语法。
+
+## 功能特性
+
+- **完整Markdown支持**: 支持标题、列表、代码块、表格等所有标准语法
+- **代码高亮**: 使用highlight.js实现语法高亮
+- **数学公式**: 支持KaTeX数学公式渲染
+- **图片处理**: 自动添加图片备注文本
+- **导出功能**: 可导出为独立HTML文件
+
+## 代码示例
+
+\`\`\`javascript
+function hello() {
+    console.log("Hello, World!");
+    return "Welcome to Markdown!";
+}
+\`\`\`
+
+## 数学公式
+
+行内公式：$E = mc^2$
+
+块级公式：
+$$
+\\int_{a}^{b} f(x) dx = F(b) - F(a)
+$$
+
+## 表格示例
+
+| 功能 | 状态 | 说明 |
+|------|------|------|
+| Markdown解析 | ✅ | 支持GFM语法 |
+| 代码高亮 | ✅ | highlight.js |
+| 数学公式 | ✅ | KaTeX |
+| 图片处理 | ✅ | 自动备注 |
+
+## 引用示例
+
+> 这是一个引用块
+>
+> 可以包含多行内容
+
+## 列表示例
+
+### 无序列表
+- 项目1
+- 项目2
+  - 子项目2.1
+  - 子项目2.2
+- 项目3
+
+### 有序列表
+1. 第一步
+2. 第二步
+3. 第三步
+
+---
+
+**开始使用吧！** 在左侧输入Markdown内容，点击"渲染"按钮查看效果。
+`;
+            document.getElementById('markdown-input').value = sampleMarkdown;
+            MarkdownRenderer.render();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            MarkdownRenderer.init();
+        });
+    </script>
+</body>
+</html>
