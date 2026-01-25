@@ -3,16 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Mr.Xia个人网站声明">
-    <title>网站声明 - Mr.Xia</title>
+    <meta name="description" content="Mr.Xia个人网站文章">
+    <title>文章 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- 引入Markdown渲染相关库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+    <style>
+        #blog-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .loading-indicator {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: var(--spacing-xl);
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-card-link {
+            display: block;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .blog-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 var(--spacing-sm);
+            color: var(--text-primary);
+            transition: color 0.2s ease;
+        }
+
+        .blog-card:hover .blog-card-title {
+            color: var(--primary-color);
+        }
+
+        .blog-card-excerpt {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .blog-card-date {
+            padding: 0 var(--spacing-lg) var(--spacing-md);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .blog-card-title {
+                font-size: 1.25rem;
+            }
+
+            .blog-card-link {
+                padding: var(--spacing-md);
+            }
+
+            .blog-card-date {
+                padding: 0 var(--spacing-md) var(--spacing-md);
+                font-size: 0.8125rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- 动态背景 -->
@@ -35,30 +107,15 @@
     <!-- 主内容 -->
     <main>
         <section>
-            <h1>网站声明 📋</h1>
+            <h1>博客文章</h1>
             <p class="text-small" style="margin-bottom: var(--spacing-lg);">
-                最后更新时间：2025年12月31日
+                记录生活，分享思考
             </p>
         </section>
 
-        <!-- Markdown展示框 -->
-        <div class="shadowbox markdown-container">
-            <h2 style="text-align: center; margin-bottom: var(--spacing-lg);">
-                📝 2025年度总结
-            </h2>
-
-            <!-- 切换按钮 -->
-            <div style="text-align: center; margin-bottom: var(--spacing-md);">
-                <button id="toggle-preview" class="btn btn-outline" onclick="MarkdownRenderer.togglePreview()">
-                    <span id="toggle-icon">📖</span>
-                    <span id="toggle-text">展开全文</span>
-                </button>
-            </div>
-
-            <!-- 渲染结果 -->
-            <div id="markdown-output" class="markdown-content">
-                <p style="text-align: center; color: var(--text-secondary);">加载中...</p>
-            </div>
+        <!-- 博客文章列表 -->
+        <div id="blog-container">
+            <div class="loading-indicator">加载中...</div>
         </div>
 
         <!-- 返回首页 -->
@@ -84,331 +141,203 @@
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     <script>
-        // Markdown静态渲染功能
-        const MarkdownRenderer = {
-            init() {
-                this.outputElement = document.getElementById('markdown-output');
-                this.isCollapsed = true;
-                this.fullContent = '';
-                this.collapsedContent = '';
-                this.preloadedImages = new Set();
-                this.preloadTimeout = null;
-                this.hasPreloaded = false;
-
-                if (!this.outputElement) {
-                    console.error('Markdown output element not found');
+        // 博客文章列表加载功能
+        const BlogLoader = {
+            async init() {
+                const container = document.getElementById('blog-container');
+                if (!container) {
+                    console.error('Blog container not found');
                     return;
                 }
 
-                console.log('MarkdownRenderer initialized');
-
-                // 配置marked选项
-                marked.setOptions({
-                    breaks: true,
-                    gfm: true
-                });
-
-                // 页面加载时自动渲染指定路径的markdown文件
-                this.loadAndRender('storage/2025年度总结/2025年度总结.md');
+                try {
+                    const articles = await this.loadAllArticles();
+                    this.renderArticles(articles, container);
+                } catch (err) {
+                    console.error('Failed to load blog articles:', err);
+                    container.innerHTML = '<p style="color: var(--error-color); text-align: center;">文章加载失败，请稍后重试</p>';
+                }
             },
 
-            async loadAndRender(filePath) {
-                console.log('Loading markdown file:', filePath);
+            async loadAllArticles() {
+                const blogFiles = await this.loadBlogFilesList();
+                if (!blogFiles || blogFiles.length === 0) {
+                    console.warn('No blog files found or failed to load blog-files.json');
+                    return [];
+                }
+
+                const articles = [];
+                const loadPromises = blogFiles.map(async (filePath) => {
+                    try {
+                        const article = await this.loadArticle(filePath);
+                        if (article) {
+                            articles.push(article);
+                        }
+                    } catch (err) {
+                        console.warn(`Failed to load article ${filePath}:`, err);
+                    }
+                });
+
+                await Promise.all(loadPromises);
+                return articles;
+            },
+
+            async loadBlogFilesList() {
                 try {
-                    const response = await fetch(filePath);
+                    const response = await fetch('blog/blog-files.json');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    const markdownText = await response.text();
-                    console.log('Markdown file loaded, length:', markdownText.length);
-                    this.render(markdownText);
+                    const blogFiles = await response.json();
+                    return blogFiles;
                 } catch (err) {
-                    console.error('Markdown file load error:', err);
-                    if (this.outputElement) {
-                        this.outputElement.innerHTML = '<p style="color: var(--error-color); text-align: center;">文件加载失败，请确保markdown文件存在</p>';
-                    }
+                    console.error('Failed to load blog-files.json:', err);
+                    return null;
                 }
             },
 
-            render(markdownText) {
-                console.log('Rendering markdown...');
-                this.fullContent = markdownText;
-                
-                const html = marked.parse(markdownText);
-                this.outputElement.innerHTML = html;
-                console.log('Markdown rendered, HTML length:', html.length);
-
-                // 生成折叠预览内容
-                this.generateCollapsedPreview();
-
-                // 默认显示折叠状态
-                if (this.isCollapsed) {
-                    this.showCollapsed();
-                } else {
-                    this.showExpanded();
+            async loadArticle(filePath) {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                // 渲染数学公式
-                this.renderMath();
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
 
-                // 高亮代码块
-                this.highlightCode();
+                const markdownContent = doc.querySelector('.markdown-content');
+                if (!markdownContent) {
+                    console.warn(`No .markdown-content found in ${filePath}`);
+                    return null;
+                }
 
-                // 处理图片，添加备注文本
-                this.processImages();
+                const h1Element = markdownContent.querySelector('h1');
+                const pElement = markdownContent.querySelector('p');
 
-                console.log('Markdown rendering complete');
+                if (!h1Element || !pElement) {
+                    console.warn(`No h1 or p found in ${filePath}`);
+                    return null;
+                }
+
+                const title = h1Element.textContent.trim();
+                const excerpt = pElement.textContent.trim();
+                const fileName = filePath.split('/').pop().replace('.html', '');
+                const date = this.extractAndFormatDate(fileName);
+
+                return {
+                    title,
+                    excerpt,
+                    filePath,
+                    fileName,
+                    date
+                };
             },
 
-            preloadImages() {
-                let imageUrls = [];
-                
+            extractAndFormatDate(fileName) {
+                const timestamp = this.extractTimestampFromFileName(fileName);
+                if (!timestamp) {
+                    return null;
+                }
+
+                return this.formatTimestamp(timestamp);
+            },
+
+            extractTimestampFromFileName(fileName) {
+                const match = fileName.match(/^(\d{8})/);
+                if (!match) {
+                    return null;
+                }
+
+                const timestamp = match[1];
+                if (!this.isValidDate(timestamp)) {
+                    return null;
+                }
+
+                return timestamp;
+            },
+
+            isValidDate(timestamp) {
+                if (timestamp.length !== 8) {
+                    return false;
+                }
+
+                const year = parseInt(timestamp.substring(0, 4), 10);
+                const month = parseInt(timestamp.substring(4, 6), 10);
+                const day = parseInt(timestamp.substring(6, 8), 10);
+
+                if (month < 1 || month > 12) {
+                    return false;
+                }
+
+                const daysInMonth = new Date(year, month, 0).getDate();
+                if (day < 1 || day > daysInMonth) {
+                    return false;
+                }
+
+                return true;
+            },
+
+            formatTimestamp(timestamp) {
                 try {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = marked.parse(this.fullContent);
-                    const images = tempDiv.querySelectorAll('img');
-                    imageUrls = Array.from(images).map(img => img.src);
-                    
-                    tempDiv.innerHTML = '';
+                    const year = timestamp.substring(0, 4);
+                    const month = timestamp.substring(4, 6);
+                    const day = timestamp.substring(6, 8);
+                    return `${year}-${month}-${day}`;
                 } catch (err) {
-                    console.warn('Failed to extract image URLs using DOM parsing:', err);
-                    
-                    const singleQuotePattern = /src=['"]([^'"]+)['"]/g;
-                    const doubleQuotePattern = /src=["']([^"']+)["']/g;
-                    
-                    const singleQuoteUrls = this.fullContent.match(singleQuotePattern) || [];
-                    const doubleQuoteUrls = this.fullContent.match(doubleQuotePattern) || [];
-                    
-                    imageUrls = [...(singleQuoteUrls || []), ...(doubleQuoteUrls || [])];
+                    console.warn('Failed to format timestamp:', timestamp, err);
+                    return null;
                 }
-                
-                if (!imageUrls || imageUrls.length === 0) {
-                    console.log('No images found to preload');
+            },
+
+            renderArticles(articles, container) {
+                if (articles.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">暂无文章</p>';
                     return;
                 }
 
-                console.log(`Found ${imageUrls.length} images to preload`);
-                
-                const connection = navigator.connection || { effectiveType: '4g' };
-                const isSlowConnection = connection.effectiveType === 'slow-2g' || 
-                                        connection.effectiveType === '2g' || 
-                                        connection.effectiveType === '3g';
-                
-                const preloadLimit = isSlowConnection ? 3 : imageUrls.length;
-                const loadingIndicator = document.getElementById('loading-indicator');
-                const loadingText = document.getElementById('loading-text');
-                
-                if (loadingIndicator && loadingText) {
-                    loadingIndicator.classList.add('active');
-                    loadingText.textContent = `正在预加载图片 (0/${preloadLimit})...`;
-                }
-                
-                let preloadedCount = 0;
-                
-                imageUrls.slice(0, preloadLimit).forEach((url, index) => {
-                    let cleanedUrl = url;
-                    
-                    cleanedUrl = cleanedUrl.replace(/%22/g, '').replace(/%22/g, '').trim();
-                    cleanedUrl = cleanedUrl.replace(/&quot;/g, '').replace(/&quot;/g, '').trim();
-                    cleanedUrl = decodeURIComponent(cleanedUrl);
-                    cleanedUrl = cleanedUrl.replace(/%22/g, '').replace(/%22/g, '').trim();
-                    
-                    if (!cleanedUrl) {
-                        console.warn(`Empty URL at index ${index}`);
-                        return;
-                    }
-                    
-                    const img = new Image();
-                    img.src = cleanedUrl;
-                    img.loading = 'eager';
-                    
-                    img.onload = () => {
-                        this.preloadedImages.add(cleanedUrl);
-                        preloadedCount++;
-                        console.log(`Preloaded image ${preloadedCount}/${preloadLimit}: ${cleanedUrl}`);
-                        
-                        if (loadingText) {
-                            loadingText.textContent = `正在预加载图片 (${preloadedCount}/${preloadLimit})...`;
-                        }
-                        
-                        if (preloadedCount === preloadLimit) {
-                            setTimeout(() => {
-                                if (loadingIndicator) {
-                                    loadingIndicator.classList.remove('active');
-                                }
-                            }, 500);
-                        }
-                    };
-                    
-                    img.onerror = () => {
-                        console.warn(`Failed to preload image: ${cleanedUrl}`);
-                    };
+                container.innerHTML = '';
+
+                articles.forEach(article => {
+                    const articleCard = this.createArticleCard(article);
+                    container.appendChild(articleCard);
                 });
-                
-                this.preloadTimeout = setTimeout(() => {
-                    if (loadingIndicator && loadingIndicator.classList.contains('active')) {
-                        loadingIndicator.classList.remove('active');
-                        console.log('Preload timeout reached, hiding loading indicator');
-                    }
-                }, 3000);
             },
 
-            generateCollapsedPreview() {
-                const lines = this.fullContent.split('\n');
-                let previewContent = '';
-                let firstImageAdded = false;
+            createArticleCard(article) {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
 
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    
-                    if (line.startsWith('#')) {
-                        previewContent += line + '\n';
-                        if (i < 3) {
-                            previewContent += '\n';
-                        }
-                    } else if (line.trim() && !firstImageAdded) {
-                        previewContent += line + '\n';
-                        if (line.trim().length > 10) {
-                            break;
-                        }
-                    } else if (line.includes('<img') || line.includes('![')) {
-                        previewContent += line + '\n';
-                        firstImageAdded = true;
-                        break;
-                    }
+                const link = document.createElement('a');
+                link.href = article.filePath;
+                link.className = 'blog-card-link';
+
+                const title = document.createElement('h2');
+                title.className = 'blog-card-title';
+                title.textContent = article.title;
+
+                const excerpt = document.createElement('p');
+                excerpt.className = 'blog-card-excerpt';
+                excerpt.textContent = article.excerpt;
+
+                link.appendChild(title);
+                link.appendChild(excerpt);
+                card.appendChild(link);
+
+                if (article.date) {
+                    const dateElement = document.createElement('div');
+                    dateElement.className = 'blog-card-date';
+                    dateElement.textContent = article.date;
+                    card.appendChild(dateElement);
                 }
 
-                this.collapsedContent = marked.parse(previewContent);
-            },
-
-            showCollapsed() {
-                this.outputElement.innerHTML = this.collapsedContent;
-                this.outputElement.classList.add('collapsed');
-                this.outputElement.classList.remove('expanded');
-                document.getElementById('toggle-icon').textContent = '📖';
-                document.getElementById('toggle-text').textContent = '展开全文';
-                
-                this.renderMath();
-                this.highlightCode();
-                this.processImages();
-                
-                if (!this.hasPreloaded) {
-                    this.preloadImages();
-                    this.hasPreloaded = true;
-                }
-            },
-
-            showExpanded() {
-                this.outputElement.innerHTML = marked.parse(this.fullContent);
-                this.outputElement.classList.remove('collapsed');
-                this.outputElement.classList.add('expanded');
-                document.getElementById('toggle-icon').textContent = '📖';
-                document.getElementById('toggle-text').textContent = '收起预览';
-                
-                this.renderMath();
-                this.highlightCode();
-                this.processImages();
-            },
-
-            togglePreview() {
-                const wasCollapsed = this.isCollapsed;
-                this.isCollapsed = !this.isCollapsed;
-                
-                if (this.isCollapsed) {
-                    this.showCollapsed();
-                } else {
-                    this.showExpanded();
-                }
-                
-                if (wasCollapsed !== this.isCollapsed) {
-                    console.log(`Preview state changed: ${wasCollapsed ? 'collapsed' : 'expanded'} → ${this.isCollapsed ? 'collapsed' : 'expanded'}`);
-                }
-            },
-
-            renderMath() {
-                try {
-                    renderMathInElement(this.outputElement, {
-                        delimiters: [
-                            {left: '$$', right: '$$', display: true},
-                            {left: '$', right: '$', display: false}
-                        ],
-                        throwOnError: false
-                    });
-                } catch (err) {
-                    console.warn('Math rendering error:', err);
-                }
-            },
-
-            highlightCode() {
-                try {
-                    this.outputElement.querySelectorAll('pre code').forEach((block) => {
-                        hljs.highlightElement(block);
-                    });
-                } catch (err) {
-                    console.warn('Code highlighting error:', err);
-                }
-            },
-
-            processImages() {
-                const flexWrappers = this.outputElement.querySelectorAll('div[style*="flex"]');
-                
-                flexWrappers.forEach(wrapper => {
-                    const flexImages = wrapper.querySelectorAll('img');
-                    
-                    flexImages.forEach(img => {
-                        const altText = img.getAttribute('alt');
-                        if (altText) {
-                            const originalStyle = img.getAttribute('style') || '';
-                            const widthMatch = originalStyle.match(/width:\s*([\d.]+)%/);
-                            const widthPercent = widthMatch ? widthMatch[1] + '%' : 'auto';
-                            
-                            const wrapperDiv = document.createElement('div');
-                            wrapperDiv.style.cssText = `display: flex; flex-direction: column; align-items: center; width: ${widthPercent}; box-sizing: border-box;`;
-                            
-                            img.parentNode.insertBefore(wrapperDiv, img);
-                            wrapperDiv.appendChild(img);
-                            
-                            const imgStyle = originalStyle.replace(/width:\s*[\d.]+%[^;]*;?\s*/g, '').trim();
-                            if (imgStyle) {
-                                img.setAttribute('style', imgStyle);
-                            } else {
-                                img.removeAttribute('style');
-                            }
-                            
-                            const caption = document.createElement('div');
-                            caption.className = 'image-caption';
-                            caption.textContent = altText;
-                            caption.style.marginTop = '4px';
-                            caption.style.marginBottom = '0';
-                            wrapperDiv.appendChild(caption);
-                        }
-                    });
-                });
-                
-                const standaloneImages = this.outputElement.querySelectorAll('img');
-                standaloneImages.forEach(img => {
-                    if (!img.closest('[style*="flex"]')) {
-                        const altText = img.getAttribute('alt');
-                        if (altText && !img.nextElementSibling?.classList.contains('image-caption')) {
-                            const caption = document.createElement('div');
-                            caption.className = 'image-caption';
-                            caption.textContent = altText;
-                            caption.style.marginTop = '4px';
-                            caption.style.marginBottom = '16px';
-                            
-                            if (img.parentNode) {
-                                img.parentNode.insertBefore(caption, img.nextSibling);
-                            }
-                        }
-                    }
-                });
+                return card;
             }
         };
 
-        // 使用window.onload确保所有资源加载完成后再渲染
+        // 页面加载时初始化
         window.addEventListener('load', () => {
-            console.log('Window loaded, initializing MarkdownRenderer');
-            MarkdownRenderer.init();
+            BlogLoader.init();
         });
     </script>
     <script src="js/navigation.js"></script>
