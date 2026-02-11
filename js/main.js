@@ -305,6 +305,8 @@ const PageAnimations = {
     init() {
         this.addFadeInAnimations();
         this.addScrollAnimations();
+        this.initMouseFollower();
+        this.initFloatingElements();
     },
 
     /**
@@ -336,6 +338,58 @@ const PageAnimations = {
                 element.classList.add('fade-in-up');
             }, index * 150 + 500);
         });
+    },
+
+    /**
+     * 初始化鼠标跟随效果
+     */
+    initMouseFollower() {
+        const follower = document.createElement('div');
+        follower.className = 'mouse-follower';
+        follower.style.cssText = `
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.3), transparent);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, opacity 0.3s ease;
+            opacity: 0;
+        `;
+        document.body.appendChild(follower);
+
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            follower.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            follower.style.opacity = '0';
+        });
+
+        const animateFollower = () => {
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+            follower.style.transform = `translate(${followerX - 10}px, ${followerY - 10}px)`;
+            requestAnimationFrame(animateFollower);
+        };
+
+        animateFollower();
+    },
+
+    /**
+     * 初始化漂浮元素动画
+     */
+    initFloatingElements() {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
     }
 };
 
@@ -359,7 +413,7 @@ const Navigation = {
             const linkPath = link.getAttribute('href');
             if (linkPath === currentPath) {
                 link.style.color = 'var(--primary-color)';
-                link.style.background = 'rgba(99, 102, 241, 0.1)';
+                link.style.background = 'rgba(249, 115, 22, 0.1)';
             }
         });
     }
@@ -409,8 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 控制台欢迎信息
-    console.log('%c👋 欢迎访问 Mr.Xia 的个人网站！', 'color: #6366f1; font-size: 20px; font-weight: bold;');
-    console.log('%c🚀 网站正在持续建设和更新中', 'color: #ec4899; font-size: 14px;');
+    console.log('%c👋 欢迎访问 Mr.Xia 的个人网站！', 'color: #a78bfa; font-size: 20px; font-weight: bold;');
+    console.log('%c🚀 网站正在持续建设和更新中', 'color: #60a5fa; font-size: 14px;');
 });
 
 // 暴露模块供外部使用
