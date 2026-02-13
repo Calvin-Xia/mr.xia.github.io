@@ -1,373 +1,671 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025年度总结</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --primary-color: #6366f1;
-            --primary-dark: #4f46e5;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --bg-secondary: #f9fafb;
-            --border-color: #e5e7eb;
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1rem;
-            --spacing-md: 1.5rem;
-            --spacing-lg: 2rem;
-            --spacing-xl: 3rem;
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-secondary);
-            padding: var(--spacing-xl);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .markdown-content {
-            background: white;
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-        }
-        .markdown-content h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin: var(--spacing-xl) 0 var(--spacing-md);
-            padding-bottom: var(--spacing-sm);
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        .markdown-content h2 {
-            font-size: 1.875rem;
-            font-weight: 600;
-            margin: var(--spacing-lg) 0 var(--spacing-md);
-            padding-bottom: var(--spacing-xs);
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-        .markdown-content h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: var(--spacing-md) 0 var(--spacing-sm);
-            color: var(--text-primary);
-        }
-        .markdown-content p {
-            margin: var(--spacing-md) 0;
-            line-height: 1.8;
-            color: var(--text-primary);
-        }
-        .markdown-content a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        .markdown-content a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-        .markdown-content strong {
-            font-weight: 700;
-        }
-        .markdown-content code {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary-color);
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        .markdown-content pre {
-            background: #1e1e1e;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
-            margin: var(--spacing-md) 0;
-            overflow-x: auto;
-        }
-        .markdown-content pre code {
-            background: transparent;
-            padding: 0;
-            color: #e6edf3;
-        }
-        .markdown-content ul, .markdown-content ol {
-            margin: var(--spacing-md) 0;
-            padding-left: var(--spacing-lg);
-        }
-        .markdown-content li {
-            margin: var(--spacing-xs) 0;
-            line-height: 1.8;
-        }
-        .markdown-content blockquote {
-            border-left: 4px solid var(--primary-color);
-            padding: var(--spacing-sm) var(--spacing-md);
-            margin: var(--spacing-md) 0;
-            background: rgba(99, 102, 241, 0.05);
-            color: var(--text-secondary);
-        }
-        .markdown-content hr {
-            border: none;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-            margin: var(--spacing-xl) 0;
-        }
-        .markdown-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: var(--spacing-md) 0;
-        }
-        .markdown-content th, .markdown-content td {
-            border: 1px solid var(--border-color);
-            padding: var(--spacing-sm) var(--spacing-md);
-            text-align: left;
-        }
-        .markdown-content th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-        .markdown-content tr:nth-child(even) {
-            background: rgba(99, 102, 241, 0.05);
-        }
-        .markdown-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--radius-md);
-            margin: var(--spacing-md) 0;
-        }
-        .image-caption {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-top: 4px;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-        .markdown-content .katex {
-            font-size: 1.1em;
-        }
-        .markdown-content .katex-display {
-            margin: var(--spacing-md) 0;
-            overflow-x: auto;
-            padding: var(--spacing-sm);
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: var(--spacing-md);
-            }
-            .markdown-content h1 {
-                font-size: 1.875rem;
-            }
-            .markdown-content h2 {
-                font-size: 1.5rem;
-            }
-            .markdown-content h3 {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <title>2025年度总结</title>
+  <style>:root {
+  /* 动态配置变量 */
+  --md-primary-color: #0F4C81;
+  --md-font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --md-font-size: 16px;
+}
+
+/* 段落缩进和对齐 */
+p {
+  
+  text-align: justify;
+}
+
+/**
+ * MD 基础主题样式
+ * 包含所有元素的基础样式和 CSS 变量定义
+ */
+
+/* ==================== 容器样式 ==================== */
+section,
+container {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 确保 容器应用基础样式 */
+body {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 去除第一个元素的 margin-top */
+section > :first-child {
+  margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
+}
+
+
+/**
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ */
+
+/* ==================== 一级标题 ==================== */
+h1 {
+  display: table;
+  padding: 0 1em;
+  border-bottom: 2px solid #0F4C81;
+  margin: 2em auto 1em;
+  color: hsl(var(--foreground));
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: #0F4C81;
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid #0F4C81;
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: 17.6px;
+  font-weight: bold;
+  line-height: 1.2;
+}/* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: 16px;
+  color: #0F4C81;
+}/* ==================== 段落 ==================== */
+p {
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid #0F4C81;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
+}blockquote > p {
+  display: block;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  margin: 0;
+}/* ==================== GFM 警告块 ==================== */
+.alert-title-note,
+.alert-title-tip,
+.alert-title-info,
+.alert-title-important,
+.alert-title-warning,
+.alert-title-caution,
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr,
+.alert-title-todo,
+.alert-title-success,
+.alert-title-done,
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq,
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing,
+.alert-title-danger,
+.alert-title-error,
+.alert-title-bug,
+.alert-title-example,
+.alert-title-quote,
+.alert-title-cite {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}.alert-title-note {
+  color: #478be6;
+}.alert-title-tip {
+  color: #57ab5a;
+}.alert-title-info {
+  color: #93c5fd;
+}.alert-title-important {
+  color: #986ee2;
+}.alert-title-warning {
+  color: #c69026;
+}.alert-title-caution {
+  color: #e5534b;
+}/* Obsidian-style callout colors */
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr {
+  color: #00bfff;
+}.alert-title-todo {
+  color: #478be6;
+}.alert-title-success,
+.alert-title-done {
+  color: #57ab5a;
+}.alert-title-question,
+.alert-title-help,
+.alert-title-faq {
+  color: #c69026;
+}.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing {
+  color: #e5534b;
+}.alert-title-danger,
+.alert-title-error {
+  color: #e5534b;
+}.alert-title-bug {
+  color: #e5534b;
+}.alert-title-example {
+  color: #986ee2;
+}.alert-title-quote,
+.alert-title-cite {
+  color: #9ca3af;
+}/* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}.alert-icon-tip {
+  fill: #57ab5a;
+}.alert-icon-info {
+  fill: #93c5fd;
+}.alert-icon-important {
+  fill: #986ee2;
+}.alert-icon-warning {
+  fill: #c69026;
+}.alert-icon-caution {
+  fill: #e5534b;
+}/* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+.alert-icon-summary,
+.alert-icon-tldr {
+  fill: #00bfff;
+}.alert-icon-todo {
+  fill: #478be6;
+}.alert-icon-success,
+.alert-icon-done {
+  fill: #57ab5a;
+}.alert-icon-question,
+.alert-icon-help,
+.alert-icon-faq {
+  fill: #c69026;
+}.alert-icon-failure,
+.alert-icon-fail,
+.alert-icon-missing {
+  fill: #e5534b;
+}.alert-icon-danger,
+.alert-icon-error {
+  fill: #e5534b;
+}.alert-icon-bug {
+  fill: #e5534b;
+}.alert-icon-example {
+  fill: #986ee2;
+}.alert-icon-quote,
+.alert-icon-cite {
+  fill: #9ca3af;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}/* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}/* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}/* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}/* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+.hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}/* ==================== 粗体 ==================== */
+strong {
+  color: #0F4C81;
+  font-weight: bold;
+  font-size: inherit;
+}/* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}/* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}.katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}/* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: #0F4C81;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}.markup-underline {
+  text-decoration: underline;
+  text-decoration-color: #0F4C81;
+}.markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: #0F4C81;
+  text-decoration-thickness: 2px;
+}/**
+ * MD 简洁主题 (@okooo5km)
+ * 简洁现代的设计风格
+ */
+
+/* ==================== 标题样式 ==================== */
+h1 {
+  padding: 0.5em 1em;
+  font-size: 22.4px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+}section h2 {
+  padding: 0.3em 1.2em;
+  font-size: 20.8px;
+  border-radius: 8px 24px 8px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}section h3 {
+  padding-left: 12px;
+  font-size: 19.2px;
+  border-radius: 6px;
+  line-height: 2.4em;
+  border-left: 4px solid #0F4C81;
+  border-right: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  background: color-mix(in srgb, #0F4C81 8%, transparent);
+}section h4 {
+  font-size: 17.6px;
+  border-radius: 6px;
+}section h5 {
+  font-size: 16px;
+  border-radius: 6px;
+}section h6 {
+  font-size: 16px;
+  border-radius: 6px;
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: italic;
+  padding: 1em 1em 1em 2em;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-top: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-right: 0.2px solid rgba(0, 0, 0, 0.04);
+}/* GFM Alert 样式覆盖 */
+.markdown-alert-note,
+.markdown-alert-tip,
+.markdown-alert-info,
+.markdown-alert-important,
+.markdown-alert-warning,
+.markdown-alert-caution {
+  font-style: italic;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}pre.code__pre > code,
+.hljs.code__pre > code {
+  font-family:
+    'Fira Code',
+    Menlo,
+    Operator Mono,
+    Consolas,
+    Monaco,
+    monospace;
+}/* ==================== 图片 ==================== */
+img {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1.5em;
+}ul {
+  list-style: none;
+  padding-left: 1.5em;
+}li {
+  margin: 0.5em 8px;
+}/* ==================== 分隔线 ==================== */
+hr {
+  height: 1px;
+  border: none;
+  margin: 2em 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}
+
+
+h2 {
+  display: block;
+  text-align: left;
+  background: transparent;
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 4px solid #0F4C81;
+  color: #0F4C81;
+}
+
+/**
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ * 如：color: var(--md-primary-color);
+ * 新主题系统已全面支持 CSS 写法，你可以 F12 打开控制台查看具体的类名及标签
+ *
+ * 召集令：如果你有好看的主题样式，欢迎分享，让更多人能够使用到你的主题。
+ * 提交区：https://github.com/doocs/md/discussions/426
+ */
+
+/* 全局变量定义 */
+:root {
+}/* 根容器 */
+.md-container {
+}/* 标题样式 */
+h1 {
+}section h2 {
+}section h3 {
+}section h4 {
+}section h5 {
+}section h6 {
+}/* 段落和文本 */
+p {
+}strong {
+}em {
+}/* 引用块 */
+blockquote {
+}blockquote > p {
+}/* 代码 */
+/* 行内代码 */
+code {
+}/* 代码块容器 */
+pre.code__pre,
+.hljs.code__pre {
+}/* 代码块内的 code */
+pre.code__pre > code,
+.hljs.code__pre > code {
+}/* 列表 */
+ol {
+}ul {
+}li {
+}/* 表格 */
+table {
+}thead {
+}th {
+}td {
+}/* 其他元素 */
+img {
+}hr {
+}figure {
+}figcaption {
+}/* KaTeX 公式 */
+.katex-inline {
+}.katex-block {
+}/* Markup 标记 */
+/* 高亮 ==文本== */
+.markup-highlight {
+}/* 下划线 ++文本++ */
+.markup-underline {
+}/* 波浪线 ~文本~ */
+.markup-wavyline {
+}/* GFM Alert 警告块 */
+/* Alert 标题 */
+.alert-title-note {
+}.alert-title-tip {
+}.alert-title-info {
+}.alert-title-important {
+}.alert-title-warning {
+}.alert-title-caution {
+}.alert-title-abstract {
+}.alert-title-summary {
+}.alert-title-tldr {
+}.alert-title-todo {
+}.alert-title-success {
+}.alert-title-done {
+}.alert-title-question {
+}.alert-title-help {
+}.alert-title-faq {
+}.alert-title-failure {
+}.alert-title-fail {
+}.alert-title-missing {
+}.alert-title-danger {
+}.alert-title-error {
+}.alert-title-bug {
+}.alert-title-example {
+}.alert-title-quote {
+}.alert-title-cite {
+}/* Alert SVG 图标 */
+.alert-icon-note {
+}.alert-icon-tip {
+}.alert-icon-info {
+}.alert-icon-important {
+}.alert-icon-warning {
+}.alert-icon-caution {
+}/* Obsidian-style Callout SVG 图标 */
+.alert-icon-abstract {
+}.alert-icon-summary {
+}.alert-icon-tldr {
+}.alert-icon-todo {
+}.alert-icon-success {
+}.alert-icon-done {
+}.alert-icon-question {
+}.alert-icon-help {
+}.alert-icon-faq {
+}.alert-icon-failure {
+}.alert-icon-fail {
+}.alert-icon-missing {
+}.alert-icon-danger {
+}.alert-icon-error {
+}.alert-icon-bug {
+}.alert-icon-example {
+}.alert-icon-quote {
+}.alert-icon-cite {
+}
+</style>
 </head>
 <body>
-    <div class="markdown-content">
-        <h1>2025年度总结</h1>
-
-        <p>  此刻我正坐在武汉大学信息学部的宿舍之中，打开了新下载的Obsidian开始写这篇文章。</p>
-<p>  又是一年终了。2025年，对于我而言，必定是非同寻常的一年——这一年发生了太多故事。</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 60%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E4%B8%AD%E7%A7%8B.JPG" alt="中秋月"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">中秋月</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 39%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%BA%A2%E7%BB%BF%E7%81%AF.jpg" alt="交叉路口"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">交叉路口</div></div>
+  <div style="width: 750px; margin: auto; padding: 20px;">
+    <section class="container">
+      <blockquote class="md-blockquote">
+        <p class="md-blockquote-p">字数 3133，阅读大约需 16 分钟</p>
+      </blockquote>
+    <p class="p">  此刻我正坐在武汉大学信息学部的宿舍之中，打开了新下载的Obsidian开始写这篇文章。</p><p class="p">  又是一年终了。2025年，对于我而言，必定是非同寻常的一年——这一年发生了太多故事。</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E4%B8%AD%E7%A7%8B.JPG" alt="中秋月" style="width: 60%;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%BA%A2%E7%BB%BF%E7%81%AF.jpg" alt="交叉路口" style="width: 39%;">
 </div>
 
-<h1>2025？</h1>
-<p>  <strong>2025</strong>，这或许是我人生当中最重要的几年之一。</p>
-<h2>18岁——告别与前进</h2>
-<p><img src="https://assets.calvin-xia.cn/image_%E6%88%90%E4%BA%BA%E7%A4%BC2.jpg" alt="2025.4.27 集体成人礼"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">2025.4.27 集体成人礼</div></p>
-<p>  18年前，呱呱坠地的我无法预知未来人生的走向；18年后，如今的我正在回望人生的道路。这是一个分水岭——成年的责任无时无刻不在提醒着我：你是一个可以独当一面的成年人了，从今以后的路途，都得靠你自己去走过，去探索，去填充。卸下小孩子的稚气，穿上大人的外套，挥挥手与童年与青年的“我”彻底告别。</p>
-<h2>高考——是终点也是起点</h2>
-<p>  中国人对于高考的复杂感情，在18岁时达到一个高峰。我们一边感叹着高考带来的压力，一边又渴求通过这一次的拼搏抵达高峰。</p>
-<p>  还记得除夕的上午，我一个人坐在空荡的教室中自习。也许是对于年味的兴奋作祟，仅仅一个多小时之后，我失去了自习的兴致。扭头，透过玻璃，看着窗外——常青的树被玻璃上的灰尘蒙上一层阴影。中国人常说“辞旧迎新”“扬尘”，于是我开始打扫教室，图的就是一个新年新气象。打扫这个偌大的教室花了不少的时间，但至少我说服了我自己（bushi）。</p>
-<p>  也记得6月6号晚上，我在白岩书院楼自习到10点——窗外是熟悉的但已经被封锁的教学楼。我拿起又放下一张张资料，不是在临时抱佛脚，更像是为自己的高中三年的学习时光总结、回忆。<strong>那个晚上能学到什么已然不重要，我只是想在这个氛围之中到达最后一刻</strong>。毕竟这样的时光，我不会，也不想再来一次。</p>
-<p>  <strong>我将所有所有沉入心中，开始了所谓“决定命运”的背水一战</strong>。我试着不去想太多——无来由的胡乱思索只会造成无休止的恐慌深渊。当最后一科生物的交卷铃声响起，我收好所有文具，站起来，长舒一口气，快步走出考场。不再去想得失，静待。无论结果如何，至少我曾为此拼搏过。</p>
-<p><img src="https://assets.calvin-xia.cn/image_%E6%88%90%E4%BA%BA%E7%A4%BC1.jpg" alt="挥挥手，遮住刺眼阳光，直奔光明"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">挥挥手，遮住刺眼阳光，直奔光明</div></p>
-<p>  <strong>这便已然足够</strong>。我开始循环Florence+The machine的经典歌曲<em><strong>Dog Days Are Over</strong></em>，纪念我逝去的高中时光。</p>
-<blockquote>
-<p><em>Happiness hit her like a train on a track</em></p>
-<p><em>Coming towards her stuck still no turning back</em></p>
-</blockquote>
-<blockquote>
-<p><em>Dog days are over</em></p>
-<p><em>Dog days are gone</em></p>
-<p><em>The horses are coming</em></p>
-<p><em>So you better run</em></p>
-</blockquote>
-<p>  结果也许并没有那么重要——不过是发挥有些失常，不过是没考上心仪的院校，不过是偶尔掠上心头的一丝失落。</p>
-<p><img src="https://assets.calvin-xia.cn/image_%E4%B8%87%E5%B7%9E%E7%9A%84%E5%A4%9C.jpg" alt="夜已深"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">夜已深</div></p>
-<p>  高考，是十二年寒窗的终点，也是全新生活的起点。高考决定着你的去向，但无法束缚人前行的脚步。</p>
-<h2>大学</h2>
-<p><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A77.jpg" alt="珞珈山不语，只是一味地欢迎ta的主人"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">珞珈山不语，只是一味地欢迎ta的主人</div></p>
-<h3>缘分·命运</h3>
-<p>  我似乎与武大有着一段特别的缘分。“中国最美大学”的名号似乎从我小时候便存在，以至于我曾梦想过来到珞珈山下体验生活。进入中学之后，要好朋友的理想院校是武汉大学。高考之后，在武大官号评论区还下载了这张图片——或许是命运流转，未曾想如愿以偿。</p>
-<p><img src="https://assets.calvin-xia.cn/image1.jpeg" alt="也许是天意？"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">也许是天意？</div></p>
-<p>  于是我释怀了。我不再纠结于结果，因为十二年寒窗的过程更加重要。</p>
-<blockquote>
-<p>Success is a journey, not a destination. The doing is often more important than the outcome.</p>
-<p>——Arthur Ashe<a href="https://arthurashe.ucla.edu/black-history-month-2014-2009-in-his-words/">[1] </a></p>
-</blockquote>
-<h3>打击·信念</h3>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A71.jpg" alt="开袋即得"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">开袋即得</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A72.jpg" alt="奋斗？"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">奋斗？</div></div>
+<h1 class="h1" data-heading="true" id="0">2025？</h1><p class="p">  <strong class="strong">2025</strong>，这或许是我人生当中最重要的几年之一。</p><h2 class="h2" data-heading="true" id="1">18岁——告别与前进</h2><figure><img src="https://assets.calvin-xia.cn/image_%E6%88%90%E4%BA%BA%E7%A4%BC2.jpg" alt="2025.4.27 集体成人礼"><figcaption class="figcaption">2025.4.27 集体成人礼</figcaption></figure><p class="p">  18年前，呱呱坠地的我无法预知未来人生的走向；18年后，如今的我正在回望人生的道路。这是一个分水岭——成年的责任无时无刻不在提醒着我：你是一个可以独当一面的成年人了，从今以后的路途，都得靠你自己去走过，去探索，去填充。卸下小孩子的稚气，穿上大人的外套，挥挥手与童年与青年的“我”彻底告别。</p><h2 class="h2" data-heading="true" id="2">高考——是终点也是起点</h2><p class="p">  中国人对于高考的复杂感情，在18岁时达到一个高峰。我们一边感叹着高考带来的压力，一边又渴求通过这一次的拼搏抵达高峰。</p><p class="p">  还记得除夕的上午，我一个人坐在空荡的教室中自习。也许是对于年味的兴奋作祟，仅仅一个多小时之后，我失去了自习的兴致。扭头，透过玻璃，看着窗外——常青的树被玻璃上的灰尘蒙上一层阴影。中国人常说“辞旧迎新”“扬尘”，于是我开始打扫教室，图的就是一个新年新气象。打扫这个偌大的教室花了不少的时间，但至少我说服了我自己（bushi）。</p><p class="p">  也记得6月6号晚上，我在白岩书院楼自习到10点——窗外是熟悉的但已经被封锁的教学楼。我拿起又放下一张张资料，不是在临时抱佛脚，更像是为自己的高中三年的学习时光总结、回忆。<strong class="strong">那个晚上能学到什么已然不重要，我只是想在这个氛围之中到达最后一刻</strong>。毕竟这样的时光，我不会，也不想再来一次。</p><p class="p">  <strong class="strong">我将所有所有沉入心中，开始了所谓“决定命运”的背水一战</strong>。我试着不去想太多——无来由的胡乱思索只会造成无休止的恐慌深渊。当最后一科生物的交卷铃声响起，我收好所有文具，站起来，长舒一口气，快步走出考场。不再去想得失，静待。无论结果如何，至少我曾为此拼搏过。</p><figure><img src="https://assets.calvin-xia.cn/image_%E6%88%90%E4%BA%BA%E7%A4%BC1.jpg" alt="挥挥手，遮住刺眼阳光，直奔光明"><figcaption class="figcaption">挥挥手，遮住刺眼阳光，直奔光明</figcaption></figure><p class="p">  <strong class="strong">这便已然足够</strong>。我开始循环Florence+The machine的经典歌曲<em class="em"><strong class="strong">Dog Days Are Over</strong></em>，纪念我逝去的高中时光。</p><blockquote class="blockquote"><p class="p"><em class="em">Happiness hit her like a train on a track</em><br><em class="em">Coming towards her stuck still no turning back</em></p></blockquote><blockquote class="blockquote"><p class="p"><em class="em">Dog days are over</em><br><em class="em">Dog days are gone</em><br><em class="em">The horses are coming</em><br><em class="em">So you better run</em></p></blockquote><p class="p">  结果也许并没有那么重要——不过是发挥有些失常，不过是没考上心仪的院校，不过是偶尔掠上心头的一丝失落。</p><figure><img src="https://assets.calvin-xia.cn/image_%E4%B8%87%E5%B7%9E%E7%9A%84%E5%A4%9C.jpg" alt="夜已深"><figcaption class="figcaption">夜已深</figcaption></figure><p class="p">  高考，是十二年寒窗的终点，也是全新生活的起点。高考决定着你的去向，但无法束缚人前行的脚步。</p><h2 class="h2" data-heading="true" id="3">大学</h2><figure><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A77.jpg" alt="珞珈山不语，只是一味地欢迎ta的主人"><figcaption class="figcaption">珞珈山不语，只是一味地欢迎ta的主人</figcaption></figure><h3 class="h3" data-heading="true" id="4">缘分·命运</h3><p class="p">  我似乎与武大有着一段特别的缘分。“中国最美大学”的名号似乎从我小时候便存在，以至于我曾梦想过来到珞珈山下体验生活。进入中学之后，要好朋友的理想院校是武汉大学。高考之后，在武大官号评论区还下载了这张图片——或许是命运流转，未曾想如愿以偿。</p><figure><img src="https://assets.calvin-xia.cn/image1.jpeg" alt="也许是天意？"><figcaption class="figcaption">也许是天意？</figcaption></figure><p class="p">  于是我释怀了。我不再纠结于结果，因为十二年寒窗的过程更加重要。</p><blockquote class="blockquote"><p class="p">Success is a journey, not a destination. The doing is often more important than the outcome.<br>——Arthur Ashe<a href="https://arthurashe.ucla.edu/black-history-month-2014-2009-in-his-words/" title="[1]">[1] </a></p></blockquote><h3 class="h3" data-heading="true" id="5">打击·信念</h3><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A71.jpg" alt="开袋即得" style="width: 48%;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A72.jpg" alt="奋斗？" style="width: 48%;">
 </div>
 
-<p>  不过，与武汉大学产生直接联系之后的这几个月里，关于她的争议变从未停歇。以至于我无力地看着无数“绿牌”（即未关注该吧的人）涌入武汉大学吧，无差别地嘲笑讽刺辱骂；无力地看着B站武大新生视频满屏幕的“节哀”，以空穴来风的谣言与断章取义的理解作为辱骂武大的“政治正确”……（突然想到，我原本准备做的录取通知书开袋视频到现在工程文件仍然搁置在家里的笔记本电脑上）</p>
-<blockquote>
-<p><em>有辱骂，有恐吓，还有无聊的攻击：其实是大可以不必作的。</em></p>
-<p><em>——鲁迅《辱骂和恐吓决不是战斗》</em></p>
-</blockquote>
-<p>  也许是我生性敏感——不过说实话这样的无力在现在看来完全没有必要。他们无法碰触我丝毫，无法动摇我分寸。同样的，喧嚣无法动摇武汉大学的根基与底蕴，谣言无法攻破武汉大学几代人的红色传承。我，武汉大学的一名普通学子，只需坚守自身初心使命，只需满怀希望出发不停歇。</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A76.jpg" alt="光亮"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">光亮</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B12.jpg" alt="余晖"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">余晖</div></div>
+<p class="p">  不过，与武汉大学产生直接联系之后的这几个月里，关于她的争议变从未停歇。以至于我无力地看着无数“绿牌”（即未关注该吧的人）涌入武汉大学吧，无差别地嘲笑讽刺辱骂；无力地看着B站武大新生视频满屏幕的“节哀”，以空穴来风的谣言与断章取义的理解作为辱骂武大的“政治正确”……（突然想到，我原本准备做的录取通知书开袋视频到现在工程文件仍然搁置在家里的笔记本电脑上）</p><blockquote class="blockquote"><p class="p"><em class="em">有辱骂，有恐吓，还有无聊的攻击：其实是大可以不必作的。</em><br><em class="em">——鲁迅《辱骂和恐吓决不是战斗》</em></p></blockquote><p class="p">  也许是我生性敏感——不过说实话这样的无力在现在看来完全没有必要。他们无法碰触我丝毫，无法动摇我分寸。同样的，喧嚣无法动摇武汉大学的根基与底蕴，谣言无法攻破武汉大学几代人的红色传承。我，武汉大学的一名普通学子，只需坚守自身初心使命，只需满怀希望出发不停歇。</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A76.jpg" alt="光亮" style="width: 48%;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B12.jpg" alt="余晖" style="width: 48%;">
 </div>
 
-<blockquote>
-<p><em>愿珞珈常青，弦歌不辍。</em>[2]</p>
-<p>[2]珞珈山上. 社论 | 风暴中心的武大人，该如何自持？[EB/OL]. (2025-12-2) [2025-12-30]. <a href="https://user.qzone.qq.com/3896142734/311/8e6b3ae83aac2e69a2b90500">QZone</a>.</p>
-</blockquote>
-<h3>平淡·色彩</h3>
-<p>  武大校门内的生活是平淡却从不缺少色彩的。几个月便已吃腻的信四食堂，宿舍、教学楼、图书馆几点一线的日常生活，展示，作业，PPT，稿子……似乎是极其普通极其平常的生活。</p>
-<p>  但色彩正在悄然绽放。</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A73.jpg" alt="本科生开学典礼"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">本科生开学典礼</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A74.jpg" alt="多彩的夜"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">多彩的夜</div></div>
+<blockquote class="blockquote"><p class="p"><em class="em">愿珞珈常青，弦歌不辍。</em>[2]<br>[2]珞珈山上. 社论 | 风暴中心的武大人，该如何自持？[EB/OL]. (2025-12-2) [2025-12-30]. <a href="https://user.qzone.qq.com/3896142734/311/8e6b3ae83aac2e69a2b90500" title="QZone">QZone</a>.</p></blockquote><h3 class="h3" data-heading="true" id="6">平淡·色彩</h3><p class="p">  武大校门内的生活是平淡却从不缺少色彩的。几个月便已吃腻的信四食堂，宿舍、教学楼、图书馆几点一线的日常生活，展示，作业，PPT，稿子……似乎是极其普通极其平常的生活。</p><p class="p">  但色彩正在悄然绽放。</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A73.jpg" alt="本科生开学典礼" style="width: 48%;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%AD%A6%E5%A4%A74.jpg" alt="多彩的夜" style="width: 48%;">
 </div>
 
-<p>  武汉大学的秋天是<span style="color:#FBC02D">金色</span>的。从星湖南路的落叶大道，至文理教五楼前珞珈广场旁银杏夹道，纷飞的落叶与如织的人流相互映照，凋零与生机在此处碰撞。深秋傍晚，坐在广场柔软的草坪上，看日落西山，霞光满天。</p>
-<p>  武汉大学的历史是<span style="color:#D32F2F">红色</span>的。校史课给予我们以武汉大学历史的漫漫长路。一个又一个名字被写下：叶雅各、沈祝三、王世杰、周恩来、毛泽东……一个又一个地名被铭记：武昌高师、珞珈山、乐山……武大秉持着她那红色的血脉，一代又一代武大人亲手写下一篇又一篇故事。</p>
-<p>  武汉大学的信念是<strong>五彩斑斓</strong>的。我们看过梧桐苍翠欲滴，欣赏老图书馆苍劲的灰。我们嗅闻樱花大道沁人的粉，感受夜色下斑驳的黄色光晕。回头看看，时光带不走我们对珞珈山的深情——世界用色彩记录着一切。</p>
-<h2>山·水</h2>
-<blockquote>
-<p>我酷爱旅游。从小到大，从一而终。</p>
-</blockquote>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E9%A3%9E%E6%95%A3%E7%9A%84%E5%85%89.jpg" alt="光怪陆离"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">光怪陆离</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B13.jpg" alt="火山日落"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">火山日落</div></div>
+<p class="p">  武汉大学的秋天是<span style="color:#FBC02D">金色</span>的。从星湖南路的落叶大道，至文理教五楼前珞珈广场旁银杏夹道，纷飞的落叶与如织的人流相互映照，凋零与生机在此处碰撞。深秋傍晚，坐在广场柔软的草坪上，看日落西山，霞光满天。</p><p class="p">  武汉大学的历史是<span style="color:#D32F2F">红色</span>的。校史课给予我们以武汉大学历史的漫漫长路。一个又一个名字被写下：叶雅各、沈祝三、王世杰、周恩来、毛泽东……一个又一个地名被铭记：武昌高师、珞珈山、乐山……武大秉持着她那红色的血脉，一代又一代武大人亲手写下一篇又一篇故事。</p><p class="p">  武汉大学的信念是<strong class="strong">五彩斑斓</strong>的。我们看过梧桐苍翠欲滴，欣赏老图书馆苍劲的灰。我们嗅闻樱花大道沁人的粉，感受夜色下斑驳的黄色光晕。回头看看，时光带不走我们对珞珈山的深情——世界用色彩记录着一切。</p><h2 class="h2" data-heading="true" id="7">山·水</h2><blockquote class="blockquote"><p class="p">我酷爱旅游。从小到大，从一而终。</p></blockquote><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E9%A3%9E%E6%95%A3%E7%9A%84%E5%85%89.jpg" alt="光怪陆离" style="width: 48%;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B13.jpg" alt="火山日落" style="width: 48%;">
 </div>
 
-<p>  仔细算算，18年以来，我的脚步踏足过许多地方——北京山西内蒙古辽宁吉林上海浙江山东河南湖北湖南重庆四川贵州云南陕西甘肃青海宁夏，以及泰国普吉，马来西亚吉隆坡仙本那柔佛巴鲁，新加坡……旅行给予我的不止是身体的空间移动，更是心灵与思想的放松与升华。</p>
-<p>  在这个格外特别的2025年，我同样解锁了全新的“关卡”——自驾游陕晋蒙、与高中同学乘火车去西安和上海、开学后来到武汉。我自诩是一个“地图感”还不错的人，对于导航软件的使用也算是比较熟练。因此祖国的大好山水，除了它们固有的景观属性，我常常会将它们关联到地图之上，用足迹地图的形式将其展现出来。</p>
-<p><img src="https://assets.calvin-xia.cn/%E5%BA%95%E5%9B%BE.svg" alt="足迹地图（只统计了停留过——或者叫做“脚踏实地”——的市级行政区）"><div class="image-caption" style="margin-top: 4px; margin-bottom: 16px;">足迹地图（只统计了停留过——或者叫做“脚踏实地”——的市级行政区）</div>
-【数据来源：天地图；制图：GeoScene Pro】</p>
-<p>  仍记得国家会展中心旁的日出与人山人海，记得临汾古城墙旁的“金库”，记得西湖花港观鱼的腾跃，记得乌兰哈达火山上金色的日落……它们或许无法永久地停留于我的记忆之中，但或许它们将成为某个时刻的灵光一现。</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B11.jpg" alt="独自攀登高峰中"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">独自攀登高峰中</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B31.jpg" alt="光"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">光</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E5%A4%9C%E4%B8%8A%E6%B5%B7.jpg" alt="夜上海"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">夜上海</div></div>
+<p class="p">  仔细算算，18年以来，我的脚步踏足过许多地方——北京山西内蒙古辽宁吉林上海浙江山东河南湖北湖南重庆四川贵州云南陕西甘肃青海宁夏，以及泰国普吉，马来西亚吉隆坡仙本那柔佛巴鲁，新加坡……旅行给予我的不止是身体的空间移动，更是心灵与思想的放松与升华。</p><p class="p">  在这个格外特别的2025年，我同样解锁了全新的“关卡”——自驾游陕晋蒙、与高中同学乘火车去西安和上海、开学后来到武汉。我自诩是一个“地图感”还不错的人，对于导航软件的使用也算是比较熟练。因此祖国的大好山水，除了它们固有的景观属性，我常常会将它们关联到地图之上，用足迹地图的形式将其展现出来。</p><figure><img src="https://assets.calvin-xia.cn/%E5%BA%95%E5%9B%BE.svg" alt="足迹地图（只统计了停留过——或者叫做“脚踏实地”——的市级行政区）"><figcaption class="figcaption">足迹地图（只统计了停留过——或者叫做“脚踏实地”——的市级行政区）</figcaption></figure><br>【数据来源：天地图；制图：GeoScene Pro】<p class="p">  仍记得国家会展中心旁的日出与人山人海，记得临汾古城墙旁的“金库”，记得西湖花港观鱼的腾跃，记得乌兰哈达火山上金色的日落……它们或许无法永久地停留于我的记忆之中，但或许它们将成为某个时刻的灵光一现。</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%81%AB%E5%B1%B11.jpg" alt="独自攀登高峰中" style="width: 32%;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B31.jpg" alt="光" style="width: 32%;">
+  <img src="https://assets.calvin-xia.cn/image_%E5%A4%9C%E4%B8%8A%E6%B5%B7.jpg" alt="夜上海" style="width: 32%;">
 </div>
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E5%BA%94%E5%8E%BF%E6%9C%A8%E5%A1%94.jpg" alt="危楼高百丈"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">危楼高百丈</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E8%8D%89%E5%8E%9F2.jpg" alt="看看天吧"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">看看天吧</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 32%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E5%A4%9C_%E6%A5%BC.jpg" alt="于夜色中"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">于夜色中</div></div>
+  <img src="https://assets.calvin-xia.cn/image_%E5%BA%94%E5%8E%BF%E6%9C%A8%E5%A1%94.jpg" alt="危楼高百丈" style="width: 32%;">
+  <img src="https://assets.calvin-xia.cn/image_%E8%8D%89%E5%8E%9F2.jpg" alt="看看天吧" style="width: 32%;">
+  <img src="https://assets.calvin-xia.cn/image_%E5%A4%9C_%E6%A5%BC.jpg" alt="于夜色中" style="width: 32%;">
 </div>
 
-<blockquote>
-<p>I've seen, I've heard, and I've felt.</p>
-<p>And that's definitely enough for me.</p>
-</blockquote>
-<h1>年度关键词——和解</h1>
-<blockquote>
-<p>向前奔跑 勇敢追寻 不畏将来</p>
-<p>——2023.12.31 我的年度总结动态</p>
-</blockquote>
-<blockquote>
-<p>不甘平凡 独自生长 茁壮向阳 </p>
-<p>祝2025，更好</p>
-<p>——2024.12.31 我的年度总结动态</p>
-</blockquote>
-<p>  如往年一样，若为我的2025寻找一个关键词，这个关键词将是——<em><strong>和解</strong></em>。</p>
-<h2>Why?</h2>
-<p>  这不是一个新词，但它在今年给予我的感受最为深刻。</p>
-<blockquote>
-<p>不过是发挥有些失常，不过是没考上心仪的院校，不过是偶尔掠上心头的一丝失落。</p>
-<p>——<a href="#%E9%AB%98%E8%80%83%E2%80%94%E2%80%94%E6%98%AF%E7%BB%88%E7%82%B9%E4%B9%9F%E6%98%AF%E8%B5%B7%E7%82%B9">高考——是终点也是起点</a></p>
-</blockquote>
-<p>  可是——<strong>真的不会失落吗</strong>？</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 45%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B33.JPG" alt="阶梯"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">阶梯</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 55%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E4%B8%B4%E6%B1%BE.jpg" alt="远望"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">远望</div></div>
+<blockquote class="blockquote"><p class="p">I've seen, I've heard, and I've felt. And that's definitely enough for me.</p></blockquote><h1 class="h1" data-heading="true" id="8">年度关键词——和解</h1><blockquote class="blockquote"><p class="p">向前奔跑 勇敢追寻 不畏将来<br>——2023.12.31 我的年度总结动态</p></blockquote><blockquote class="blockquote"><p class="p">不甘平凡 独自生长 茁壮向阳<br>祝2025，更好<br>——2024.12.31 我的年度总结动态</p></blockquote><p class="p">  如往年一样，若为我的2025寻找一个关键词，这个关键词将是——<em class="em"><strong class="strong">和解</strong></em>。</p><h2 class="h2" data-heading="true" id="9">Why?</h2><p class="p">  这不是一个新词，但它在今年给予我的感受最为深刻。</p><blockquote class="blockquote"><p class="p">不过是发挥有些失常，不过是没考上心仪的院校，不过是偶尔掠上心头的一丝失落。<br>——<a href="#高考——是终点也是起点" title="高考——是终点也是起点">高考——是终点也是起点</a></p></blockquote><p class="p">  可是——<strong class="strong">真的不会失落吗</strong>？</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B33.JPG" alt="阶梯" style="width: 45%;">
+  <img src="https://assets.calvin-xia.cn/image_%E4%B8%B4%E6%B1%BE.jpg" alt="远望" style="width: 55%;">
 </div>
 
-<p>  前半年，我很清楚自己的状态，也很清楚地看到了一片阴霾——不过仍是一些侥幸，一些侥幸，一些又一些的侥幸；不过仍是一些尝试，一些尝试，一些又一些的尝试。</p>
-<p>  落下帷幕之后，我问自己：你愿意与自己和解吗？</p>
-<p>  是啊，和解。我无法在此刻触及自己的理想，我无法立刻更易自己的性格，我无法改变外界的纷纷扰扰——可那又如何？我仍然存在于这个世界之中，我仍然可以用双手双脚双眼双耳去摸索，去行走，去看，去听，去探索这个世界。</p>
-<h2>And?</h2>
-<p>  我放下执念，选择与自己和解，却意外地收获了自己。在珞珈山的日子是平淡而美好的——疲惫与收获并存，真正的自我在这样的日子之中出现。</p>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E6%BC%94%E5%94%B1%E4%BC%9A1.jpg" alt="演唱会！"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">演唱会！</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 48%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E8%A5%BF%E6%B9%963.jpg" alt="让我融化在西湖中"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">让我融化在西湖中</div></div>
+<p class="p">  前半年，我很清楚自己的状态，也很清楚地看到了一片阴霾——不过仍是一些侥幸，一些侥幸，一些又一些的侥幸；不过仍是一些尝试，一些尝试，一些又一些的尝试。</p><p class="p">  落下帷幕之后，我问自己：你愿意与自己和解吗？</p><p class="p">  是啊，和解。我无法在此刻触及自己的理想，我无法立刻更易自己的性格，我无法改变外界的纷纷扰扰——可那又如何？我仍然存在于这个世界之中，我仍然可以用双手双脚双眼双耳去摸索，去行走，去看，去听，去探索这个世界。</p><h2 class="h2" data-heading="true" id="10">And?</h2><p class="p">  我放下执念，选择与自己和解，却意外地收获了自己。在珞珈山的日子是平淡而美好的——疲惫与收获并存，真正的自我在这样的日子之中出现。</p><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E6%BC%94%E5%94%B1%E4%BC%9A1.jpg" alt="演唱会！" style="width: 48%;">
+  <img src="https://assets.calvin-xia.cn/image_%E8%A5%BF%E6%B9%963.jpg" alt="让我融化在西湖中" style="width: 48%;">
 </div>
 
-<blockquote>
-<p>But I won't let them break me down to dust</p>
-<p>I know that there's a place for us</p>
-<p>For we are glorious</p>
-</blockquote>
-<blockquote>
-<p>This is who I meant to be</p>
-<p>This is me</p>
-</blockquote>
-<blockquote>
-<p>There's nothing I'm not worthy of</p>
-</blockquote>
-<p>与去年一样，我仍然想说：不甘平凡 独自生长 茁壮向阳。</p>
-<p>但似乎又不太一样。</p>
-<blockquote>
-<p>看似前路阴霾未来无光时，不妨与自己和解，与现状和解。</p>
-<p><strong>接受现状 坦然眺望 坚定前行</strong></p>
-<p>希望2026，更好</p>
-</blockquote>
-<div style="display: flex; justify-content: space-between; gap: 10px;">
-  <div style="display: flex; flex-direction: column; align-items: center; width: 55%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B32.JPG" alt="新旧交替"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">新旧交替</div></div>
-  <div style="display: flex; flex-direction: column; align-items: center; width: 45%; box-sizing: border-box;"><img src="https://assets.calvin-xia.cn/image_%E8%A5%BF%E6%B9%961.jpg" alt="让我融化在西湖中"><div class="image-caption" style="margin-top: 4px; margin-bottom: 0px;">让我融化在西湖中</div></div>
+<blockquote class="blockquote"><p class="p">But I won't let them break me down to dust<br>I know that there's a place for us<br>For we are glorious</p></blockquote><blockquote class="blockquote"><p class="p">This is who I meant to be<br>This is me</p></blockquote><blockquote class="blockquote"><p class="p">There's nothing I'm not worthy of</p></blockquote><p class="p">与去年一样，我仍然想说：不甘平凡 独自生长 茁壮向阳。</p><p class="p">但似乎又不太一样。</p><blockquote class="blockquote"><p class="p">看似前路阴霾未来无光时，不妨与自己和解，与现状和解<br><strong class="strong">接受现状 坦然眺望 坚定前行</strong><br>希望2026，更好</p></blockquote><div style="display: flex; justify-content: space-between; gap: 10px;">
+  <img src="https://assets.calvin-xia.cn/image_%E7%BB%B5%E9%98%B32.JPG" alt="新旧交替" style="width: 55%;">
+  <img src="https://assets.calvin-xia.cn/image_%E8%A5%BF%E6%B9%961.jpg" alt="让我融化在西湖中" style="width: 45%;">
 </div>
 
-<hr>
-<h1>写在最后</h1>
-<ul>
-<li>Markdown、PDF版本尝试采用<span style="color:#2196F3">M</span><span style="color:#3F51B5">a</span><span style="color:#673AB7">t</span><span style="color:#9C27B0">e</span><span style="color:#E91E63">r</span><span style="color:#F44336">i</span><span style="color:#FF9800">a</span><span style="color:#FFC107">l</span><span style="color:#FFEB3B">-</span><span style="color:#CDDC39">D</span><span style="color:#8BC34A">e</span><span style="color:#4CAF50">s</span><span style="color:#009688">i</span><span style="color:#00BCD4">g</span><span style="color:#03A9F4">n</span>配色（或者应该说是简单用了MD的几种700标准色）</li>
-<li>所有照片均为本人拍摄（主要设备：<em>Redmi K50</em>、<em>REDMI K80 Ultra</em>、<em>Nikon D7100</em>）</li>
-</ul>
-
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false}
-                ],
-                throwOnError: false
-            });
-        });
-    </script>
+<hr class="hr"><h1 class="h1" data-heading="true" id="11">写在最后</h1><ul class="ul"><li class="listitem">• Markdown、PDF版本尝试采用<span style="color:#2196F3">M</span><span style="color:#3F51B5">a</span><span style="color:#673AB7">t</span><span style="color:#9C27B0">e</span><span style="color:#E91E63">r</span><span style="color:#F44336">i</span><span style="color:#FF9800">a</span><span style="color:#FFC107">l</span><span style="color:#FFEB3B">-</span><span style="color:#CDDC39">D</span><span style="color:#8BC34A">e</span><span style="color:#4CAF50">s</span><span style="color:#009688">i</span><span style="color:#00BCD4">g</span><span style="color:#03A9F4">n</span>配色（或者应该说是简单用了MD的几种700标准色）</li><li class="listitem">• 所有照片均为本人拍摄（主要设备：<em class="em">Redmi K50</em>、<em class="em">REDMI K80 Ultra</em>、<em class="em">Nikon D7100</em>）</li></ul>
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  
+    <style>
+      .hljs.code__pre > .mac-sign {
+        display: none;
+      }
+    </style>
+  
+    <style>
+      h2 strong {
+        color: inherit !important;
+      }
+    </style>
+  </section>
+  </div>
 </body>
 </html>
