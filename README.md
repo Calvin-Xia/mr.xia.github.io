@@ -76,6 +76,7 @@ mr.xia.github.io/
 - 支持分类和标签筛选
 - 实时搜索功能
 - 元数据管理（标题、摘要、日期等）
+- 博客文章使用[Dooc社区 WeChat Markdown Editor](https://github.com/doocs/md)进行转换处理
 
 ### 6. Markdown渲染
 - 静态Markdown文件渲染
