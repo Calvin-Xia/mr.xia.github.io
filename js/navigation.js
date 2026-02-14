@@ -75,14 +75,6 @@
                     window.scrollY
                 );
             });
-            
-            console.log('Navigation system initialized for page:', currentPage);
-            const navLinks = document.querySelectorAll('a[data-history="true"]');
-            console.log('Found navigation links:', navLinks.length);
-            
-            navLinks.forEach((link, index) => {
-                console.log(`  Link ${index + 1}:`, link.getAttribute('href'), '->', link.textContent.trim());
-            });
         },
         
         handleClick(event) {
@@ -104,8 +96,6 @@
                 const title = element.getAttribute('data-title') || '';
                 
                 if (targetUrl && targetUrl !== '#' && targetUrl !== '' && targetUrl !== window.location.pathname) {
-                    console.log('Navigating to:', targetUrl);
-                    
                     NavigationState.saveScrollPosition(
                         NavigationState.getCurrentPage(),
                         window.scrollY
@@ -130,7 +120,6 @@
                         window.location.href = targetUrl;
                     }, 200);
                 } else {
-                    console.log('Same page or invalid URL, ignoring');
                 }
             }
         },
@@ -256,8 +245,6 @@
             setTimeout(() => {
                 this.hideTransitionIndicator();
             }, 400);
-            
-            console.log('Loaded page:', pageId, 'scrollY:', scrollY);
         },
         
         savePageState(stateData) {

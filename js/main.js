@@ -5,12 +5,21 @@
 
 // ===== 时间显示模块 =====
 const TimeDisplay = {
+    intervalId: null,
+
     /**
      * 初始化时间显示
      */
     init() {
         this.updateTime();
-        setInterval(() => this.updateTime(), 1000);
+        this.intervalId = setInterval(() => this.updateTime(), 1000);
+        
+        window.addEventListener('beforeunload', () => {
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+        });
     },
 
     /**
@@ -451,20 +460,14 @@ const Utils = {
 
 // ===== 页面加载初始化 =====
 document.addEventListener('DOMContentLoaded', () => {
-    // 初始化各个模块
     TimeDisplay.init();
     Timer.init();
     PageAnimations.init();
     Navigation.init();
 
-    // 为所有按钮添加波纹效果
     document.querySelectorAll('.btn').forEach(button => {
         button.addEventListener('click', Utils.createRipple);
     });
-
-    // 控制台欢迎信息
-    console.log('%c👋 欢迎访问 Mr.Xia 的个人网站！', 'color: #a78bfa; font-size: 20px; font-weight: bold;');
-    console.log('%c🚀 网站正在持续建设和更新中', 'color: #60a5fa; font-size: 14px;');
 });
 
 // 暴露模块供外部使用

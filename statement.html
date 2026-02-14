@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="css/style.css" as="style">
     <meta name="description" content="Mr.Xia个人网站文章">
     <title>文章 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
@@ -360,7 +363,7 @@
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
                 <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage\Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
                     渝公网安备50010102001439号
                 </a>
             </p>
@@ -492,11 +495,12 @@
             articles: [],
             currentCategory: 'all',
             currentTag: 'all',
+            retryCount: 0,
+            maxRetries: 3,
 
             async init() {
                 const container = document.getElementById('blog-container');
                 if (!container) {
-                    console.error('Blog container not found');
                     return;
                 }
 
@@ -507,15 +511,33 @@
                     this.renderFilters();
                     this.renderArticles(articles, container);
                 } catch (err) {
-                    console.error('Failed to load blog articles:', err);
-                    container.innerHTML = '<p style="color: var(--error-color); text-align: center;">文章加载失败，请稍后重试</p>';
+                    this.renderError(container, err);
                 }
+            },
+
+            renderError(container, err) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">⚠️</div>
+                        <p>文章加载失败</p>
+                        <p class="text-small">请检查网络连接后重试</p>
+                        <button class="btn btn-outline" style="margin-top: var(--spacing-md);" onclick="BlogLoader.retry()">
+                            重新加载
+                        </button>
+                    </div>
+                `;
+            },
+
+            async retry() {
+                this.retryCount = 0;
+                const container = document.getElementById('blog-container');
+                container.innerHTML = '<div class="loading-indicator">加载中...</div>';
+                await this.init();
             },
 
             async loadAllArticles() {
                 const metadata = await this.loadMetadata();
                 if (!metadata || metadata.length === 0) {
-                    console.warn('No metadata found or failed to load blog-metadata.json');
                     return [];
                 }
 
@@ -523,17 +545,24 @@
             },
 
             async loadMetadata() {
-                try {
-                    const response = await fetch('blog/blog-metadata.json');
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                const attemptFetch = async (retryAttempt = 0) => {
+                    try {
+                        const response = await fetch('blog/blog-metadata.json');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const metadata = await response.json();
+                        return metadata;
+                    } catch (err) {
+                        if (retryAttempt < this.maxRetries) {
+                            await new Promise(resolve => setTimeout(resolve, 1000 * (retryAttempt + 1)));
+                            return attemptFetch(retryAttempt + 1);
+                        }
+                        throw err;
                     }
-                    const metadata = await response.json();
-                    return metadata;
-                } catch (err) {
-                    console.error('Failed to load blog-metadata.json:', err);
-                    return null;
-                }
+                };
+                
+                return attemptFetch();
             },
 
             renderFilters() {

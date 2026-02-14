@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="css/style.css" as="style">
     <meta name="description" content="在线计时器工具">
-    <title>计时器 - Mr.Xia</title>
+    <title>工具 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- 选项卡样式 -->
     <style>
@@ -223,7 +226,7 @@
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
                 <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage\Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
                     渝公网安备50010102001439号
                 </a>
             </p>
@@ -233,7 +236,6 @@
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     <script src="js/navigation.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.4/docx.min.js"></script>
     <script>
         // 选项卡切换功能
         document.addEventListener('DOMContentLoaded', function() {
@@ -359,6 +361,11 @@
         // 随机选择器功能
         let items = [];
 
+        function sanitizeInput(input) {
+            if (typeof input !== 'string') return '';
+            return input.trim().substring(0, 200);
+        }
+
         function updateList() {
             const ul = document.getElementById('items');
             ul.innerHTML = '';
@@ -381,7 +388,7 @@
 
         function addItem() {
             const input = document.getElementById('itemInput');
-            const value = input.value.trim();
+            const value = sanitizeInput(input.value);
             if (value) {
                 items.push(value);
                 input.value = '';
@@ -430,7 +437,7 @@
         }
 
         function fillFromText(text) {
-            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+            const lines = text.split(/\r?\n/).map(l => sanitizeInput(l)).filter(l => l);
             lines.forEach(line => {
                 if (!items.includes(line)) items.push(line);
             });
@@ -520,9 +527,6 @@
             }
         }
     </style>
-    
-    <!-- JavaScript -->
-    <script src="js/navigation.js"></script>
     
     <!-- 页面过渡指示器 -->
     <div id="page-transition-indicator">
