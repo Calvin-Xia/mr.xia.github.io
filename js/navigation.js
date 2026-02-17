@@ -1,6 +1,8 @@
 (function() {
     'use strict';
 
+    let navigationTimeoutId = null;
+
     const NavigationState = {
         states: new Map(),
         currentPage: '',
@@ -70,6 +72,10 @@
             document.addEventListener('click', (event) => this.handleClick(event));
             
             window.addEventListener('beforeunload', () => {
+                if (navigationTimeoutId !== null) {
+                    clearTimeout(navigationTimeoutId);
+                    navigationTimeoutId = null;
+                }
                 NavigationState.saveScrollPosition(
                     NavigationState.getCurrentPage(),
                     window.scrollY
@@ -116,7 +122,11 @@
                     
                     this.showTransitionIndicator();
                     
-                    setTimeout(() => {
+                    if (navigationTimeoutId !== null) {
+                        clearTimeout(navigationTimeoutId);
+                    }
+                    navigationTimeoutId = setTimeout(() => {
+                        navigationTimeoutId = null;
                         window.location.href = targetUrl;
                     }, 200);
                 } else {
@@ -154,7 +164,11 @@
             
             this.showTransitionIndicator();
             
-            setTimeout(() => {
+            if (navigationTimeoutId !== null) {
+                clearTimeout(navigationTimeoutId);
+            }
+            navigationTimeoutId = setTimeout(() => {
+                navigationTimeoutId = null;
                 window.location.href = url;
             }, 200);
         },
@@ -185,7 +199,11 @@
             
             this.showTransitionIndicator();
             
-            setTimeout(() => {
+            if (navigationTimeoutId !== null) {
+                clearTimeout(navigationTimeoutId);
+            }
+            navigationTimeoutId = setTimeout(() => {
+                navigationTimeoutId = null;
                 window.location.href = 'index.html';
             }, 200);
         },

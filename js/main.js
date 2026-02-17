@@ -64,38 +64,44 @@ const TimeDisplay = {
 
 // ===== 计时器模块 =====
 const Timer = {
-    startTime: null, // 计时器开始时间戳
-    elapsedTime: 0, // 已经经过的时间（毫秒）
-    targetTime: 0, // 目标时间（毫秒）
+    startTime: null,
+    elapsedTime: 0,
+    targetTime: 0,
     intervalId: null,
-    isRunning: false, // 计时器是否正在运行
+    isRunning: false,
+    cachedElements: {},
 
     /**
      * 初始化计时器
      */
     init() {
-        const startBtn = document.getElementById('start');
-        const pauseBtn = document.getElementById('pause');
-        const resetBtn = document.getElementById('reset');
-        const setTimeBtn = document.getElementById('set-time');
+        this.cachedElements = {
+            startBtn: document.getElementById('start'),
+            pauseBtn: document.getElementById('pause'),
+            resetBtn: document.getElementById('reset'),
+            setTimeBtn: document.getElementById('set-time'),
+            timerDisplay: document.getElementById('timer-display'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            hoursInput: document.getElementById('hours'),
+            minutesInput: document.getElementById('minutes'),
+            secondsInput: document.getElementById('seconds')
+        };
 
-        // 初始化显示
-        const timerElement = document.getElementById('timer-display');
-        if (timerElement) {
-            timerElement.textContent = this.formatTime(0);
+        const { startBtn, pauseBtn, resetBtn, setTimeBtn, timerDisplay } = this.cachedElements;
+
+        if (timerDisplay) {
+            timerDisplay.textContent = this.formatTime(0);
         }
 
-        // 初始化进度条
         this.updateProgress();
 
-        // 为每个按钮单独添加事件监听器，而不是一次性检查所有按钮
         if (startBtn) {
             startBtn.addEventListener('click', () => this.start());
         }
         
         if (pauseBtn) {
             pauseBtn.addEventListener('click', () => this.pause());
-            // 初始状态
             pauseBtn.disabled = true;
         }
         
@@ -103,15 +109,13 @@ const Timer = {
             resetBtn.addEventListener('click', () => this.reset());
         }
 
-        // 绑定设置时间按钮事件
         if (setTimeBtn) {
             setTimeBtn.addEventListener('click', () => this.setTimeFromInputs());
         }
 
-        // 绑定输入框变化事件
-        const timeInputs = ['hours', 'minutes', 'seconds'];
-        timeInputs.forEach(inputId => {
-            const input = document.getElementById(inputId);
+        const timeInputs = ['hoursInput', 'minutesInput', 'secondsInput'];
+        timeInputs.forEach(key => {
+            const input = this.cachedElements[key];
             if (input) {
                 input.addEventListener('input', () => this.validateTimeInput(input));
             }
@@ -135,27 +139,23 @@ const Timer = {
      * 从输入框设置时间
      */
     setTimeFromInputs() {
-        const hours = parseInt(document.getElementById('hours').value) || 0;
-        const minutes = parseInt(document.getElementById('minutes').value) || 0;
-        const seconds = parseInt(document.getElementById('seconds').value) || 0;
+        const { startBtn, pauseBtn, timerDisplay, hoursInput, minutesInput, secondsInput } = this.cachedElements;
+        
+        const hours = parseInt(hoursInput?.value) || 0;
+        const minutes = parseInt(minutesInput?.value) || 0;
+        const seconds = parseInt(secondsInput?.value) || 0;
         
         const totalSeconds = hours * 3600 + minutes * 60 + seconds;
         this.targetTime = totalSeconds * 1000;
         this.elapsedTime = 0;
         this.isRunning = false;
         
-        // 更新显示
-        const timerElement = document.getElementById('timer-display');
-        if (timerElement) {
-            timerElement.textContent = this.formatTime(totalSeconds);
+        if (timerDisplay) {
+            timerDisplay.textContent = this.formatTime(totalSeconds);
         }
         
-        // 更新进度条
         this.updateProgress();
         
-        // 更新按钮状态，单独检查每个按钮
-        const startBtn = document.getElementById('start');
-        const pauseBtn = document.getElementById('pause');
         if (startBtn) {
             startBtn.disabled = false;
         }
@@ -184,23 +184,18 @@ const Timer = {
         const now = Date.now();
         let totalElapsed = this.elapsedTime + (now - this.startTime);
         
-        // 如果达到或超过目标时间，停止计时
         if (this.targetTime > 0 && totalElapsed >= this.targetTime) {
             totalElapsed = this.targetTime;
             this.pause();
-            // 可以在这里添加完成提示，如播放声音或显示提示
         }
         
-        // 转换为总秒数
         const totalSeconds = Math.floor(totalElapsed / 1000);
         
-        // 只使用正确的计时器显示元素ID
-        const timerElement = document.getElementById('timer-display');
-        if (timerElement) {
-            timerElement.textContent = this.formatTime(totalSeconds);
+        const { timerDisplay } = this.cachedElements;
+        if (timerDisplay) {
+            timerDisplay.textContent = this.formatTime(totalSeconds);
         }
         
-        // 更新进度条
         this.updateProgress(totalElapsed);
     },
 
@@ -208,17 +203,14 @@ const Timer = {
      * 更新进度条
      */
     updateProgress(elapsedTime = this.elapsedTime) {
-        const progressBar = document.getElementById('progress-bar');
-        const progressText = document.getElementById('progress-text');
+        const { progressBar, progressText } = this.cachedElements;
         
         if (!progressBar || !progressText) return;
         
         if (this.targetTime <= 0) {
-            // 如果没有设置目标时间，显示已用时间
             progressBar.style.width = '0%';
             progressText.textContent = `已用时间: ${this.formatTime(Math.floor(elapsedTime / 1000))}`;
         } else {
-            // 计算进度百分比
             const progress = Math.min(100, Math.floor((elapsedTime / this.targetTime) * 100));
             progressBar.style.width = `${progress}%`;
             progressText.textContent = `${progress}% 已完成`;
@@ -233,12 +225,9 @@ const Timer = {
             this.startTime = Date.now();
             this.isRunning = true;
             
-            // 提高更新频率，使显示更流畅
             this.intervalId = setInterval(() => this.update(), 100);
             
-            // 更新按钮状态，单独检查每个按钮
-            const startBtn = document.getElementById('start');
-            const pauseBtn = document.getElementById('pause');
+            const { startBtn, pauseBtn } = this.cachedElements;
             if (startBtn) {
                 startBtn.disabled = true;
             }
@@ -266,9 +255,7 @@ const Timer = {
             
             this.isRunning = false;
             
-            // 更新按钮状态，单独检查每个按钮
-            const startBtn = document.getElementById('start');
-            const pauseBtn = document.getElementById('pause');
+            const { startBtn, pauseBtn } = this.cachedElements;
             if (startBtn) {
                 startBtn.disabled = false;
             }
@@ -285,18 +272,13 @@ const Timer = {
         this.pause();
         this.elapsedTime = 0;
         
-        // 更新显示
-        const timerElement = document.getElementById('timer-display');
-        if (timerElement) {
-            timerElement.textContent = this.formatTime(Math.floor(this.targetTime / 1000));
+        const { startBtn, pauseBtn, timerDisplay } = this.cachedElements;
+        if (timerDisplay) {
+            timerDisplay.textContent = this.formatTime(Math.floor(this.targetTime / 1000));
         }
         
-        // 更新进度条
         this.updateProgress();
         
-        // 更新按钮状态，单独检查每个按钮
-        const startBtn = document.getElementById('start');
-        const pauseBtn = document.getElementById('pause');
         if (startBtn) {
             startBtn.disabled = false;
         }
@@ -458,16 +440,33 @@ const Utils = {
     }
 };
 
+// ===== 安全初始化包装函数 =====
+function safeInit(moduleName, initFn) {
+    try {
+        initFn();
+    } catch (error) {
+        console.error(`[模块初始化错误] ${moduleName}:`, error);
+    }
+}
+
 // ===== 页面加载初始化 =====
 document.addEventListener('DOMContentLoaded', () => {
-    TimeDisplay.init();
-    Timer.init();
-    PageAnimations.init();
-    Navigation.init();
+    try {
+        safeInit('TimeDisplay', () => TimeDisplay.init());
+        safeInit('Timer', () => Timer.init());
+        safeInit('PageAnimations', () => PageAnimations.init());
+        safeInit('Navigation', () => Navigation.init());
 
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', Utils.createRipple);
-    });
+        document.querySelectorAll('.btn').forEach(button => {
+            try {
+                button.addEventListener('click', Utils.createRipple);
+            } catch (error) {
+                console.error('[按钮事件绑定错误]:', error);
+            }
+        });
+    } catch (error) {
+        console.error('[页面初始化错误]:', error);
+    }
 });
 
 // 暴露模块供外部使用

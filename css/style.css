@@ -78,6 +78,7 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    will-change: background-position;
 }
 
 /* ===== 动态背景效果（日落渐变流动） ===== */
@@ -299,6 +300,7 @@ a:hover {
     background-size: 200% 100%;
     animation: shimmer 4s ease-in-out infinite;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    will-change: background-position;
 }
 
 @keyframes shimmer {
@@ -382,6 +384,7 @@ a:hover {
     margin: var(--spacing-md) 0;
     animation: gentlePulse 3s ease-in-out infinite;
     border: 1px solid rgba(249, 115, 22, 0.2);
+    will-change: transform;
 }
 
 @keyframes gentlePulse {
@@ -776,6 +779,7 @@ a:hover {
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    will-change: transform;
 }
 
 @keyframes spin {
@@ -1084,4 +1088,47 @@ a:hover {
     border-top-color: var(--primary-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    body {
+        animation: none;
+        background-size: 100% 100%;
+    }
+
+    .bg-img {
+        animation: none;
+        background-size: 100% 100%;
+    }
+
+    .bg-img::before,
+    .bg-img::after {
+        animation: none;
+    }
+
+    .shadowbox::before {
+        animation: none;
+    }
+
+    #currentTime {
+        animation: none;
+    }
+
+    .loading-spinner,
+    #page-transition-indicator .spinner {
+        animation: none;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
 }

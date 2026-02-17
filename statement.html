@@ -291,11 +291,11 @@
     <header>
         <nav>
             <div class="logo">Mr.Xia</div>
-            <ul class="nav-links">
+            <ul class="nav-links" role="list">
                 <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
                 <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
                 <li><a href="timetable.html" data-history="true" data-title="工具">工具</a></li>
-                <li><a href="statement.html" data-history="true" data-title="文章">文章</a></li>
+                <li><a href="statement.html" data-history="true" data-title="文章" aria-current="page">文章</a></li>
                 <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
             </ul>
         </nav>
@@ -318,8 +318,9 @@
                     id="search-input" 
                     placeholder="搜索文章标题、内容或标签..." 
                     autocomplete="off"
+                    aria-label="搜索文章"
                 >
-                <button id="search-btn" class="search-btn">
+                <button id="search-btn" class="search-btn" aria-label="搜索">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
@@ -363,7 +364,7 @@
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
                 <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
@@ -373,342 +374,345 @@
     <!-- JavaScript -->
     <script src="js/main.js"></script>
     <script>
-        // 搜索模块
-        const Search = {
-            articles: [],
-            searchInput: null,
-            searchSuggestions: null,
-            searchBtn: null,
-            debounceTimer: null,
+        (function() {
+            const Search = {
+                articles: [],
+                searchInput: null,
+                searchSuggestions: null,
+                searchBtn: null,
+                debounceTimer: null,
 
-            init() {
-                this.searchInput = document.getElementById('search-input');
-                this.searchSuggestions = document.getElementById('search-suggestions');
-                this.searchBtn = document.getElementById('search-btn');
+                init() {
+                    this.searchInput = document.getElementById('search-input');
+                    this.searchSuggestions = document.getElementById('search-suggestions');
+                    this.searchBtn = document.getElementById('search-btn');
 
-                if (!this.searchInput || !this.searchSuggestions || !this.searchBtn) {
-                    console.error('Search elements not found');
-                    return;
-                }
-
-                this.searchInput.addEventListener('input', (e) => this.handleInput(e));
-                this.searchBtn.addEventListener('click', () => this.performSearch());
-                this.searchInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.performSearch();
+                    if (!this.searchInput || !this.searchSuggestions || !this.searchBtn) {
+                        console.error('Search elements not found');
+                        return;
                     }
-                });
 
-                document.addEventListener('click', (e) => {
-                    if (!this.searchInput.contains(e.target) && !this.searchSuggestions.contains(e.target)) {
-                        this.hideSuggestions();
-                    }
-                });
-            },
-
-            setArticles(articles) {
-                this.articles = articles;
-            },
-
-            handleInput(e) {
-                clearTimeout(this.debounceTimer);
-                const query = e.target.value.trim();
-
-                if (query.length === 0) {
-                    this.hideSuggestions();
-                    BlogLoader.renderArticles(this.articles, document.getElementById('blog-container'));
-                    return;
-                }
-
-                this.debounceTimer = setTimeout(() => {
-                    this.showSuggestions(query);
-                }, 300);
-            },
-
-            showSuggestions(query) {
-                const suggestions = this.findSuggestions(query);
-                
-                if (suggestions.length === 0) {
-                    this.hideSuggestions();
-                    return;
-                }
-
-                this.searchSuggestions.innerHTML = suggestions.map(article => `
-                    <div class="suggestion-item" data-id="${article.id}">
-                        <div class="suggestion-title">${this.highlightMatch(article.title, query)}</div>
-                        <div class="suggestion-meta">${article.category} · ${article.date}</div>
-                    </div>
-                `).join('');
-
-                this.searchSuggestions.classList.add('active');
-
-                this.searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        const articleId = item.dataset.id;
-                        const article = this.articles.find(a => a.id === articleId);
-                        if (article) {
-                            window.location.href = article.filePath;
+                    this.searchInput.addEventListener('input', (e) => this.handleInput(e));
+                    this.searchBtn.addEventListener('click', () => this.performSearch());
+                    this.searchInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.performSearch();
                         }
                     });
-                });
-            },
 
-            hideSuggestions() {
-                this.searchSuggestions.classList.remove('active');
-            },
+                    document.addEventListener('click', (e) => {
+                        if (!this.searchInput.contains(e.target) && !this.searchSuggestions.contains(e.target)) {
+                            this.hideSuggestions();
+                        }
+                    });
+                },
 
-            findSuggestions(query) {
-                const lowerQuery = query.toLowerCase();
-                return this.articles.filter(article => 
-                    article.title.toLowerCase().includes(lowerQuery) ||
-                    article.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
-                ).slice(0, 5);
-            },
-
-            highlightMatch(text, query) {
-                const regex = new RegExp(`(${query})`, 'gi');
-                return text.replace(regex, '<mark style="background: rgba(99, 102, 241, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
-            },
-
-            performSearch() {
-                const query = this.searchInput.value.trim().toLowerCase();
-                this.hideSuggestions();
-
-                if (query.length === 0) {
-                    BlogLoader.renderArticles(this.articles, document.getElementById('blog-container'));
-                    return;
-                }
-
-                const results = this.articles.filter(article => 
-                    article.title.toLowerCase().includes(query) ||
-                    article.excerpt.toLowerCase().includes(query) ||
-                    article.tags.some(tag => tag.toLowerCase().includes(query)) ||
-                    article.category.toLowerCase().includes(query)
-                );
-
-                BlogLoader.renderArticles(results, document.getElementById('blog-container'));
-            }
-        };
-
-        // 博客文章列表加载功能
-        const BlogLoader = {
-            articles: [],
-            currentCategory: 'all',
-            currentTag: 'all',
-            retryCount: 0,
-            maxRetries: 3,
-
-            async init() {
-                const container = document.getElementById('blog-container');
-                if (!container) {
-                    return;
-                }
-
-                try {
-                    const articles = await this.loadAllArticles();
+                setArticles(articles) {
                     this.articles = articles;
-                    Search.setArticles(articles);
-                    this.renderFilters();
-                    this.renderArticles(articles, container);
-                } catch (err) {
-                    this.renderError(container, err);
-                }
-            },
+                },
 
-            renderError(container, err) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon">⚠️</div>
-                        <p>文章加载失败</p>
-                        <p class="text-small">请检查网络连接后重试</p>
-                        <button class="btn btn-outline" style="margin-top: var(--spacing-md);" onclick="BlogLoader.retry()">
-                            重新加载
-                        </button>
-                    </div>
-                `;
-            },
+                handleInput(e) {
+                    clearTimeout(this.debounceTimer);
+                    const query = e.target.value.trim();
 
-            async retry() {
-                this.retryCount = 0;
-                const container = document.getElementById('blog-container');
-                container.innerHTML = '<div class="loading-indicator">加载中...</div>';
-                await this.init();
-            },
-
-            async loadAllArticles() {
-                const metadata = await this.loadMetadata();
-                if (!metadata || metadata.length === 0) {
-                    return [];
-                }
-
-                return metadata;
-            },
-
-            async loadMetadata() {
-                const attemptFetch = async (retryAttempt = 0) => {
-                    try {
-                        const response = await fetch('blog/blog-metadata.json');
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        const metadata = await response.json();
-                        return metadata;
-                    } catch (err) {
-                        if (retryAttempt < this.maxRetries) {
-                            await new Promise(resolve => setTimeout(resolve, 1000 * (retryAttempt + 1)));
-                            return attemptFetch(retryAttempt + 1);
-                        }
-                        throw err;
+                    if (query.length === 0) {
+                        this.hideSuggestions();
+                        BlogLoader.renderArticles(this.articles, document.getElementById('blog-container'));
+                        return;
                     }
-                };
-                
-                return attemptFetch();
-            },
 
-            renderFilters() {
-                const categories = new Set(this.articles.map(a => a.category));
-                const tags = new Set(this.articles.flatMap(a => a.tags));
+                    this.debounceTimer = setTimeout(() => {
+                        this.showSuggestions(query);
+                    }, 300);
+                },
 
-                const categoryContainer = document.getElementById('category-filters');
-                const tagContainer = document.getElementById('tag-filters');
+                showSuggestions(query) {
+                    const suggestions = this.findSuggestions(query);
+                    
+                    if (suggestions.length === 0) {
+                        this.hideSuggestions();
+                        return;
+                    }
 
-                if (categoryContainer) {
-                    categoryContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="category">全部</button>';
-                    categories.forEach(category => {
-                        const btn = document.createElement('button');
-                        btn.className = 'filter-tag';
-                        btn.dataset.filter = category;
-                        btn.dataset.type = 'category';
-                        btn.textContent = category;
-                        categoryContainer.appendChild(btn);
+                    this.searchSuggestions.innerHTML = suggestions.map(article => `
+                        <div class="suggestion-item" data-id="${article.id}">
+                            <div class="suggestion-title">${this.highlightMatch(article.title, query)}</div>
+                            <div class="suggestion-meta">${article.category} · ${article.date}</div>
+                        </div>
+                    `).join('');
+
+                    this.searchSuggestions.classList.add('active');
+
+                    this.searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            const articleId = item.dataset.id;
+                            const article = this.articles.find(a => a.id === articleId);
+                            if (article) {
+                                window.location.href = article.filePath;
+                            }
+                        });
                     });
+                },
 
-                    categoryContainer.querySelectorAll('.filter-tag').forEach(btn => {
-                        btn.addEventListener('click', (e) => this.handleFilterClick(e));
-                    });
+                hideSuggestions() {
+                    this.searchSuggestions.classList.remove('active');
+                },
+
+                findSuggestions(query) {
+                    const lowerQuery = query.toLowerCase();
+                    return this.articles.filter(article => 
+                        article.title.toLowerCase().includes(lowerQuery) ||
+                        article.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+                    ).slice(0, 5);
+                },
+
+                highlightMatch(text, query) {
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    return text.replace(regex, '<mark style="background: rgba(99, 102, 241, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
+                },
+
+                performSearch() {
+                    const query = this.searchInput.value.trim().toLowerCase();
+                    this.hideSuggestions();
+
+                    if (query.length === 0) {
+                        BlogLoader.renderArticles(this.articles, document.getElementById('blog-container'));
+                        return;
+                    }
+
+                    const results = this.articles.filter(article => 
+                        article.title.toLowerCase().includes(query) ||
+                        article.excerpt.toLowerCase().includes(query) ||
+                        article.tags.some(tag => tag.toLowerCase().includes(query)) ||
+                        article.category.toLowerCase().includes(query)
+                    );
+
+                    BlogLoader.renderArticles(results, document.getElementById('blog-container'));
                 }
+            };
 
-                if (tagContainer) {
-                    tagContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="tag">全部</button>';
-                    tags.forEach(tag => {
-                        const btn = document.createElement('button');
-                        btn.className = 'filter-tag';
-                        btn.dataset.filter = tag;
-                        btn.dataset.type = 'tag';
-                        btn.textContent = tag;
-                        tagContainer.appendChild(btn);
-                    });
+            const BlogLoader = {
+                articles: [],
+                currentCategory: 'all',
+                currentTag: 'all',
+                retryCount: 0,
+                maxRetries: 3,
 
-                    tagContainer.querySelectorAll('.filter-tag').forEach(btn => {
-                        btn.addEventListener('click', (e) => this.handleFilterClick(e));
-                    });
-                }
-            },
+                async init() {
+                    const container = document.getElementById('blog-container');
+                    if (!container) {
+                        return;
+                    }
 
-            handleFilterClick(e) {
-                const filter = e.target.dataset.filter;
-                const type = e.target.dataset.type;
+                    try {
+                        const articles = await this.loadAllArticles();
+                        this.articles = articles;
+                        Search.setArticles(articles);
+                        this.renderFilters();
+                        this.renderArticles(articles, container);
+                    } catch (err) {
+                        this.renderError(container, err);
+                    }
+                },
 
-                const container = type === 'category' ? document.getElementById('category-filters') : document.getElementById('tag-filters');
-                container.querySelectorAll('.filter-tag').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-
-                if (type === 'category') {
-                    this.currentCategory = filter;
-                } else {
-                    this.currentTag = filter;
-                }
-
-                this.applyFilters();
-            },
-
-            applyFilters() {
-                let filtered = this.articles;
-
-                if (this.currentCategory !== 'all') {
-                    filtered = filtered.filter(a => a.category === this.currentCategory);
-                }
-
-                if (this.currentTag !== 'all') {
-                    filtered = filtered.filter(a => a.tags.includes(this.currentTag));
-                }
-
-                this.renderArticles(filtered, document.getElementById('blog-container'));
-            },
-
-            renderArticles(articles, container) {
-                if (articles.length === 0) {
+                renderError(container, err) {
                     container.innerHTML = `
                         <div class="no-results">
-                            <div class="no-results-icon">🔍</div>
-                            <p>没有找到相关文章</p>
-                            <p class="text-small">试试其他关键词或筛选条件</p>
+                            <div class="no-results-icon">⚠️</div>
+                            <p>文章加载失败</p>
+                            <p class="text-small">请检查网络连接后重试</p>
+                            <button class="btn btn-outline" style="margin-top: var(--spacing-md);" id="retry-btn">
+                                重新加载
+                            </button>
                         </div>
                     `;
-                    return;
+                    const retryBtn = document.getElementById('retry-btn');
+                    if (retryBtn) {
+                        retryBtn.addEventListener('click', () => this.retry());
+                    }
+                },
+
+                async retry() {
+                    this.retryCount = 0;
+                    const container = document.getElementById('blog-container');
+                    container.innerHTML = '<div class="loading-indicator">加载中...</div>';
+                    await this.init();
+                },
+
+                async loadAllArticles() {
+                    const metadata = await this.loadMetadata();
+                    if (!metadata || metadata.length === 0) {
+                        return [];
+                    }
+
+                    return metadata;
+                },
+
+                async loadMetadata() {
+                    const attemptFetch = async (retryAttempt = 0) => {
+                        try {
+                            const response = await fetch('blog/blog-metadata.json');
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            const metadata = await response.json();
+                            return metadata;
+                        } catch (err) {
+                            if (retryAttempt < this.maxRetries) {
+                                await new Promise(resolve => setTimeout(resolve, 1000 * (retryAttempt + 1)));
+                                return attemptFetch(retryAttempt + 1);
+                            }
+                            throw err;
+                        }
+                    };
+                    
+                    return attemptFetch();
+                },
+
+                renderFilters() {
+                    const categories = new Set(this.articles.map(a => a.category));
+                    const tags = new Set(this.articles.flatMap(a => a.tags));
+
+                    const categoryContainer = document.getElementById('category-filters');
+                    const tagContainer = document.getElementById('tag-filters');
+
+                    if (categoryContainer) {
+                        categoryContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="category">全部</button>';
+                        categories.forEach(category => {
+                            const btn = document.createElement('button');
+                            btn.className = 'filter-tag';
+                            btn.dataset.filter = category;
+                            btn.dataset.type = 'category';
+                            btn.textContent = category;
+                            categoryContainer.appendChild(btn);
+                        });
+
+                        categoryContainer.querySelectorAll('.filter-tag').forEach(btn => {
+                            btn.addEventListener('click', (e) => this.handleFilterClick(e));
+                        });
+                    }
+
+                    if (tagContainer) {
+                        tagContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="tag">全部</button>';
+                        tags.forEach(tag => {
+                            const btn = document.createElement('button');
+                            btn.className = 'filter-tag';
+                            btn.dataset.filter = tag;
+                            btn.dataset.type = 'tag';
+                            btn.textContent = tag;
+                            tagContainer.appendChild(btn);
+                        });
+
+                        tagContainer.querySelectorAll('.filter-tag').forEach(btn => {
+                            btn.addEventListener('click', (e) => this.handleFilterClick(e));
+                        });
+                    }
+                },
+
+                handleFilterClick(e) {
+                    const filter = e.target.dataset.filter;
+                    const type = e.target.dataset.type;
+
+                    const container = type === 'category' ? document.getElementById('category-filters') : document.getElementById('tag-filters');
+                    container.querySelectorAll('.filter-tag').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    if (type === 'category') {
+                        this.currentCategory = filter;
+                    } else {
+                        this.currentTag = filter;
+                    }
+
+                    this.applyFilters();
+                },
+
+                applyFilters() {
+                    let filtered = this.articles;
+
+                    if (this.currentCategory !== 'all') {
+                        filtered = filtered.filter(a => a.category === this.currentCategory);
+                    }
+
+                    if (this.currentTag !== 'all') {
+                        filtered = filtered.filter(a => a.tags.includes(this.currentTag));
+                    }
+
+                    this.renderArticles(filtered, document.getElementById('blog-container'));
+                },
+
+                renderArticles(articles, container) {
+                    if (articles.length === 0) {
+                        container.innerHTML = `
+                            <div class="no-results">
+                                <div class="no-results-icon">🔍</div>
+                                <p>没有找到相关文章</p>
+                                <p class="text-small">试试其他关键词或筛选条件</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = '';
+
+                    articles.forEach(article => {
+                        const articleCard = this.createArticleCard(article);
+                        container.appendChild(articleCard);
+                    });
+                },
+
+                createArticleCard(article) {
+                    const card = document.createElement('div');
+                    card.className = 'blog-card';
+
+                    const link = document.createElement('a');
+                    link.href = article.filePath;
+                    link.className = 'blog-card-link';
+
+                    const title = document.createElement('h2');
+                    title.className = 'blog-card-title';
+                    title.textContent = article.title;
+
+                    const excerpt = document.createElement('p');
+                    excerpt.className = 'blog-card-excerpt';
+                    excerpt.textContent = article.excerpt;
+
+                    const meta = document.createElement('div');
+                    meta.className = 'blog-card-meta';
+
+                    const category = document.createElement('span');
+                    category.className = 'blog-card-category';
+                    category.textContent = article.category;
+
+                    meta.appendChild(category);
+
+                    article.tags.forEach(tag => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'blog-card-tag';
+                        tagSpan.textContent = tag;
+                        meta.appendChild(tagSpan);
+                    });
+
+                    link.appendChild(title);
+                    link.appendChild(excerpt);
+                    card.appendChild(link);
+                    card.appendChild(meta);
+
+                    if (article.date) {
+                        const dateElement = document.createElement('div');
+                        dateElement.className = 'blog-card-date';
+                        dateElement.textContent = article.date;
+                        card.appendChild(dateElement);
+                    }
+
+                    return card;
                 }
+            };
 
-                container.innerHTML = '';
-
-                articles.forEach(article => {
-                    const articleCard = this.createArticleCard(article);
-                    container.appendChild(articleCard);
-                });
-            },
-
-            createArticleCard(article) {
-                const card = document.createElement('div');
-                card.className = 'blog-card';
-
-                const link = document.createElement('a');
-                link.href = article.filePath;
-                link.className = 'blog-card-link';
-
-                const title = document.createElement('h2');
-                title.className = 'blog-card-title';
-                title.textContent = article.title;
-
-                const excerpt = document.createElement('p');
-                excerpt.className = 'blog-card-excerpt';
-                excerpt.textContent = article.excerpt;
-
-                const meta = document.createElement('div');
-                meta.className = 'blog-card-meta';
-
-                const category = document.createElement('span');
-                category.className = 'blog-card-category';
-                category.textContent = article.category;
-
-                meta.appendChild(category);
-
-                article.tags.forEach(tag => {
-                    const tagSpan = document.createElement('span');
-                    tagSpan.className = 'blog-card-tag';
-                    tagSpan.textContent = tag;
-                    meta.appendChild(tagSpan);
-                });
-
-                link.appendChild(title);
-                link.appendChild(excerpt);
-                card.appendChild(link);
-                card.appendChild(meta);
-
-                if (article.date) {
-                    const dateElement = document.createElement('div');
-                    dateElement.className = 'blog-card-date';
-                    dateElement.textContent = article.date;
-                    card.appendChild(dateElement);
-                }
-
-                return card;
-            }
-        };
-
-        // 页面加载时初始化
-        window.addEventListener('load', () => {
-            Search.init();
-            BlogLoader.init();
-        });
+            window.addEventListener('load', () => {
+                Search.init();
+                BlogLoader.init();
+            });
+        })();
     </script>
     <script src="js/navigation.js"></script>
     
