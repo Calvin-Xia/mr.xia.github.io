@@ -67,14 +67,14 @@
 
     <!-- 页眉导航 -->
     <header>
-        <nav>
+        <nav aria-label="主导航">
             <div class="logo">Mr.Xia</div>
-            <ul class="nav-links" role="list">
-                <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
-                <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
-                <li><a href="timetable.html" data-history="true" data-title="工具" aria-current="page">工具</a></li>
-                <li><a href="statement.html" data-history="true" data-title="文章">文章</a></li>
-                <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" data-history="true" data-title="首页" role="menuitem">首页</a></li>
+                <li role="none"><a href="Works.html" data-history="true" data-title="作品" role="menuitem">作品</a></li>
+                <li role="none"><a href="timetable.html" data-history="true" data-title="工具" aria-current="page" role="menuitem">工具</a></li>
+                <li role="none"><a href="statement.html" data-history="true" data-title="文章" role="menuitem">文章</a></li>
+                <li role="none"><a href="about.html" data-history="true" data-title="关于" role="menuitem">关于</a></li>
             </ul>
         </nav>
     </header>
@@ -89,15 +89,15 @@
         </section>
 
         <!-- 选项卡导航 -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="timer" aria-label="在线计时器选项卡">在线计时器 ⏱️</button>
-            <button class="tab-btn" data-tab="random-selector" aria-label="随机选择器选项卡">随机选择器 🎲</button>
+        <div class="tabs" role="tablist" aria-label="工具选项卡">
+            <button class="tab-btn active" data-tab="timer" role="tab" aria-selected="true" aria-controls="timer" id="tab-timer">在线计时器 ⏱️</button>
+            <button class="tab-btn" data-tab="random-selector" role="tab" aria-selected="false" aria-controls="random-selector" id="tab-random-selector">随机选择器 🎲</button>
         </div>
 
         <!-- 选项卡内容 -->
         <div class="tab-content">
             <!-- 计时器选项卡 -->
-            <div id="timer" class="tab-panel active">
+            <div id="timer" class="tab-panel active" role="tabpanel" aria-labelledby="tab-timer">
                 <!-- 计时器容器 -->
                 <div class="card timer-container">
                     <!-- 时间设置区域 -->
@@ -108,7 +108,7 @@
                                 <label for="hours">小时</label>
                                 <div class="time-input-wrapper">
                                     <button class="time-btn time-decrease" onclick="changeTime('hours', -1)" aria-label="减少小时">-</button>
-                                    <input type="number" id="hours" name="hours" min="0" max="99" value="0" class="time-input" aria-label="小时">
+                                    <input type="number" id="hours" name="hours" min="0" max="99" value="0" class="time-input" aria-label="小时" aria-describedby="timer-instructions">
                                     <button class="time-btn time-increase" onclick="changeTime('hours', 1)" aria-label="增加小时">+</button>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                                 <label for="minutes">分钟</label>
                                 <div class="time-input-wrapper">
                                     <button class="time-btn time-decrease" onclick="changeTime('minutes', -1)" aria-label="减少分钟">-</button>
-                                    <input type="number" id="minutes" name="minutes" min="0" max="59" value="0" class="time-input" aria-label="分钟">
+                                    <input type="number" id="minutes" name="minutes" min="0" max="59" value="0" class="time-input" aria-label="分钟" aria-describedby="timer-instructions">
                                     <button class="time-btn time-increase" onclick="changeTime('minutes', 1)" aria-label="增加分钟">+</button>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
                                 <label for="seconds">秒数</label>
                                 <div class="time-input-wrapper">
                                     <button class="time-btn time-decrease" onclick="changeTime('seconds', -1)" aria-label="减少秒数">-</button>
-                                    <input type="number" id="seconds" name="seconds" min="0" max="59" value="0" class="time-input" aria-label="秒数">
+                                    <input type="number" id="seconds" name="seconds" min="0" max="59" value="0" class="time-input" aria-label="秒数" aria-describedby="timer-instructions">
                                     <button class="time-btn time-increase" onclick="changeTime('seconds', 1)" aria-label="增加秒数">+</button>
                                 </div>
                             </div>
@@ -151,20 +151,20 @@
 
                     <!-- 控制按钮 -->
                     <div class="timer-controls">
-                        <button id="start" class="btn" aria-label="开始计时">
+                        <button id="start" class="btn">
                             ▶️ 开始
                         </button>
-                        <button id="pause" class="btn btn-secondary" aria-label="暂停计时">
+                        <button id="pause" class="btn btn-secondary">
                             ⏸️ 暂停
                         </button>
-                        <button id="reset" class="btn btn-outline" aria-label="重置计时器">
+                        <button id="reset" class="btn btn-outline">
                             🔄 重置
                         </button>
                     </div>
 
                     <!-- 使用说明 -->
                     <div class="timer-info">
-                        <p class="text-small">
+                        <p id="timer-instructions" class="text-small">
                             💡 提示：设置计时时间后，点击"开始"按钮开始计时，"暂停"暂停计时，"重置"清零计时器
                         </p>
                     </div>
@@ -191,7 +191,7 @@
             </div>
 
             <!-- 随机选择器选项卡 -->
-            <div id="random-selector" class="tab-panel">
+            <div id="random-selector" class="tab-panel" role="tabpanel" aria-labelledby="tab-random-selector">
                 <div class="random-selector-container">
                     <h2 style="text-align: center; color: var(--primary-color); margin-bottom: var(--spacing-lg);">随机选择器 By Copilot</h2>
                     <div class="actions" style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md);">
@@ -248,11 +248,15 @@
                     const targetTab = btn.getAttribute('data-tab');
 
                     // 移除所有选项卡的激活状态
-                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-selected', 'false');
+                    });
                     tabPanels.forEach(p => p.classList.remove('active'));
 
                     // 激活当前选项卡
                     btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
                     const activePanel = document.getElementById(targetTab);
                     activePanel.classList.add('active');
                     
@@ -274,6 +278,24 @@
                             startBtn.disabled = timer.isRunning;
                             pauseBtn.disabled = !timer.isRunning;
                         }
+                    }
+                });
+
+                // 键盘导航支持
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                        const tabs = Array.from(tabBtns);
+                        const currentIndex = tabs.indexOf(btn);
+                        let newIndex;
+                        
+                        if (e.key === 'ArrowLeft') {
+                            newIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+                        } else {
+                            newIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+                        }
+                        
+                        tabs[newIndex].focus();
+                        tabs[newIndex].click();
                     }
                 });
             });
@@ -386,6 +408,7 @@
                     const btn = document.createElement('button');
                     btn.textContent = '删除';
                     btn.className = 'remove-btn';
+                    btn.setAttribute('aria-label', '删除 ' + item);
                     btn.onclick = () => { deleteItem(idx); };
                     li.appendChild(btn);
 
@@ -571,8 +594,8 @@
     </style>
     
     <!-- 页面过渡指示器 -->
-    <div id="page-transition-indicator">
-        <div class="spinner"></div>
+    <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
+        <div class="spinner" role="status" aria-label="页面加载中"></div>
     </div>
 </body>
 </html>

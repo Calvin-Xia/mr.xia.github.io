@@ -16,14 +16,14 @@
 
     <!-- 页眉导航 -->
     <header>
-        <nav>
+        <nav aria-label="主导航">
             <div class="logo">Mr.Xia</div>
-            <ul class="nav-links" role="list">
-                <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
-                <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
-                <li><a href="timetable.html" data-history="true" data-title="工具">工具</a></li>
-                <li><a href="statement.html" data-history="true" data-title="文章">文章</a></li>
-                <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" data-history="true" data-title="首页" role="menuitem">首页</a></li>
+                <li role="none"><a href="Works.html" data-history="true" data-title="作品" role="menuitem">作品</a></li>
+                <li role="none"><a href="timetable.html" data-history="true" data-title="工具" role="menuitem">工具</a></li>
+                <li role="none"><a href="statement.html" data-history="true" data-title="文章" role="menuitem">文章</a></li>
+                <li role="none"><a href="about.html" data-history="true" data-title="关于" role="menuitem">关于</a></li>
             </ul>
         </nav>
     </header>
@@ -53,10 +53,10 @@
             </div>
 
             <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: var(--spacing-lg); flex-wrap: wrap;">
-                <a href="index.html" class="btn" aria-label="返回首页">
+                <a href="index.html" class="btn">
                      返回首页
                 </a>
-                <button onclick="history.back()" class="btn btn-outline" aria-label="返回上一页">
+                <button onclick="history.back()" class="btn btn-outline">
                      返回上一页
                 </button>
             </div>

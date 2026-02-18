@@ -693,7 +693,7 @@
 
     <main>
         <div class="editor-container">
-            <div class="editor-panel">
+            <div class="editor-panel" aria-label="Markdown编辑器">
                 <div class="panel-header">
                     <span class="panel-title">Markdown输入</span>
                     <div class="panel-actions">
@@ -704,14 +704,14 @@
                 <textarea id="markdown-input" placeholder="在此输入Markdown内容..."></textarea>
             </div>
 
-            <div class="editor-panel preview-panel">
+            <div class="editor-panel preview-panel" aria-label="HTML预览">
                 <div class="panel-header">
                     <span class="panel-title">HTML预览</span>
                     <div class="panel-actions">
                         <button class="btn btn-outline" onclick="togglePreview()" id="toggle-btn">折叠</button>
                     </div>
                 </div>
-                <div class="preview-content">
+                <div class="preview-content" aria-live="polite">
                     <div id="markdown-output" class="markdown-content">
                         <p style="text-align: center; color: var(--text-secondary);">预览区域</p>
                     </div>
@@ -853,7 +853,7 @@ $$</code></pre>
         </div>
     </main>
 
-    <div id="loading-indicator" class="loading-indicator">
+    <div id="loading-indicator" class="loading-indicator" role="status" aria-live="polite">
         <div class="loading-spinner"></div>
         <span id="loading-text">加载中...</span>
     </div>

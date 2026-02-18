@@ -289,14 +289,14 @@
 
     <!-- 页眉导航 -->
     <header>
-        <nav>
+        <nav aria-label="主导航">
             <div class="logo">Mr.Xia</div>
-            <ul class="nav-links" role="list">
-                <li><a href="index.html" data-history="true" data-title="首页">首页</a></li>
-                <li><a href="Works.html" data-history="true" data-title="作品">作品</a></li>
-                <li><a href="timetable.html" data-history="true" data-title="工具">工具</a></li>
-                <li><a href="statement.html" data-history="true" data-title="文章" aria-current="page">文章</a></li>
-                <li><a href="about.html" data-history="true" data-title="关于">关于</a></li>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" data-history="true" data-title="首页" role="menuitem">首页</a></li>
+                <li role="none"><a href="Works.html" data-history="true" data-title="作品" role="menuitem">作品</a></li>
+                <li role="none"><a href="timetable.html" data-history="true" data-title="工具" role="menuitem">工具</a></li>
+                <li role="none"><a href="statement.html" data-history="true" data-title="文章" aria-current="page" role="menuitem">文章</a></li>
+                <li role="none"><a href="about.html" data-history="true" data-title="关于" role="menuitem">关于</a></li>
             </ul>
         </nav>
     </header>
@@ -319,6 +319,7 @@
                     placeholder="搜索文章标题、内容或标签..." 
                     autocomplete="off"
                     aria-label="搜索文章"
+                    aria-describedby="search-hint"
                 >
                 <button id="search-btn" class="search-btn" aria-label="搜索">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -327,7 +328,8 @@
                     </svg>
                 </button>
             </div>
-            <div id="search-suggestions" class="search-suggestions"></div>
+            <p id="search-hint" class="text-small" style="margin-top: var(--spacing-xs); color: var(--text-secondary); display: none;">输入关键词搜索文章标题、内容或标签</p>
+            <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="搜索建议"></div>
         </div>
 
         <!-- 分类和标签导航 -->
@@ -335,19 +337,19 @@
             <div class="filter-section">
                 <h3>分类</h3>
                 <div id="category-filters" class="filter-tags">
-                    <button class="filter-tag active" data-filter="all" data-type="category">全部</button>
+                    <button class="filter-tag active" data-filter="all" data-type="category" aria-pressed="true">全部</button>
                 </div>
             </div>
             <div class="filter-section">
                 <h3>标签</h3>
                 <div id="tag-filters" class="filter-tags">
-                    <button class="filter-tag active" data-filter="all" data-type="tag">全部</button>
+                    <button class="filter-tag active" data-filter="all" data-type="tag" aria-pressed="true">全部</button>
                 </div>
             </div>
         </div>
 
         <!-- 博客文章列表 -->
-        <div id="blog-container">
+        <div id="blog-container" aria-live="polite" aria-label="博客文章列表">
             <div class="loading-indicator">加载中...</div>
         </div>
 
@@ -381,6 +383,7 @@
                 searchSuggestions: null,
                 searchBtn: null,
                 debounceTimer: null,
+                selectedIndex: -1,
 
                 init() {
                     this.searchInput = document.getElementById('search-input');
@@ -399,6 +402,7 @@
                             this.performSearch();
                         }
                     });
+                    this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
 
                     document.addEventListener('click', (e) => {
                         if (!this.searchInput.contains(e.target) && !this.searchSuggestions.contains(e.target)) {
@@ -435,7 +439,7 @@
                     }
 
                     this.searchSuggestions.innerHTML = suggestions.map(article => `
-                        <div class="suggestion-item" data-id="${article.id}">
+                        <div class="suggestion-item" data-id="${article.id}" role="option">
                             <div class="suggestion-title">${this.highlightMatch(article.title, query)}</div>
                             <div class="suggestion-meta">${article.category} · ${article.date}</div>
                         </div>
@@ -456,6 +460,42 @@
 
                 hideSuggestions() {
                     this.searchSuggestions.classList.remove('active');
+                    this.selectedIndex = -1;
+                },
+
+                handleKeydown(e) {
+                    const items = this.searchSuggestions.querySelectorAll('.suggestion-item');
+                    if (items.length === 0 || !this.searchSuggestions.classList.contains('active')) {
+                        return;
+                    }
+
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.selectedIndex = Math.min(this.selectedIndex + 1, items.length - 1);
+                        this.updateSelection(items);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+                        this.updateSelection(items);
+                    } else if (e.key === 'Enter' && this.selectedIndex >= 0) {
+                        e.preventDefault();
+                        items[this.selectedIndex].click();
+                    } else if (e.key === 'Escape') {
+                        this.hideSuggestions();
+                    }
+                },
+
+                updateSelection(items) {
+                    items.forEach((item, index) => {
+                        if (index === this.selectedIndex) {
+                            item.style.backgroundColor = 'var(--hover-color)';
+                            item.setAttribute('aria-selected', 'true');
+                            this.searchInput.setAttribute('aria-activedescendant', item.dataset.id);
+                        } else {
+                            item.style.backgroundColor = '';
+                            item.setAttribute('aria-selected', 'false');
+                        }
+                    });
                 },
 
                 findSuggestions(query) {
@@ -577,13 +617,14 @@
                     const tagContainer = document.getElementById('tag-filters');
 
                     if (categoryContainer) {
-                        categoryContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="category">全部</button>';
+                        categoryContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="category" aria-pressed="true">全部</button>';
                         categories.forEach(category => {
                             const btn = document.createElement('button');
                             btn.className = 'filter-tag';
                             btn.dataset.filter = category;
                             btn.dataset.type = 'category';
                             btn.textContent = category;
+                            btn.setAttribute('aria-pressed', 'false');
                             categoryContainer.appendChild(btn);
                         });
 
@@ -593,13 +634,14 @@
                     }
 
                     if (tagContainer) {
-                        tagContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="tag">全部</button>';
+                        tagContainer.innerHTML = '<button class="filter-tag active" data-filter="all" data-type="tag" aria-pressed="true">全部</button>';
                         tags.forEach(tag => {
                             const btn = document.createElement('button');
                             btn.className = 'filter-tag';
                             btn.dataset.filter = tag;
                             btn.dataset.type = 'tag';
                             btn.textContent = tag;
+                            btn.setAttribute('aria-pressed', 'false');
                             tagContainer.appendChild(btn);
                         });
 
@@ -614,8 +656,12 @@
                     const type = e.target.dataset.type;
 
                     const container = type === 'category' ? document.getElementById('category-filters') : document.getElementById('tag-filters');
-                    container.querySelectorAll('.filter-tag').forEach(btn => btn.classList.remove('active'));
+                    container.querySelectorAll('.filter-tag').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-pressed', 'false');
+                    });
                     e.target.classList.add('active');
+                    e.target.setAttribute('aria-pressed', 'true');
 
                     if (type === 'category') {
                         this.currentCategory = filter;
@@ -717,8 +763,8 @@
     <script src="js/navigation.js"></script>
     
     <!-- 页面过渡指示器 -->
-    <div id="page-transition-indicator">
-        <div class="spinner"></div>
+    <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
+        <div class="spinner" role="status" aria-label="页面加载中"></div>
     </div>
 </body>
 </html>
