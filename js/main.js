@@ -384,6 +384,27 @@ const PageAnimations = {
     }
 };
 
+// ===== 邮箱保护模块 =====
+const EmailProtection = {
+    encodedEmail: 'cGVyc29uYWxwYWdlZmVlZGJhY2tAY2FsdmluLXhpYS5jb20=',
+    
+    decode() {
+        return atob(this.encodedEmail);
+    },
+    
+    init() {
+        const emailContainers = document.querySelectorAll('[data-email-placeholder]');
+        emailContainers.forEach(container => {
+            const email = this.decode();
+            const link = document.createElement('a');
+            link.href = `mailto:${email}`;
+            link.textContent = '点击这里';
+            link.style.color = 'var(--primary-color)';
+            container.appendChild(link);
+        });
+    }
+};
+
 // ===== 导航模块 =====
 const Navigation = {
     /**
@@ -456,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
         safeInit('Timer', () => Timer.init());
         safeInit('PageAnimations', () => PageAnimations.init());
         safeInit('Navigation', () => Navigation.init());
+        safeInit('EmailProtection', () => EmailProtection.init());
 
         document.querySelectorAll('.btn').forEach(button => {
             try {
@@ -475,5 +497,6 @@ window.MrXiaApp = {
     Timer,
     PageAnimations,
     Navigation,
-    Utils
+    Utils,
+    EmailProtection
 };

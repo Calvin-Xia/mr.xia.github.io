@@ -406,22 +406,56 @@
             }
 
             async function extractDocx(arrayBuffer) {
-                if (!window.mammoth) {
-                    await loadMammoth();
+                try {
+                    if (!window.mammoth) {
+                        await loadMammoth();
+                    }
+                    window.mammoth.convertToHtml({arrayBuffer})
+                        .then(result => {
+                            const docText = result.value.replace(/<[^>]+>/g, '\n');
+                            fillFromText(docText);
+                            updateList();
+                        });
+                } catch (error) {
+                    console.error('[CDN Fallback] Failed to load mammoth.js:', error);
+                    alert('Word文档解析功能暂时不可用，请稍后重试或使用TXT/Markdown文件');
                 }
-                window.mammoth.convertToHtml({arrayBuffer})
-                    .then(result => {
-                        const docText = result.value.replace(/<[^>]+>/g, '\n');
-                        fillFromText(docText);
-                        updateList();
-                    });
             }
 
             function loadMammoth() {
-                return new Promise((resolve) => {
+                return new Promise((resolve, reject) => {
+                    if (window.mammoth) {
+                        resolve();
+                        return;
+                    }
+                    
                     const script = document.createElement('script');
                     script.src = "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js";
-                    script.onload = resolve;
+                    
+                    script.onload = function() {
+                        console.log('[CDN Fallback] Successfully loaded mammoth.js from CDN');
+                        resolve();
+                    };
+                    
+                    script.onerror = function() {
+                        console.warn('[CDN Fallback] CDN failed for mammoth.js, trying local');
+                        script.onerror = null;
+                        
+                        const fallbackScript = document.createElement('script');
+                        fallbackScript.src = "libs/mammoth/mammoth.browser.min.js";
+                        
+                        fallbackScript.onload = function() {
+                            console.log('[CDN Fallback] Successfully loaded mammoth.js from local');
+                            resolve();
+                        };
+                        
+                        fallbackScript.onerror = function() {
+                            reject(new Error('Failed to load mammoth.js from both CDN and local'));
+                        };
+                        
+                        document.body.appendChild(fallbackScript);
+                    };
+                    
                     document.body.appendChild(script);
                 });
             }
