@@ -90,6 +90,14 @@ def convert_html_file(file_path):
         )
         changes.append("添加viewport标签")
     
+    if '<link rel="icon"' not in content:
+        content = re.sub(
+            r'(<meta charset="utf-8">)',
+            r'\1\n  <link rel="icon" type="image/png" href="../storage/icon.png">',
+            content
+        )
+        changes.append("添加favicon标签")
+    
     content = re.sub(
         r'style="(?:max-width:\s*750px;\s*)?(?:width:\s*100%;\s*)?width:\s*750px;\s*margin:\s*auto;\s*padding:\s*20px;"',
         r'style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;"',
