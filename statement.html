@@ -356,7 +356,7 @@
 
         <!-- 返回首页 -->
         <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
+            <a href="index.html" class="btn btn-secondary">
                 ← 返回首页
             </a>
         </div>
@@ -507,8 +507,13 @@
                     ).slice(0, 5);
                 },
 
+                escapeRegExp(text) {
+                    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                },
+
                 highlightMatch(text, query) {
-                    const regex = new RegExp(`(${query})`, 'gi');
+                    const safeQuery = this.escapeRegExp(query);
+                    const regex = new RegExp(`(${safeQuery})`, 'gi');
                     return text.replace(regex, '<mark style="background: rgba(99, 102, 241, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
                 },
 

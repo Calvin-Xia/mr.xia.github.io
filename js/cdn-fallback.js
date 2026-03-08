@@ -137,6 +137,11 @@
             cdnUrl: 'https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js',
             localUrl: 'libs/marked/marked.min.js'
         },
+        dompurify: {
+            globalName: 'DOMPurify',
+            cdnUrl: 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js',
+            localUrl: 'libs/dompurify/purify.min.js'
+        },
         highlight: {
             globalName: 'hljs',
             cdnUrl: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js',

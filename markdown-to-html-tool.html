@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" as="script">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" as="script">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" as="script">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" as="style">
@@ -874,6 +875,11 @@ $$</code></pre>
                         CDNResources.marked.localUrl
                     ),
                     CDNLoader.loadScript(
+                        CDNResources.dompurify.globalName,
+                        CDNResources.dompurify.cdnUrl,
+                        CDNResources.dompurify.localUrl
+                    ),
+                    CDNLoader.loadScript(
                         CDNResources.highlight.globalName,
                         CDNResources.highlight.cdnUrl,
                         CDNResources.highlight.localUrl
@@ -904,6 +910,7 @@ $$</code></pre>
                 this.outputElement = document.getElementById('markdown-output');
                 this.isCollapsed = false;
                 this.fullContent = '';
+                this.fullRenderedHTML = '';
                 this.collapsedContent = '';
                 this.preloadedImages = new Set();
                 this.hasPreloaded = false;
@@ -939,21 +946,44 @@ $$</code></pre>
                 });
             },
 
+            sanitizeHTML(html) {
+                return DOMPurify.sanitize(html, {
+                    USE_PROFILES: { html: true },
+                    ALLOW_DATA_ATTR: false,
+                    FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form', 'input', 'button', 'textarea', 'select', 'option', 'link', 'meta', 'base'],
+                    FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'onfocus', 'onmouseenter', 'onmouseleave', 'onsubmit']
+                });
+            },
+
+            renderMarkdownFragment(markdownText) {
+                const unsafeHTML = marked.parse(markdownText);
+                const safeHTML = this.sanitizeHTML(unsafeHTML);
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = safeHTML;
+                this.processImages(tempDiv);
+                return tempDiv.innerHTML;
+            },
+
+            buildPreviewHTML(markdownText) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = this.renderMarkdownFragment(markdownText);
+                this.enhanceRenderedContent(tempDiv);
+                return tempDiv.innerHTML;
+            },
+
             render() {
                 const markdownText = this.inputElement.value;
                 if (!markdownText.trim()) {
                     this.outputElement.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">请输入Markdown内容</p>';
+                    this.fullContent = '';
+                    this.fullRenderedHTML = '';
+                    this.collapsedContent = '';
                     return;
                 }
 
                 this.fullContent = markdownText;
-                const html = marked.parse(markdownText);
-                this.outputElement.innerHTML = html;
-
+                this.fullRenderedHTML = this.renderMarkdownFragment(markdownText);
                 this.generateCollapsedPreview();
-                this.renderMath();
-                this.highlightCode();
-                this.processImages();
 
                 if (this.isCollapsed) {
                     this.showCollapsed();
@@ -989,7 +1019,7 @@ $$</code></pre>
                     }
                 }
 
-                this.collapsedContent = marked.parse(previewContent);
+                this.collapsedContent = this.renderMarkdownFragment(previewContent);
             },
 
             showCollapsed() {
@@ -998,20 +1028,20 @@ $$</code></pre>
                 this.outputElement.classList.remove('expanded');
                 document.getElementById('toggle-btn').textContent = '展开';
                 
-                this.renderMath();
-                this.highlightCode();
-                this.processImages();
+                this.enhanceRenderedContent(this.outputElement);
             },
 
             showExpanded() {
-                this.outputElement.innerHTML = marked.parse(this.fullContent);
+                if (!this.fullRenderedHTML && this.fullContent.trim()) {
+                    this.fullRenderedHTML = this.renderMarkdownFragment(this.fullContent);
+                }
+
+                this.outputElement.innerHTML = this.fullRenderedHTML;
                 this.outputElement.classList.remove('collapsed');
                 this.outputElement.classList.add('expanded');
                 document.getElementById('toggle-btn').textContent = '折叠';
                 
-                this.renderMath();
-                this.highlightCode();
-                this.processImages();
+                this.enhanceRenderedContent(this.outputElement);
             },
 
             togglePreview() {
@@ -1024,9 +1054,9 @@ $$</code></pre>
                 }
             },
 
-            renderMath() {
+            renderMath(element = this.outputElement) {
                 try {
-                    renderMathInElement(this.outputElement, {
+                    renderMathInElement(element, {
                         delimiters: [
                             {left: '$$', right: '$$', display: true},
                             {left: '$', right: '$', display: false}
@@ -1038,9 +1068,9 @@ $$</code></pre>
                 }
             },
 
-            highlightCode() {
+            highlightCode(element = this.outputElement) {
                 try {
-                    this.outputElement.querySelectorAll('pre code').forEach((block) => {
+                    element.querySelectorAll('pre code').forEach((block) => {
                         hljs.highlightElement(block);
                     });
                 } catch (err) {
@@ -1048,6 +1078,10 @@ $$</code></pre>
                 }
             },
 
+            enhanceRenderedContent(element = this.outputElement) {
+                this.renderMath(element);
+                this.highlightCode(element);
+            },
             processImages(element = this.outputElement) {
                 const flexWrappers = element.querySelectorAll('div[style*="flex"]');
                 
@@ -1110,13 +1144,9 @@ $$</code></pre>
                     return;
                 }
 
-                const html = marked.parse(markdownText);
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                this.processImages(tempDiv);
-                const processedHTML = tempDiv.innerHTML;
-                
+                const processedHTML = markdownText === this.fullContent && this.fullRenderedHTML
+                    ? this.fullRenderedHTML
+                    : this.renderMarkdownFragment(markdownText);
                 const fullHTML = this.generateFullHTML(processedHTML);
                 
                 const blob = new Blob([fullHTML], { type: 'text/html' });
@@ -1408,7 +1438,7 @@ $$</code></pre>
                     return;
                 }
 
-                const html = marked.parse(markdownText);
+                const html = this.buildPreviewHTML(markdownText);
                 navigator.clipboard.writeText(html).then(() => {
                     this.showLoading('复制成功', 1000);
                 }).catch(err => {
@@ -1450,6 +1480,9 @@ $$</code></pre>
             if (confirm('确定要清空输入内容吗？')) {
                 document.getElementById('markdown-input').value = '';
                 document.getElementById('markdown-output').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">预览区域</p>';
+                MarkdownRenderer.fullContent = '';
+                MarkdownRenderer.fullRenderedHTML = '';
+                MarkdownRenderer.collapsedContent = '';
             }
         }
 

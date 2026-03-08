@@ -145,6 +145,12 @@ const Timer = {
         const minutes = parseInt(minutesInput?.value) || 0;
         const seconds = parseInt(secondsInput?.value) || 0;
         
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+        this.startTime = null;
+
         const totalSeconds = hours * 3600 + minutes * 60 + seconds;
         this.targetTime = totalSeconds * 1000;
         this.elapsedTime = 0;
