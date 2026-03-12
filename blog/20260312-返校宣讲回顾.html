@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="../storage/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20260207</title>
+  <style>:root {
+  /* 动态配置变量 */
+  --md-primary-color: #0F4C81;
+  --md-font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --md-font-size: 16px;
+}
+
+/* 段落缩进和对齐 */
+p {
+  
+  text-align: justify;
+}
+
+/**
+ * MD 基础主题样式
+ * 包含所有元素的基础样式和 CSS 变量定义
+ */
+
+/* ==================== 容器样式 ==================== */
+section,
+container {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 确保 容器应用基础样式 */
+body {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 去除第一个元素的 margin-top */
+section > :first-child {
+  margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
+}
+
+
+/**
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ */
+
+/* ==================== 一级标题 ==================== */
+h1 {
+  display: table;
+  padding: 0 1em;
+  border-bottom: 2px solid #0F4C81;
+  margin: 2em auto 1em;
+  color: hsl(var(--foreground));
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: #0F4C81;
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid #0F4C81;
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: 17.6px;
+  font-weight: bold;
+  line-height: 1.2;
+}/* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: 16px;
+  color: #0F4C81;
+}/* ==================== 段落 ==================== */
+p {
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid #0F4C81;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
+}blockquote > p {
+  display: block;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  margin: 0;
+}/* ==================== GFM 警告块 ==================== */
+.alert-title-note,
+.alert-title-tip,
+.alert-title-info,
+.alert-title-important,
+.alert-title-warning,
+.alert-title-caution,
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr,
+.alert-title-todo,
+.alert-title-success,
+.alert-title-done,
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq,
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing,
+.alert-title-danger,
+.alert-title-error,
+.alert-title-bug,
+.alert-title-example,
+.alert-title-quote,
+.alert-title-cite {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}.alert-title-note {
+  color: #478be6;
+}.alert-title-tip {
+  color: #57ab5a;
+}.alert-title-info {
+  color: #93c5fd;
+}.alert-title-important {
+  color: #986ee2;
+}.alert-title-warning {
+  color: #c69026;
+}.alert-title-caution {
+  color: #e5534b;
+}/* Obsidian-style callout colors */
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr {
+  color: #00bfff;
+}.alert-title-todo {
+  color: #478be6;
+}.alert-title-success,
+.alert-title-done {
+  color: #57ab5a;
+}.alert-title-question,
+.alert-title-help,
+.alert-title-faq {
+  color: #c69026;
+}.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing {
+  color: #e5534b;
+}.alert-title-danger,
+.alert-title-error {
+  color: #e5534b;
+}.alert-title-bug {
+  color: #e5534b;
+}.alert-title-example {
+  color: #986ee2;
+}.alert-title-quote,
+.alert-title-cite {
+  color: #9ca3af;
+}/* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}.alert-icon-tip {
+  fill: #57ab5a;
+}.alert-icon-info {
+  fill: #93c5fd;
+}.alert-icon-important {
+  fill: #986ee2;
+}.alert-icon-warning {
+  fill: #c69026;
+}.alert-icon-caution {
+  fill: #e5534b;
+}/* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+.alert-icon-summary,
+.alert-icon-tldr {
+  fill: #00bfff;
+}.alert-icon-todo {
+  fill: #478be6;
+}.alert-icon-success,
+.alert-icon-done {
+  fill: #57ab5a;
+}.alert-icon-question,
+.alert-icon-help,
+.alert-icon-faq {
+  fill: #c69026;
+}.alert-icon-failure,
+.alert-icon-fail,
+.alert-icon-missing {
+  fill: #e5534b;
+}.alert-icon-danger,
+.alert-icon-error {
+  fill: #e5534b;
+}.alert-icon-bug {
+  fill: #e5534b;
+}.alert-icon-example {
+  fill: #986ee2;
+}.alert-icon-quote,
+.alert-icon-cite {
+  fill: #9ca3af;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}/* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}/* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}/* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}/* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+.hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}/* ==================== 粗体 ==================== */
+strong {
+  color: #0F4C81;
+  font-weight: bold;
+  font-size: inherit;
+}/* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}/* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}.katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}/* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: #0F4C81;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}.markup-underline {
+  text-decoration: underline;
+  text-decoration-color: #0F4C81;
+}.markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: #0F4C81;
+  text-decoration-thickness: 2px;
+}/**
+ * MD 简洁主题 (@okooo5km)
+ * 简洁现代的设计风格
+ */
+
+/* ==================== 标题样式 ==================== */
+h1 {
+  padding: 0.5em 1em;
+  font-size: 22.4px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+}section h2 {
+  padding: 0.3em 1.2em;
+  font-size: 20.8px;
+  border-radius: 8px 24px 8px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}section h3 {
+  padding-left: 12px;
+  font-size: 19.2px;
+  border-radius: 6px;
+  line-height: 2.4em;
+  border-left: 4px solid #0F4C81;
+  border-right: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  background: color-mix(in srgb, #0F4C81 8%, transparent);
+}section h4 {
+  font-size: 17.6px;
+  border-radius: 6px;
+}section h5 {
+  font-size: 16px;
+  border-radius: 6px;
+}section h6 {
+  font-size: 16px;
+  border-radius: 6px;
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: italic;
+  padding: 1em 1em 1em 2em;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-top: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-right: 0.2px solid rgba(0, 0, 0, 0.04);
+}/* GFM Alert 样式覆盖 */
+.markdown-alert-note,
+.markdown-alert-tip,
+.markdown-alert-info,
+.markdown-alert-important,
+.markdown-alert-warning,
+.markdown-alert-caution {
+  font-style: italic;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}pre.code__pre > code,
+.hljs.code__pre > code {
+  font-family:
+    'Fira Code',
+    Menlo,
+    Operator Mono,
+    Consolas,
+    Monaco,
+    monospace;
+}/* ==================== 图片 ==================== */
+img {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1.5em;
+}ul {
+  list-style: none;
+  padding-left: 1.5em;
+}li {
+  margin: 0.5em 8px;
+}/* ==================== 分隔线 ==================== */
+hr {
+  height: 1px;
+  border: none;
+  margin: 2em 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}
+
+
+h2 {
+  display: block;
+  text-align: left;
+  background: transparent;
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 4px solid #0F4C81;
+  color: #0F4C81;
+}
+
+/**
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ * 如：color: var(--md-primary-color);
+ * 新主题系统已全面支持 CSS 写法，你可以 F12 打开控制台查看具体的类名及标签
+ *
+ * 召集令：如果你有好看的主题样式，欢迎分享，让更多人能够使用到你的主题。
+ * 提交区：https://github.com/doocs/md/discussions/426
+ */
+
+/* 全局变量定义 */
+:root {
+}/* 根容器 */
+.md-container {
+}/* 标题样式 */
+h1 {
+}section h2 {
+}section h3 {
+}section h4 {
+}section h5 {
+}section h6 {
+}/* 段落和文本 */
+p {
+}strong {
+}em {
+}/* 引用块 */
+blockquote {
+}blockquote > p {
+}/* 代码 */
+/* 行内代码 */
+code {
+}/* 代码块容器 */
+pre.code__pre,
+.hljs.code__pre {
+}/* 代码块内的 code */
+pre.code__pre > code,
+.hljs.code__pre > code {
+}/* 列表 */
+ol {
+}ul {
+}li {
+}/* 表格 */
+table {
+}thead {
+}th {
+}td {
+}/* 其他元素 */
+img {
+}hr {
+}figure {
+}figcaption {
+}/* KaTeX 公式 */
+.katex-inline {
+}.katex-block {
+}/* Markup 标记 */
+/* 高亮 ==文本== */
+.markup-highlight {
+}/* 下划线 ++文本++ */
+.markup-underline {
+}/* 波浪线 ~文本~ */
+.markup-wavyline {
+}/* GFM Alert 警告块 */
+/* Alert 标题 */
+.alert-title-note {
+}.alert-title-tip {
+}.alert-title-info {
+}.alert-title-important {
+}.alert-title-warning {
+}.alert-title-caution {
+}.alert-title-abstract {
+}.alert-title-summary {
+}.alert-title-tldr {
+}.alert-title-todo {
+}.alert-title-success {
+}.alert-title-done {
+}.alert-title-question {
+}.alert-title-help {
+}.alert-title-faq {
+}.alert-title-failure {
+}.alert-title-fail {
+}.alert-title-missing {
+}.alert-title-danger {
+}.alert-title-error {
+}.alert-title-bug {
+}.alert-title-example {
+}.alert-title-quote {
+}.alert-title-cite {
+}/* Alert SVG 图标 */
+.alert-icon-note {
+}.alert-icon-tip {
+}.alert-icon-info {
+}.alert-icon-important {
+}.alert-icon-warning {
+}.alert-icon-caution {
+}/* Obsidian-style Callout SVG 图标 */
+.alert-icon-abstract {
+}.alert-icon-summary {
+}.alert-icon-tldr {
+}.alert-icon-todo {
+}.alert-icon-success {
+}.alert-icon-done {
+}.alert-icon-question {
+}.alert-icon-help {
+}.alert-icon-faq {
+}.alert-icon-failure {
+}.alert-icon-fail {
+}.alert-icon-missing {
+}.alert-icon-danger {
+}.alert-icon-error {
+}.alert-icon-bug {
+}.alert-icon-example {
+}.alert-icon-quote {
+}.alert-icon-cite {
+}
+</style><style>pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#24292e;background:#fff}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#d73a49}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#6f42c1}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-variable{color:#005cc5}.hljs-meta .hljs-string,.hljs-regexp,.hljs-string{color:#032f62}.hljs-built_in,.hljs-symbol{color:#e36209}.hljs-code,.hljs-comment,.hljs-formula{color:#6a737d}.hljs-name,.hljs-quote,.hljs-selector-pseudo,.hljs-selector-tag{color:#22863a}.hljs-subst{color:#24292e}.hljs-section{color:#005cc5;font-weight:700}.hljs-bullet{color:#735c0f}.hljs-emphasis{color:#24292e;font-style:italic}.hljs-strong{color:#24292e;font-weight:700}.hljs-addition{color:#22863a;background-color:#f0fff4}.hljs-deletion{color:#b31d28;background-color:#ffeef0}</style>
+</head>
+<body>
+  <div style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;">
+    <section class="container">
+      <blockquote class="md-blockquote">
+        <p class="md-blockquote-p">字数 1352，阅读大约需 7 分钟</p>
+      </blockquote>
+    <h1 class="h1" data-heading="true" id="0">Momentous but Momentary——何谓生涯规划？</h1><p class="p">这本该是一个返校宣讲的回顾帖，可惜鸽了如此久，干脆只把写好的部分拿出来凑合一篇吧~  </p><p class="p">我并不希望将这个回顾写成流水账的形式，所以我将记录几个印象深刻的瞬间。  </p><blockquote class="blockquote"><p class="p">时间：20260203 下午 17:00~18:00<br>地点：重庆市万州第二高级中学高中部中心广场  </p></blockquote><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/return-highschool/IMG_20260203_161741.jpg" alt="依旧"><figcaption class="figcaption">依旧</figcaption></figure><h2 class="h2" data-heading="true" id="1">瞬间的 callback</h2><p class="p">似乎并不是什么特别引人注意的瞬间，但的确让我印象深刻。  </p><p class="p">当我们正愁于周边和宣传册被迅速抢走后惨淡的现状时，一名女生走过来开始向我们提问——简要问过选科之后，她直截了当的表示，只想看看口腔医学的分数和位次。我迅速在手机中的文件里面搜索口腔医学 5+3 和 8 年制的投档分数线，放大，高亮，递给她看。她仔细端详之后，点头，对我表示感谢，随即离开。  </p><p class="p">非常微小的一个瞬间，但是给我留下了很深的印象。回想自己的高中时代，我似乎并没有一个特别明确的志向。很多人问过我这样的问题：  </p><blockquote class="blockquote"><p class="p">有没有考虑过自己心仪的大学专业？<br>有没有想过以后想干什么？  </p></blockquote><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/return-highschool/IMG_20260203_174848.jpg" alt="特写"><figcaption class="figcaption">特写</figcaption></figure><p class="p">说来奇怪，明明很多人（老师，家长，甚至包括我自己）都给自己灌输过生涯规划的重要性，为何到了最后我也无法找到一个准确的答案？  </p><p class="p">我十分认真地考虑了这个问题，也逐渐形成了一些想法：  </p><ul class="ul"><li class="listitem">• 从<strong class="strong">外界</strong>来看：时间倒推到高一上，曾有过一门每周 0.5 节的“生涯规划”课程。老师告诉我们生涯规划很重要，但这门课的“存活”时长堪忧——恰逢 22 年疫情反复，这门课也不了了之；分科以后，这样的课也就再也没有正式地上过—— <span class="katex-inline"><svg xmlns="http://www.w3.org/2000/svg" height="2.034ex" role="img" viewBox="0 -694 12540 899" aria-hidden="true" style="vertical-align: -0.464ex; display: initial; max-width: 300vw !important; flex-shrink: 0; width: 28.371ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path></g><g data-mml-node="mi" transform="translate(1051,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(1536,0)"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(2414,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="mi" transform="translate(2880,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(3480,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g><g data-mml-node="mi" transform="translate(3841,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(4326,0)"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(4898,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mtext" transform="translate(5367,0)"><path data-c="A0" d=""></path></g><g data-mml-node="mi" transform="translate(5617,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(6046,0)"><path data-c="1D462" d="M21 287Q21 295 30 318T55 370T99 420T158 442Q204 442 227 417T250 358Q250 340 216 246T182 105Q182 62 196 45T238 27T291 44T328 78L339 95Q341 99 377 247Q407 367 413 387T427 416Q444 431 463 431Q480 431 488 421T496 402L420 84Q419 79 419 68Q419 43 426 35T447 26Q469 29 482 57T512 145Q514 153 532 153Q551 153 551 144Q550 139 549 130T540 98T523 55T498 17T462 -8Q454 -10 438 -10Q372 -10 347 46Q345 45 336 36T318 21T296 6T267 -6T233 -11Q189 -11 155 7Q103 38 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(6618,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g><g data-mml-node="mtext" transform="translate(6979,0)"><path data-c="A0" d=""></path></g><g data-mml-node="mi" transform="translate(7229,0)"><path data-c="1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path></g><g data-mml-node="mi" transform="translate(8280,0)"><path data-c="1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path></g><g data-mml-node="mi" transform="translate(8765,0)"><path data-c="1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(9643,0)"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="mi" transform="translate(10109,0)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(10709,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g><g data-mml-node="mi" transform="translate(11070,0)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mi" transform="translate(11599,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(12050,0)"><path data-c="1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg></span> ，这略显滑稽的反差感，导致学生只知道有这样一个东西而无法真正静下心来思考/理解。  </li><li class="listitem">• 从<strong class="strong">自身</strong>来看：上面的理由并非在为自己开脱。个体所做的一切行为都是基于自身判断的，没做就是没做，谁也无法逃避这件事情。为什么上文中的那个女生就有很清晰的规划，而我没有？囿于学业的前行，却忽视了向前看的能力。我有一万个理由可以为自己开脱：现在还早，学习更重要，学得好了这些都不是问题，有的是时间思考这些无聊的问题……随即到了为自己作出抉择的时期，气盛心高与骨感现实形成鲜明落差，面对志愿表两眼一黑不知从何开始……概括起来就两点：<span class="markup-highlight">“心大”且拖延</span>。</li></ul><p class="p">是不想吗？我想不是，只是我彼时的认知无法支撑我去想如此长远的未来。  </p><p class="p">我会想起宣讲之后的第二天，回到高一的两个班级宣讲有关高中生物化学学科的学习方法，也同样，聊到了生涯规划这一个板块。  </p><p class="p">我当时在稿子里面写道：  </p><blockquote class="blockquote"><p class="p">如果到了高三还没有开始规划的话，那就不要开始了。这个时候你就需要等到 6.10 英语口语考试结束，到 6 月底出分填志愿这段时间（感觉可以可以把这段时间叫做中国学生的 gap week or something like that）到这个时间，再去思考，冷静选择。  </p></blockquote><p class="p">不过在实际讲的时候，我刻意避开了 gap week 这个描述——他们对 gap year, or something like that，真的有概念吗？对于我们而言，“gap”这个词，几乎是很难出现。与其为了“显摆”丢一点不知道高不高级的词汇在里面，不如走向他们的思想之中，讲他们能听得懂的，他们已经经历过，并已经有很多感触与认知的东西。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/return-highschool/IMG_20260312_233305.jpg" alt="传递"><figcaption class="figcaption">传递</figcaption></figure><h2 class="h2" data-heading="true" id="2">何去何从？</h2><p class="p">从我——一名对自己未来出路仍有困惑的大一学生——的角度来看，生涯规划的意义其实非常重要。不妨用我写到这里时耳机里面刚好随机到的一首歌来说，“人都应该有梦”（张韶涵《淋雨一直走》）。时常问问自己问题：  </p><blockquote class="blockquote"><p class="p">我擅长什么？<br>我喜欢什么？<br>我以后想要做什么？<br>这样做之后我能满足自己的生活/心理所需要吗？<br>……  </p></blockquote><p class="p">不过还需要遵守一点原则：<span class="markup-highlight">一切从自己出发</span>。人生完完全全属于自己，根据自身的实际情况进行部署与实践才是硬道理。外界的声音可以采纳，但都需要经过自己的深思熟虑。<strong class="strong">实践是检验真理的唯一标准</strong>，矛盾的统一与特殊性告诉我们，选取适合自己的理论进行实践才最适合自己。  </p><p class="p">有梦之后，大可以迈步向前，不惧风雨。  </p><p class="p">毕竟——“人都应该有梦”的下一句是<span class="markup-highlight">“有梦就别怕痛”</span>。  </p>
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  
+    <style>
+      .hljs.code__pre > .mac-sign {
+        display: none;
+      }
+    </style>
+  
+    <style>
+      h2 strong {
+        color: inherit !important;
+      }
+    </style>
+  </section>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var lazyImages = document.querySelectorAll('img.lazy-img');
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, {rootMargin: '50px 0px'});
+        lazyImages.forEach(function(img) {
+            observer.observe(img);
+        });
+    } else {
+        lazyImages.forEach(function(img) {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
