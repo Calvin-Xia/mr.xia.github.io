@@ -84,7 +84,7 @@
         .blog-card-tag {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background: rgba(249, 115, 22, 0.1);
+            background: rgba(99, 102, 241, 0.1);
             color: var(--primary-color);
             border-radius: var(--radius-sm);
             font-size: 0.8125rem;
@@ -94,7 +94,7 @@
         .blog-card-category {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background: rgba(251, 113, 133, 0.12);
+            background: rgba(236, 72, 153, 0.1);
             color: var(--secondary-color);
             border-radius: var(--radius-sm);
             font-size: 0.8125rem;
@@ -119,7 +119,7 @@
 
         .search-box:focus-within {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
         #search-input {
@@ -356,7 +356,7 @@
 
         <!-- 返回首页 -->
         <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary">
+            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
                 ← 返回首页
             </a>
         </div>
@@ -507,14 +507,9 @@
                     ).slice(0, 5);
                 },
 
-                escapeRegExp(text) {
-                    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                },
-
                 highlightMatch(text, query) {
-                    const safeQuery = this.escapeRegExp(query);
-                    const regex = new RegExp(`(${safeQuery})`, 'gi');
-                    return text.replace(regex, '<mark style="background: rgba(249, 115, 22, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    return text.replace(regex, '<mark style="background: rgba(99, 102, 241, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
                 },
 
                 performSearch() {
@@ -562,17 +557,11 @@
                 },
 
                 renderError(container, err) {
-                    const isFileProtocol = window.location.protocol === 'file:';
-                    const detailMessage = isFileProtocol
-                        ? '当前通过 file:// 直接打开页面，浏览器通常会阻止读取 blog/blog-metadata.json。请改用本地服务器预览。'
-                        : '请检查网络连接，或确认 blog/blog-metadata.json 可以正常访问。';
-
-                    console.error('Failed to load blog metadata', err);
                     container.innerHTML = `
                         <div class="no-results">
                             <div class="no-results-icon">⚠️</div>
                             <p>文章加载失败</p>
-                            <p class="text-small">${detailMessage}</p>
+                            <p class="text-small">请检查网络连接后重试</p>
                             <button class="btn btn-outline" style="margin-top: var(--spacing-md);" id="retry-btn">
                                 重新加载
                             </button>

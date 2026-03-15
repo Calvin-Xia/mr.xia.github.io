@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="../storage/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两小时，环线，慢行</title>
+  <style>:root {
+  /* 动态配置变量 */
+  --md-primary-color: #0F4C81;
+  --md-font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --md-font-size: 16px;
+}
+
+/* 段落缩进和对齐 */
+p {
+  
+  text-align: justify;
+}
+
+/**
+ * MD 基础主题样式
+ * 包含所有元素的基础样式和 CSS 变量定义
+ */
+
+/* ==================== 容器样式 ==================== */
+section,
+container {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 确保 容器应用基础样式 */
+body {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 去除第一个元素的 margin-top */
+section > :first-child {
+  margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
+}
+
+
+/**
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ */
+
+/* ==================== 一级标题 ==================== */
+h1 {
+  display: table;
+  padding: 0 1em;
+  border-bottom: 2px solid #0F4C81;
+  margin: 2em auto 1em;
+  color: hsl(var(--foreground));
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: #0F4C81;
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid #0F4C81;
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: 17.6px;
+  font-weight: bold;
+  line-height: 1.2;
+}/* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: 16px;
+  color: #0F4C81;
+}/* ==================== 段落 ==================== */
+p {
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid #0F4C81;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
+}blockquote > p {
+  display: block;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  margin: 0;
+}/* ==================== GFM 警告块 ==================== */
+.alert-title-note,
+.alert-title-tip,
+.alert-title-info,
+.alert-title-important,
+.alert-title-warning,
+.alert-title-caution,
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr,
+.alert-title-todo,
+.alert-title-success,
+.alert-title-done,
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq,
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing,
+.alert-title-danger,
+.alert-title-error,
+.alert-title-bug,
+.alert-title-example,
+.alert-title-quote,
+.alert-title-cite {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}.alert-title-note {
+  color: #478be6;
+}.alert-title-tip {
+  color: #57ab5a;
+}.alert-title-info {
+  color: #93c5fd;
+}.alert-title-important {
+  color: #986ee2;
+}.alert-title-warning {
+  color: #c69026;
+}.alert-title-caution {
+  color: #e5534b;
+}/* Obsidian-style callout colors */
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr {
+  color: #00bfff;
+}.alert-title-todo {
+  color: #478be6;
+}.alert-title-success,
+.alert-title-done {
+  color: #57ab5a;
+}.alert-title-question,
+.alert-title-help,
+.alert-title-faq {
+  color: #c69026;
+}.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing {
+  color: #e5534b;
+}.alert-title-danger,
+.alert-title-error {
+  color: #e5534b;
+}.alert-title-bug {
+  color: #e5534b;
+}.alert-title-example {
+  color: #986ee2;
+}.alert-title-quote,
+.alert-title-cite {
+  color: #9ca3af;
+}/* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}.alert-icon-tip {
+  fill: #57ab5a;
+}.alert-icon-info {
+  fill: #93c5fd;
+}.alert-icon-important {
+  fill: #986ee2;
+}.alert-icon-warning {
+  fill: #c69026;
+}.alert-icon-caution {
+  fill: #e5534b;
+}/* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+.alert-icon-summary,
+.alert-icon-tldr {
+  fill: #00bfff;
+}.alert-icon-todo {
+  fill: #478be6;
+}.alert-icon-success,
+.alert-icon-done {
+  fill: #57ab5a;
+}.alert-icon-question,
+.alert-icon-help,
+.alert-icon-faq {
+  fill: #c69026;
+}.alert-icon-failure,
+.alert-icon-fail,
+.alert-icon-missing {
+  fill: #e5534b;
+}.alert-icon-danger,
+.alert-icon-error {
+  fill: #e5534b;
+}.alert-icon-bug {
+  fill: #e5534b;
+}.alert-icon-example {
+  fill: #986ee2;
+}.alert-icon-quote,
+.alert-icon-cite {
+  fill: #9ca3af;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}/* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}/* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}/* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}/* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+.hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}/* ==================== 粗体 ==================== */
+strong {
+  color: #0F4C81;
+  font-weight: bold;
+  font-size: inherit;
+}/* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}/* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}.katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}/* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: #0F4C81;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}.markup-underline {
+  text-decoration: underline;
+  text-decoration-color: #0F4C81;
+}.markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: #0F4C81;
+  text-decoration-thickness: 2px;
+}/**
+ * MD 简洁主题 (@okooo5km)
+ * 简洁现代的设计风格
+ */
+
+/* ==================== 标题样式 ==================== */
+h1 {
+  padding: 0.5em 1em;
+  font-size: 22.4px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+}section h2 {
+  padding: 0.3em 1.2em;
+  font-size: 20.8px;
+  border-radius: 8px 24px 8px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}section h3 {
+  padding-left: 12px;
+  font-size: 19.2px;
+  border-radius: 6px;
+  line-height: 2.4em;
+  border-left: 4px solid #0F4C81;
+  border-right: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  background: color-mix(in srgb, #0F4C81 8%, transparent);
+}section h4 {
+  font-size: 17.6px;
+  border-radius: 6px;
+}section h5 {
+  font-size: 16px;
+  border-radius: 6px;
+}section h6 {
+  font-size: 16px;
+  border-radius: 6px;
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: italic;
+  padding: 1em 1em 1em 2em;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-top: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-right: 0.2px solid rgba(0, 0, 0, 0.04);
+}/* GFM Alert 样式覆盖 */
+.markdown-alert-note,
+.markdown-alert-tip,
+.markdown-alert-info,
+.markdown-alert-important,
+.markdown-alert-warning,
+.markdown-alert-caution {
+  font-style: italic;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}pre.code__pre > code,
+.hljs.code__pre > code {
+  font-family:
+    'Fira Code',
+    Menlo,
+    Operator Mono,
+    Consolas,
+    Monaco,
+    monospace;
+}/* ==================== 图片 ==================== */
+img {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1.5em;
+}ul {
+  list-style: none;
+  padding-left: 1.5em;
+}li {
+  margin: 0.5em 8px;
+}/* ==================== 分隔线 ==================== */
+hr {
+  height: 1px;
+  border: none;
+  margin: 2em 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}
+
+
+h2 {
+  display: block;
+  text-align: left;
+  background: transparent;
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 4px solid #0F4C81;
+  color: #0F4C81;
+}
+
+/**
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ * 如：color: var(--md-primary-color);
+ * 新主题系统已全面支持 CSS 写法，你可以 F12 打开控制台查看具体的类名及标签
+ *
+ * 召集令：如果你有好看的主题样式，欢迎分享，让更多人能够使用到你的主题。
+ * 提交区：https://github.com/doocs/md/discussions/426
+ */
+
+/* 全局变量定义 */
+:root {
+}/* 根容器 */
+.md-container {
+}/* 标题样式 */
+h1 {
+}section h2 {
+}section h3 {
+}section h4 {
+}section h5 {
+}section h6 {
+}/* 段落和文本 */
+p {
+}strong {
+}em {
+}/* 引用块 */
+blockquote {
+}blockquote > p {
+}/* 代码 */
+/* 行内代码 */
+code {
+}/* 代码块容器 */
+pre.code__pre,
+.hljs.code__pre {
+}/* 代码块内的 code */
+pre.code__pre > code,
+.hljs.code__pre > code {
+}/* 列表 */
+ol {
+}ul {
+}li {
+}/* 表格 */
+table {
+}thead {
+}th {
+}td {
+}/* 其他元素 */
+img {
+}hr {
+}figure {
+}figcaption {
+}/* KaTeX 公式 */
+.katex-inline {
+}.katex-block {
+}/* Markup 标记 */
+/* 高亮 ==文本== */
+.markup-highlight {
+}/* 下划线 ++文本++ */
+.markup-underline {
+}/* 波浪线 ~文本~ */
+.markup-wavyline {
+}/* GFM Alert 警告块 */
+/* Alert 标题 */
+.alert-title-note {
+}.alert-title-tip {
+}.alert-title-info {
+}.alert-title-important {
+}.alert-title-warning {
+}.alert-title-caution {
+}.alert-title-abstract {
+}.alert-title-summary {
+}.alert-title-tldr {
+}.alert-title-todo {
+}.alert-title-success {
+}.alert-title-done {
+}.alert-title-question {
+}.alert-title-help {
+}.alert-title-faq {
+}.alert-title-failure {
+}.alert-title-fail {
+}.alert-title-missing {
+}.alert-title-danger {
+}.alert-title-error {
+}.alert-title-bug {
+}.alert-title-example {
+}.alert-title-quote {
+}.alert-title-cite {
+}/* Alert SVG 图标 */
+.alert-icon-note {
+}.alert-icon-tip {
+}.alert-icon-info {
+}.alert-icon-important {
+}.alert-icon-warning {
+}.alert-icon-caution {
+}/* Obsidian-style Callout SVG 图标 */
+.alert-icon-abstract {
+}.alert-icon-summary {
+}.alert-icon-tldr {
+}.alert-icon-todo {
+}.alert-icon-success {
+}.alert-icon-done {
+}.alert-icon-question {
+}.alert-icon-help {
+}.alert-icon-faq {
+}.alert-icon-failure {
+}.alert-icon-fail {
+}.alert-icon-missing {
+}.alert-icon-danger {
+}.alert-icon-error {
+}.alert-icon-bug {
+}.alert-icon-example {
+}.alert-icon-quote {
+}.alert-icon-cite {
+}
+</style><style>pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#24292e;background:#fff}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#d73a49}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#6f42c1}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-variable{color:#005cc5}.hljs-meta .hljs-string,.hljs-regexp,.hljs-string{color:#032f62}.hljs-built_in,.hljs-symbol{color:#e36209}.hljs-code,.hljs-comment,.hljs-formula{color:#6a737d}.hljs-name,.hljs-quote,.hljs-selector-pseudo,.hljs-selector-tag{color:#22863a}.hljs-subst{color:#24292e}.hljs-section{color:#005cc5;font-weight:700}.hljs-bullet{color:#735c0f}.hljs-emphasis{color:#24292e;font-style:italic}.hljs-strong{color:#24292e;font-weight:700}.hljs-addition{color:#22863a;background-color:#f0fff4}.hljs-deletion{color:#b31d28;background-color:#ffeef0}</style>
+</head>
+<body>
+  <div style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;">
+    <section class="container">
+      <blockquote class="md-blockquote">
+        <p class="md-blockquote-p">字数 1207，阅读大约需 7 分钟</p>
+      </blockquote>
+    <blockquote class="blockquote"><p class="p">今天（3月14日），“武汉东至武汉东”普速环线列车正式开通，寒潮来临前的这个温暖晴好的周六，这趟列车吸引了很多铁路迷前来打卡。<br><a href="https://www.sohu.com/a/996547784_121284943" title="环游武汉三镇的普速环线列车今日启程，车上好多“铁路迷” - 极目新闻">环游武汉三镇的普速环线列车今日启程，车上好多“铁路迷” - 极目新闻<sup>[1]</sup></a>  </p></blockquote><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/train-sign.JPG" alt="崭新的水牌"><figcaption class="figcaption">崭新的水牌</figcaption></figure><p class="p">4806 次列车，从武汉东站普速场出发，经武昌南环线余花联络线转入武九线，经滠武线（武汉货车外绕线）武昌东站绕过武汉站后，经天兴洲长江大桥跨越长江，随后经丹水池联络线转入京广普速线接入汉口站、老汉阳站、跨过武汉长江大桥到达武昌站，随后再次转入武昌南环线余花联络线，于出发 1 小时 55 分后抵达武汉东站。  </p><h2 class="h2" data-heading="true" id="0">人缓缓前行</h2><p class="p">这是我第一次乘坐不带前缀的慢绿皮火车。  </p><p class="p">这也是我第一次乘坐非空调硬座。  </p><p class="p">从二楼检票口走向站台，站在下行扶梯上时，我看见了武汉人民的热情——硬座早已被拖家带口的小家庭坐满，甚至还有许多人即使买站票也要来体验。是啊，如此春日骄阳的周末，如此高性价比的一趟车，如此 nostalgia 风的慢车……天时、地利、人和，万事俱备，只待发车。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/departure-screen.JPG" alt="列车驶离"><figcaption class="figcaption">列车驶离</figcaption></figure><p class="p">列车缓缓出发，风顺着能打开但被限位的窗户吹入车厢内。霎时间，车厢内的闷热被一扫而空。刚刚还热闹的车厢，逐渐安静下来——窗外开始出现不一样的景色，火车内也开始有了几分温馨。  </p><p class="p">坐在我对面的一对夫妇，一路上看着窗外的景色，聊着小时候关于火车轨道的奇遇；身旁的小朋友，开着豆包的实时对话，笨拙但认真地与豆包互动着；斜前方还有几个火车迷/铁道迷，在不断拍摄这辆 YZ25B 的设施细节与窗外风景；更远处，还能听到流利的武汉话，人们在车上拉着家常，吃着零食，看着窗外时不时掠过的火车、动车……  </p><p class="p">这种感受无比奇妙。人们拖家携口来到这趟火车上相聚，尽管只有短暂的两个小时路途，但业已结下了奇妙的缘分。7 节车厢，1000 多号人，他们，或者说我们的故事，在此刻收束于同一趟列车，串联成同一条线。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/outside-watching.JPG" alt="好奇·远望"><figcaption class="figcaption">好奇·远望</figcaption></figure><p class="p">没有争吵，没有杂乱，只有时有时无的对谈与欢笑，只有藏匿于聊天声背后的细微却清晰的列车广播，与窗外的风景一道，讲述着武汉——这个英雄的城市，那生生不息的故事。  </p><p class="p">当列车到站，人群蜂拥而下，面带微笑，向外走去。徒留绿皮火车，静静地等待下一趟旅客的到来。它奔行在轨道之上，承载了无数人的期许，却默默无闻地，继续奉献着自己。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/passenger-leaving.JPG" alt="欢笑"><figcaption class="figcaption">欢笑</figcaption></figure><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/empty-carriage.JPG" alt="空旷"><figcaption class="figcaption">空旷</figcaption></figure><h2 class="h2" data-heading="true" id="1">景轻轻拂过</h2><p class="p">恰逢春日，恰逢暖阳，这趟车也因此格外明媚。  </p><p class="p">从光谷出发，环绕武汉市，穿越武汉三镇，这趟车连接着新与旧的交替。  </p><p class="p">商圈街道的繁华，郊区的静谧，偶尔出现的繁花，长江上如织的船只，天兴洲上广袤无垠的油菜地……这座城市的色彩在旅客的眼中一览无余。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/car-youcai.JPG" alt="车行其上"><figcaption class="figcaption">车行其上</figcaption></figure><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/human-youcai.JPG" alt="和谐共生"><figcaption class="figcaption">和谐共生</figcaption></figure><p class="p">从未见过如此宽阔密集的油菜花田——宛如金黄色海洋，诉说着春日的生机与美好。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/under-daocha.JPG" alt="道岔旁"><figcaption class="figcaption">道岔旁</figcaption></figure><p class="p">铁轨蜿蜒通向远方，也通向未来。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/sunset-tadiao.JPG" alt="日落之下"><figcaption class="figcaption">日落之下</figcaption></figure><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/sunset-window.JPG" alt="车窗外的日落"><figcaption class="figcaption">车窗外的日落</figcaption></figure><p class="p">日落之下，城市尚不会沉睡。  </p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/railway-building.JPG" alt=""></figure><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/railway-car.JPG" alt=""></figure><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/27-bridge.JPG" alt=""></figure><p class="p">如果你是火车头，就请引领远航；是钉子，就请坚守不放松；是桥梁是铁轨，就请奉献自我；  </p><p class="p"><strong class="strong">无论你是什么，无论身处何方，都可以将自己的生命融于发展的潮流之中，做新时代的中流砥柱。</strong>  </p><h2 class="h2" data-heading="true" id="2">世界在眼前展开</h2><p class="p">当列车终于停在武汉东站的站台上，我收起相机，走出列车。列车外的世界已经发生了变化——这是逃离繁忙生活的两小时。万事万物在运动，但列车上的两小时仿若静止。我加快了出站的脚步，投入到新的生活中去。  </p><p class="p">生活还得继续，不过这一次，我有了新的感受。</p><figure><img loading="lazy" class="lazy-img" data-src="https://content.calvin-xia.cn/slow-train/leaving-toward.JPG" alt="新生活"><figcaption class="figcaption">新生活</figcaption></figure><h4 class="h4" data-heading="true" id="3">引用链接</h4><p class="footnotes"><code style="font-size: 90%; opacity: 0.6;">[1]</code> 环游武汉三镇的普速环线列车今日启程，车上好多“铁路迷” - 极目新闻: <i style="word-break: break-all">https://www.sohu.com/a/996547784_121284943</i><br></p>
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  
+    <style>
+      .hljs.code__pre > .mac-sign {
+        display: none;
+      }
+    </style>
+  
+    <style>
+      h2 strong {
+        color: inherit !important;
+      }
+    </style>
+  </section>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var lazyImages = document.querySelectorAll('img.lazy-img');
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, {rootMargin: '50px 0px'});
+        lazyImages.forEach(function(img) {
+            observer.observe(img);
+        });
+    } else {
+        lazyImages.forEach(function(img) {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>
