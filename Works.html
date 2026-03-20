@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
@@ -30,107 +31,173 @@
     </header>
 
     <!-- 主内容 -->
-    <main>
-        <section>
-            <h1>个人作品展示 🎨</h1>
-            <p class="text-small" style="margin-bottom: var(--spacing-xl);">
-                （若任意链接失效，请联系作者）
+    <main id="main-content" class="site-main" tabindex="-1">
+        <section class="page-intro">
+            <p class="section-kicker">项目归档</p>
+            <h1 class="page-title">个人作品</h1>
+            <p class="page-subtitle">
+                这里收录我正在维护与持续更新的项目、实验与创意实践。
             </p>
         </section>
 
         <!-- 作品列表 -->
-        <section>
-            <div class="shadowbox">
-                <h2 style="text-align: center; color: var(--text-primary);">
+        <section class="section-stack project-list">
+            <div class="shadowbox status-panel project-status-panel">
+                <p class="section-kicker">持续维护</p>
+                <h2 class="section-heading">
                     作品陆续更新中...
                 </h2>
-                <p style="text-align: center; color: var(--text-secondary); margin-top: var(--spacing-md);">
-                    敬请期待更多精彩内容 ✨
+                <p class="section-copy">
+                    当前优先展示仍在维护或可直接访问的项目，后续会继续补充更多实验与归档内容。
                 </p>
             </div>
 
             <!-- 示例作品卡片（可取消注释） -->
             
-            <div class="card">
-                <h3>📱 指纹验证应用</h3>
-                <p style="color: var(--text-secondary); margin: var(--spacing-sm) 0;">
-                    使用 FusionApp 2.0 编写的指纹验证框架式应用
-                </p>
-                <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md);">
-                    <a href="storage/指纹验证-myapp.zhiwenyanzheng-2.0.0beta-48.apk" target="_blank" class="btn">
-                        下载应用
-                    </a>
-                    <a href="UpdateLog/fingerprint-app-update-log.html" class="btn btn-outline">
-                        查看更新日志
-                    </a>
+            <div class="card project-card project-card--featured">
+                <div class="project-card-layout">
+                    <div class="project-card-copy">
+                        <p class="card-kicker">Android 应用</p>
+                        <h3>指纹验证应用</h3>
+                        <p>
+                            使用 FusionApp 2.0 编写的指纹验证框架式应用，聚焦轻量验证流程与持续版本迭代。
+                        </p>
+                        <p class="project-meta">适用场景：本地安装体验、版本更新记录、历史功能追踪</p>
+                    </div>
+                    <aside class="project-card-side" aria-label="项目摘要与操作">
+                        <div class="project-tag-list" aria-label="项目标签">
+                            <span class="project-tag">Android APK</span>
+                            <span class="project-tag">FusionApp 2.0</span>
+                            <span class="project-tag">持续更新</span>
+                        </div>
+                        <p class="project-side-note">
+                            面向本地安装与版本回顾，适合快速下载、回看迭代与验证当前功能状态。
+                        </p>
+                        <div class="action-row project-card-actions">
+                            <a href="storage/指纹验证-myapp.zhiwenyanzheng-2.0.0beta-48.apk" target="_blank" class="btn">
+                                下载应用
+                            </a>
+                            <a href="UpdateLog/fingerprint-app-update-log.html" class="btn btn-outline">
+                                查看更新日志
+                            </a>
+                        </div>
+                    </aside>
                 </div>
             </div>
             
-            <div class="card">
-                <h3>📂 网址收藏夹</h3>
-                <p style="color: var(--text-secondary); margin: var(--spacing-sm) 0;">
-                    使用js css静态/next.js编写的收藏夹网页应用
-                </p>
-                <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md);">
-                    <a href="https://github.com/Calvin-Xia/listmyfavorites.github.io/" target="_blank" class="btn">
-                        静态网页 GitHub Repository
-                    </a>
-                    <a href="https://github.com/Calvin-Xia/VibeVault2/" target="_blank" class="btn btn-outline">
-                        动态网页 GitHub Repository
-                    </a>
+            <div class="card project-card">
+                <div class="project-card-layout">
+                    <div class="project-card-copy">
+                        <p class="card-kicker">收藏与导航</p>
+                        <h3>网址收藏夹</h3>
+                        <p>
+                            包含静态版与动态版两种实现，分别对应纯前端部署和 Next.js 驱动的完整网页应用。
+                        </p>
+                        <p class="project-meta">技术形态：静态 HTML/CSS/JS 与 Next.js 双版本并行维护</p>
+                    </div>
+                    <aside class="project-card-side" aria-label="项目摘要与操作">
+                        <div class="project-tag-list" aria-label="项目标签">
+                            <span class="project-tag">静态版</span>
+                            <span class="project-tag">动态版</span>
+                            <span class="project-tag">Next.js</span>
+                        </div>
+                        <p class="project-side-note">
+                            适合对比轻量部署与完整应用架构，也便于继续扩展收藏、标签与登录能力。
+                        </p>
+                        <div class="action-row project-card-actions">
+                            <a href="https://github.com/Calvin-Xia/listmyfavorites.github.io/" target="_blank" class="btn">
+                                静态网页 GitHub Repository
+                            </a>
+                            <a href="https://github.com/Calvin-Xia/VibeVault2/" target="_blank" class="btn btn-outline">
+                                动态网页 GitHub Repository
+                            </a>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
 
-            <div class="card">
-                <h3>🗺️ 金鹰一班蹭饭地图</h3>
-                <p style="color: var(--text-secondary); margin: var(--spacing-sm) 0;">
-                    动态展示高2022级1班毕业去向地图
-                </p>
-                <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md);">
-                    <a href="https://github.com/Calvin-Xia/class1forever.github.io/" target="_blank" class="btn">
-                        GitHub Repository
-                    </a>
-                    <a href="https://class1forever.pages.dev/" target="_blank" class="btn btn-outline">
-                       访问地址
-                    </a>
+            <div class="card project-card">
+                <div class="project-card-layout">
+                    <div class="project-card-copy">
+                        <p class="card-kicker">班级地图</p>
+                        <h3>金鹰一班蹭饭地图</h3>
+                        <p>
+                            以可视化地图的方式动态展示高 2022 级 1 班毕业去向，兼顾纪念性与可访问性。
+                        </p>
+                        <p class="project-meta">内容重点：毕业去向展示、在线访问、公开维护</p>
+                    </div>
+                    <aside class="project-card-side" aria-label="项目摘要与操作">
+                        <div class="project-tag-list" aria-label="项目标签">
+                            <span class="project-tag">公开站点</span>
+                            <span class="project-tag">地图展示</span>
+                            <span class="project-tag">纪念项目</span>
+                        </div>
+                        <p class="project-side-note">
+                            更偏向纪念性与浏览体验，适合直接访问，也方便继续维护班级去向信息。
+                        </p>
+                        <div class="action-row project-card-actions">
+                            <a href="https://github.com/Calvin-Xia/class1forever.github.io/" target="_blank" class="btn">
+                                GitHub Repository
+                            </a>
+                            <a href="https://class1forever.pages.dev/" target="_blank" class="btn btn-outline">
+                               访问地址
+                            </a>
+                        </div>
+                    </aside>
                 </div>
             </div>
 
-            <div class="card">
-                <h3>📅 网页按钮块设计器</h3>
-                <p style="color: var(--text-secondary); margin: var(--spacing-sm) 0;">
-                    使用next.js编写的网页按钮块设计器
-                </p>
-                <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-md);">
-                    <a href="https://github.com/Calvin-Xia/VibeUIgenerator/" target="_blank" class="btn">
-                        GitHub Repository
-                    </a>
-                    <a href="https://vibeui-generator.pages.dev/" target="_blank" class="btn btn-outline">
-                       访问地址
-                    </a>
+            <div class="card project-card">
+                <div class="project-card-layout">
+                    <div class="project-card-copy">
+                        <p class="card-kicker">设计工具</p>
+                        <h3>网页按钮块设计器</h3>
+                        <p>
+                            使用 Next.js 编写的网页按钮块设计器，用于更快生成带视觉层次的按钮与组件块样式。
+                        </p>
+                        <p class="project-meta">适合场景：快速原型、按钮样式探索、组件视觉试验</p>
+                    </div>
+                    <aside class="project-card-side" aria-label="项目摘要与操作">
+                        <div class="project-tag-list" aria-label="项目标签">
+                            <span class="project-tag">Next.js</span>
+                            <span class="project-tag">设计工具</span>
+                            <span class="project-tag">在线体验</span>
+                        </div>
+                        <p class="project-side-note">
+                            更适合快速试样式、搭原型与验证按钮层次，侧重输出效率与可视反馈。
+                        </p>
+                        <div class="action-row project-card-actions">
+                            <a href="https://github.com/Calvin-Xia/VibeUIgenerator/" target="_blank" class="btn">
+                                GitHub Repository
+                            </a>
+                            <a href="https://vibeui-generator.pages.dev/" target="_blank" class="btn btn-outline">
+                               访问地址
+                            </a>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </section>
 
         <!-- 返回首页 -->
-        <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
+        <div class="page-return">
+            <a href="index.html" class="btn btn-secondary" data-history="true" data-title="首页">
                 ← 返回首页
             </a>
         </div>
 
         <!-- 页脚 -->
-        <div class="footer" style="text-align: right;">
+        <footer class="site-footer">
             <p class="footer-text">
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
-                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
+                <a class="record-link" href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
+                    <img class="record-icon" src="storage/Beian.png" alt="公安备案" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
-        </div>
+        </footer>
     </main>
 
     <!-- JavaScript -->

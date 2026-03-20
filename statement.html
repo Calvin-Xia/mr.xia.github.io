@@ -10,281 +10,9 @@
     <meta name="description" content="Mr.Xia个人网站文章">
     <title>文章 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        #blog-container {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-        }
-
-        .loading-indicator {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: var(--spacing-xl);
-        }
-
-        .blog-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
-        }
-
-        .blog-card-link {
-            display: block;
-            padding: var(--spacing-lg);
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .blog-card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0 0 var(--spacing-sm);
-            color: var(--text-primary);
-            transition: color 0.2s ease;
-        }
-
-        .blog-card:hover .blog-card-title {
-            color: var(--primary-color);
-        }
-
-        .blog-card-excerpt {
-            margin: 0;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .blog-card-date {
-            padding: 0 var(--spacing-lg) var(--spacing-md);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            opacity: 0.8;
-        }
-
-        .blog-card-meta {
-            padding: 0 var(--spacing-lg) var(--spacing-md);
-            display: flex;
-            gap: var(--spacing-sm);
-            flex-wrap: wrap;
-        }
-
-        .blog-card-tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary-color);
-            border-radius: var(--radius-sm);
-            font-size: 0.8125rem;
-            font-weight: 500;
-        }
-
-        .blog-card-category {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(236, 72, 153, 0.1);
-            color: var(--secondary-color);
-            border-radius: var(--radius-sm);
-            font-size: 0.8125rem;
-            font-weight: 500;
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            padding: var(--spacing-sm);
-            border: 2px solid transparent;
-            transition: all var(--transition-base);
-        }
-
-        .search-box:focus-within {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        #search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: var(--spacing-sm);
-            font-size: 1rem;
-            background: transparent;
-        }
-
-        #search-input::placeholder {
-            color: var(--text-light);
-        }
-
-        .search-btn {
-            background: var(--primary-color);
-            border: none;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-sm);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all var(--transition-fast);
-        }
-
-        .search-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            margin-top: var(--spacing-xs);
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1000;
-            display: none;
-        }
-
-        .search-suggestions.active {
-            display: block;
-        }
-
-        .suggestion-item {
-            padding: var(--spacing-sm) var(--spacing-md);
-            cursor: pointer;
-            transition: background var(--transition-fast);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .suggestion-item:last-child {
-            border-bottom: none;
-        }
-
-        .suggestion-item:hover {
-            background: var(--hover-color);
-        }
-
-        .suggestion-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .suggestion-meta {
-            font-size: 0.875rem;
-            color: var(--text-light);
-        }
-
-        .filter-nav {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            box-shadow: var(--shadow-md);
-        }
-
-        .filter-section {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .filter-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .filter-section h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .filter-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-xs);
-        }
-
-        .filter-tag {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: white;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-        }
-
-        .filter-tag:hover {
-            background: var(--hover-color);
-            color: var(--text-primary);
-        }
-
-        .filter-tag.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .no-results {
-            text-align: center;
-            padding: var(--spacing-xl);
-            color: var(--text-secondary);
-        }
-
-        .no-results-icon {
-            font-size: 3rem;
-            margin-bottom: var(--spacing-md);
-        }
-
-        @media (max-width: 768px) {
-            .blog-card-title {
-                font-size: 1.25rem;
-            }
-
-            .blog-card-link {
-                padding: var(--spacing-md);
-            }
-
-            .blog-card-date {
-                padding: 0 var(--spacing-md) var(--spacing-md);
-                font-size: 0.8125rem;
-            }
-
-            .filter-nav {
-                padding: var(--spacing-md);
-            }
-
-            .filter-tag {
-                padding: 0.375rem 0.75rem;
-                font-size: 0.8125rem;
-            }
-        }
-    </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
@@ -303,35 +31,37 @@
     </header>
 
     <!-- 主内容 -->
-    <main>
-        <section>
+    <main id="main-content" class="site-main" tabindex="-1">
+        <section class="page-intro page-intro--compact articles-intro">
+            <p class="section-kicker">内容索引</p>
             <h1>博客文章</h1>
-            <p class="text-small" style="margin-bottom: var(--spacing-lg);">
+            <p class="page-subtitle text-small">
                 记录生活，分享思考
             </p>
-        </section>
-
-        <!-- 搜索框 -->
-        <div class="search-container">
-            <div class="search-box">
-                <input 
-                    type="text" 
-                    id="search-input" 
-                    placeholder="搜索文章标题、内容或标签..." 
-                    autocomplete="off"
-                    aria-label="搜索文章"
-                    aria-describedby="search-hint"
-                >
-                <button id="search-btn" class="search-btn" aria-label="搜索">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
+            <div class="search-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="搜索文章标题、内容或标签..." 
+                        autocomplete="off"
+                        aria-label="搜索文章"
+                        aria-describedby="search-hint"
+                        aria-controls="search-suggestions"
+                        aria-autocomplete="list"
+                        aria-expanded="false"
+                    >
+                    <button id="search-btn" class="search-btn" aria-label="搜索">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p id="search-hint" class="text-small search-hint">输入关键词搜索文章标题、内容或标签</p>
+                <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="搜索建议"></div>
             </div>
-            <p id="search-hint" class="text-small" style="margin-top: var(--spacing-xs); color: var(--text-secondary); display: none;">输入关键词搜索文章标题、内容或标签</p>
-            <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="搜索建议"></div>
-        </div>
+        </section>
 
         <!-- 分类和标签导航 -->
         <div class="filter-nav">
@@ -355,19 +85,19 @@
         </div>
 
         <!-- 返回首页 -->
-        <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
+        <div class="page-return">
+            <a href="index.html" class="btn btn-secondary" data-history="true" data-title="首页">
                 ← 返回首页
             </a>
         </div>
         
         <!-- 页脚 -->
-        <div class="footer" style="text-align: right;">
+        <div class="site-footer">
             <p class="footer-text">
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
-                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
+                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" class="record-link" rel="noreferrer" target="_blank">
+                    <img src="storage/Beian.png" alt="公安备案" class="record-icon" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
@@ -440,13 +170,14 @@
                     }
 
                     this.searchSuggestions.innerHTML = suggestions.map(article => `
-                        <div class="suggestion-item" data-id="${article.id}" role="option">
+                        <div class="suggestion-item" id="suggestion-${article.id}" data-id="${article.id}" role="option">
                             <div class="suggestion-title">${this.highlightMatch(article.title, query)}</div>
                             <div class="suggestion-meta">${article.category} · ${article.date}</div>
                         </div>
                     `).join('');
 
                     this.searchSuggestions.classList.add('active');
+                    this.searchInput.setAttribute('aria-expanded', 'true');
 
                     this.searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
                         item.addEventListener('click', () => {
@@ -462,6 +193,8 @@
                 hideSuggestions() {
                     this.searchSuggestions.classList.remove('active');
                     this.selectedIndex = -1;
+                    this.searchInput.setAttribute('aria-expanded', 'false');
+                    this.searchInput.removeAttribute('aria-activedescendant');
                 },
 
                 handleKeydown(e) {
@@ -489,11 +222,11 @@
                 updateSelection(items) {
                     items.forEach((item, index) => {
                         if (index === this.selectedIndex) {
-                            item.style.backgroundColor = 'var(--hover-color)';
+                            item.classList.add('is-selected');
                             item.setAttribute('aria-selected', 'true');
-                            this.searchInput.setAttribute('aria-activedescendant', item.dataset.id);
+                            this.searchInput.setAttribute('aria-activedescendant', item.id);
                         } else {
-                            item.style.backgroundColor = '';
+                            item.classList.remove('is-selected');
                             item.setAttribute('aria-selected', 'false');
                         }
                     });
@@ -509,7 +242,7 @@
 
                 highlightMatch(text, query) {
                     const regex = new RegExp(`(${query})`, 'gi');
-                    return text.replace(regex, '<mark style="background: rgba(99, 102, 241, 0.2); padding: 0 2px; border-radius: 2px;">$1</mark>');
+                    return text.replace(regex, '<mark class="search-highlight">$1</mark>');
                 },
 
                 performSearch() {
@@ -558,14 +291,14 @@
 
                 renderError(container, err) {
                     container.innerHTML = `
-                        <div class="no-results">
-                            <div class="no-results-icon">⚠️</div>
-                            <p>文章加载失败</p>
-                            <p class="text-small">请检查网络连接后重试</p>
-                            <button class="btn btn-outline" style="margin-top: var(--spacing-md);" id="retry-btn">
-                                重新加载
-                            </button>
-                        </div>
+                            <div class="no-results">
+                                <div class="no-results-icon">⚠️</div>
+                                <p>文章加载失败</p>
+                                <p class="text-small">请检查网络连接后重试</p>
+                                <button class="btn btn-outline retry-btn" id="retry-btn">
+                                    重新加载
+                                </button>
+                            </div>
                     `;
                     const retryBtn = document.getElementById('retry-btn');
                     if (retryBtn) {

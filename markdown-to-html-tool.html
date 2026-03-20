@@ -684,15 +684,33 @@
             background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
         }
     </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <div class="bg-img"></div>
 
     <header>
-        <h1>📝 Markdown转HTML工具</h1>
+        <nav aria-label="主导航">
+            <div class="logo">Mr.Xia</div>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="index.html" data-history="true" data-title="首页" role="menuitem">首页</a></li>
+                <li role="none"><a href="Works.html" data-history="true" data-title="作品" role="menuitem">作品</a></li>
+                <li role="none"><a href="timetable.html" data-history="true" data-title="工具" role="menuitem">工具</a></li>
+                <li role="none"><a href="statement.html" data-history="true" data-title="文章" role="menuitem">文章</a></li>
+                <li role="none"><a href="about.html" data-history="true" data-title="关于" role="menuitem">关于</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main>
+    <main id="main-content" class="site-main tool-page-main" tabindex="-1">
+        <section class="page-intro page-intro--center">
+            <p class="section-kicker">独立工具</p>
+            <h1 class="page-title">Markdown 转 HTML</h1>
+            <p class="page-subtitle">保留完整 Markdown 渲染能力，同时用与主站一致的工作台壳层来提升阅读和编辑体验。</p>
+        </section>
+
+        <div class="tool-workbench">
         <div class="editor-container">
             <div class="editor-panel" aria-label="Markdown编辑器">
                 <div class="panel-header">
@@ -852,6 +870,18 @@ $$</code></pre>
                 <li>建议在现代浏览器中使用以获得最佳体验</li>
             </ul>
         </div>
+        </div>
+
+        <footer class="site-footer">
+            <p class="footer-text">
+                <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
+                <br>
+                <a class="record-link" href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
+                    <img class="record-icon" src="storage/Beian.png" alt="公安备案" loading="lazy">
+                    渝公网安备50010102001439号
+                </a>
+            </p>
+        </footer>
     </main>
 
     <div id="loading-indicator" class="loading-indicator" role="status" aria-live="polite">
@@ -859,6 +889,12 @@ $$</code></pre>
         <span id="loading-text">加载中...</span>
     </div>
 
+    <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
+        <div class="spinner" role="status" aria-label="页面加载中"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/cdn-fallback.js"></script>
     <script>
         (async function() {

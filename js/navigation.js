@@ -1,12 +1,11 @@
 (function() {
     'use strict';
+    // Keep this as a classic-script IIFE for the static site; ES modules can be adopted later if the site needs fuller module boundaries.
 
-    const SCROLL_STORAGE_PREFIX = 'mrxia:scroll:';
-    const PENDING_NAVIGATION_KEY = 'mrxia:pending-navigation';
     const HISTORY_STATE_KEY = '__mrxiaNavigation';
-    const PENDING_NAVIGATION_TTL = 30000;
-    const RESTORE_RETRY_LIMIT = 20;
-    const RESTORE_RETRY_DELAY = 100;
+    const PENDING_FOCUS_KEY = 'mrxia:pending-focus';
+    const RESTORE_RETRY_LIMIT = 8;
+    const RESTORE_RETRY_DELAY = 80;
 
     function getCurrentPage() {
         const path = window.location.pathname;
@@ -14,13 +13,10 @@
         return filename || 'index.html';
     }
 
-    function getScrollStorageKey(pageId) {
-        return `${SCROLL_STORAGE_PREFIX}${pageId}`;
-    }
-
     const NavigationController = {
         initialized: false,
         restoreTimerId: null,
+        restoreAbortHandler: null,
         skipAutoPersist: false,
 
         init() {
@@ -34,8 +30,6 @@
             if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'manual';
             }
-
-            this.restoreSavedScroll();
 
             document.addEventListener('click', (event) => this.handleInternalNavigation(event));
 
@@ -56,8 +50,10 @@
                 }
 
                 this.hideTransitionIndicator();
-                this.restoreSavedScroll();
+                this.restoreSavedScroll(event.persisted);
             });
+
+            this.applyPendingFocus();
         },
 
         handleInternalNavigation(event) {
@@ -69,6 +65,7 @@
                 return;
             }
 
+            // data-history marks links that should participate in transition + scroll restoration.
             const link = event.target.closest ? event.target.closest('a[data-history="true"]') : null;
             if (!link || link.target === '_blank' || link.hasAttribute('download')) {
                 return;
@@ -81,7 +78,7 @@
 
             this.persistCurrentPageState(true);
             this.skipAutoPersist = true;
-            this.markPendingNavigation(targetUrl);
+            this.markPendingFocus(targetUrl);
             this.showTransitionIndicator();
         },
 
@@ -104,62 +101,77 @@
         },
 
         getPageFromUrl(url) {
-            const urlObject = url instanceof URL ? url : this.getResolvedUrl(url);
-            if (!urlObject) {
+            const targetUrl = url instanceof URL ? url : this.getResolvedUrl(url);
+            if (!targetUrl) {
                 return null;
             }
 
-            const filename = urlObject.pathname.split('/').pop();
+            const filename = targetUrl.pathname.split('/').pop();
             return filename || 'index.html';
         },
 
-        markPendingNavigation(targetUrl) {
+        markPendingFocus(targetUrl) {
             const targetPage = this.getPageFromUrl(targetUrl);
             if (!targetPage) {
                 return;
             }
 
             try {
-                sessionStorage.setItem(PENDING_NAVIGATION_KEY, JSON.stringify({
-                    page: targetPage,
-                    timestamp: Date.now()
-                }));
+                sessionStorage.setItem(PENDING_FOCUS_KEY, targetPage);
             } catch (error) {
-                console.warn('[Navigation] Unable to persist pending navigation target.', error);
+                console.warn('[Navigation] Unable to persist pending focus target.', error);
             }
         },
 
-        getPendingNavigation() {
+        consumePendingFocus(pageId) {
             try {
-                const rawValue = sessionStorage.getItem(PENDING_NAVIGATION_KEY);
-                if (!rawValue) {
-                    return null;
+                const pendingPage = sessionStorage.getItem(PENDING_FOCUS_KEY);
+                if (!pendingPage) {
+                    return false;
                 }
 
-                const pendingNavigation = JSON.parse(rawValue);
-                if (!pendingNavigation || typeof pendingNavigation.page !== 'string') {
-                    sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
-                    return null;
+                if (pendingPage !== pageId) {
+                    return false;
                 }
 
-                if (Date.now() - Number(pendingNavigation.timestamp || 0) > PENDING_NAVIGATION_TTL) {
-                    sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
-                    return null;
-                }
-
-                return pendingNavigation;
+                sessionStorage.removeItem(PENDING_FOCUS_KEY);
+                return true;
             } catch (error) {
-                sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
-                return null;
+                return false;
             }
         },
 
-        clearPendingNavigation() {
-            try {
-                sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
-            } catch (error) {
-                console.warn('[Navigation] Unable to clear pending navigation target.', error);
+        getNavigationType() {
+            if (typeof performance === 'undefined' || typeof performance.getEntriesByType !== 'function') {
+                return 'navigate';
             }
+
+            const [navigationEntry] = performance.getEntriesByType('navigation');
+            return navigationEntry && navigationEntry.type ? navigationEntry.type : 'navigate';
+        },
+
+        shouldRestoreScroll(forceRestore = false) {
+            return forceRestore || this.getNavigationType() === 'back_forward';
+        },
+
+        applyPendingFocus() {
+            const currentPage = getCurrentPage();
+            if (!this.consumePendingFocus(currentPage)) {
+                return;
+            }
+
+            const main = document.querySelector('main');
+            if (!main) {
+                return;
+            }
+
+            window.requestAnimationFrame(() => {
+                try {
+                    main.focus({ preventScroll: true });
+                } catch (error) {
+                    main.focus();
+                }
+            });
         },
 
         persistCurrentPageState(force = false) {
@@ -184,12 +196,6 @@
             } catch (error) {
                 console.warn('[Navigation] Unable to persist history state.', error);
             }
-
-            try {
-                sessionStorage.setItem(getScrollStorageKey(pageId), String(scrollY));
-            } catch (error) {
-                console.warn('[Navigation] Unable to persist scroll position.', error);
-            }
         },
 
         getSavedScrollPosition(pageId) {
@@ -198,27 +204,17 @@
                 return historyState.scrollY;
             }
 
-            const pendingNavigation = this.getPendingNavigation();
-            if (!pendingNavigation || pendingNavigation.page !== pageId) {
-                return 0;
-            }
-
-            try {
-                const storedValue = Number(sessionStorage.getItem(getScrollStorageKey(pageId)));
-                return Number.isFinite(storedValue) && storedValue > 0 ? storedValue : 0;
-            } catch (error) {
-                return 0;
-            }
+            return 0;
         },
 
-        restoreSavedScroll() {
+        restoreSavedScroll(forceRestore = false) {
             const currentPage = getCurrentPage();
-            const pendingNavigation = this.getPendingNavigation();
-            const savedScroll = this.getSavedScrollPosition(currentPage);
 
-            if (pendingNavigation && pendingNavigation.page === currentPage) {
-                this.clearPendingNavigation();
+            if (!this.shouldRestoreScroll(forceRestore)) {
+                return;
             }
+
+            const savedScroll = this.getSavedScrollPosition(currentPage);
 
             if (savedScroll <= 0) {
                 return;
@@ -227,11 +223,35 @@
             this.applyScrollRestore(savedScroll);
         },
 
-        applyScrollRestore(targetScroll) {
+        cancelScrollRestore() {
             if (this.restoreTimerId !== null) {
-                clearInterval(this.restoreTimerId);
+                clearTimeout(this.restoreTimerId);
                 this.restoreTimerId = null;
             }
+
+            if (this.restoreAbortHandler) {
+                window.removeEventListener('wheel', this.restoreAbortHandler);
+                window.removeEventListener('touchstart', this.restoreAbortHandler);
+                window.removeEventListener('keydown', this.restoreAbortHandler);
+                this.restoreAbortHandler = null;
+            }
+        },
+
+        setupRestoreAbortHandlers() {
+            this.cancelScrollRestore();
+
+            this.restoreAbortHandler = () => {
+                this.cancelScrollRestore();
+            };
+
+            window.addEventListener('wheel', this.restoreAbortHandler, { passive: true });
+            window.addEventListener('touchstart', this.restoreAbortHandler, { passive: true });
+            window.addEventListener('keydown', this.restoreAbortHandler);
+        },
+
+        applyScrollRestore(targetScroll) {
+            this.cancelScrollRestore();
+            this.setupRestoreAbortHandlers();
 
             let attemptCount = 0;
             const restore = () => {
@@ -244,23 +264,15 @@
                 const finished = (canReachTarget && reachedTarget) || attemptCount >= RESTORE_RETRY_LIMIT;
 
                 if (finished) {
-                    this.restoreTimerId = null;
+                    this.cancelScrollRestore();
                     this.persistCurrentPageState(true);
+                    return;
                 }
-
-                return finished;
+                
+                this.restoreTimerId = window.setTimeout(restore, RESTORE_RETRY_DELAY);
             };
 
-            if (restore()) {
-                return;
-            }
-
-            this.restoreTimerId = window.setInterval(() => {
-                if (restore() && this.restoreTimerId !== null) {
-                    clearInterval(this.restoreTimerId);
-                    this.restoreTimerId = null;
-                }
-            }, RESTORE_RETRY_DELAY);
+            restore();
         },
 
         showTransitionIndicator() {
@@ -283,8 +295,18 @@
             indicator.classList.remove('active');
             indicator.setAttribute('aria-hidden', 'true');
             indicator.setAttribute('aria-busy', 'false');
+        },
+
+        goHome() {
+            this.showTransitionIndicator();
+            window.location.href = 'index.html';
         }
     };
+
+    window.MrXiaApp = window.MrXiaApp || {};
+    window.MrXiaApp.NavigationController = NavigationController;
+    // Preserve the legacy global for existing inline calls while also exposing a namespaced entry point.
+    window.NavigationController = window.MrXiaApp.NavigationController;
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => NavigationController.init());

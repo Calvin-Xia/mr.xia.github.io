@@ -23,32 +23,34 @@
 
     <!-- 主内容 -->
     <main>
-        <h1>🎨 样式指南</h1>
-        <p style="color: var(--text-secondary); margin-bottom: var(--spacing-xl);">
+        <section class="page-intro">
+            <h1>🎨 样式指南</h1>
+            <p class="page-subtitle">
             本页面展示网站的设计元素和规范
-        </p>
+            </p>
+        </section>
 
         <!-- 色彩系统 -->
         <section>
             <h2>色彩系统</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin: var(--spacing-lg) 0;">
-                <div style="background: var(--primary-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
+            <div class="styleguide-grid">
+                <div class="token-card token-card--primary">
                     <div>主色</div>
-                    <small>#6366f1</small>
+                    <small>#d55a1f</small>
                 </div>
-                <div style="background: var(--secondary-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="token-card token-card--secondary">
                     <div>辅色</div>
-                    <small>#ec4899</small>
+                    <small>#cb6d86</small>
                 </div>
-                <div style="background: var(--accent-color); color: white; padding: var(--spacing-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="token-card token-card--accent">
                     <div>强调色</div>
-                    <small>#f59e0b</small>
+                    <small>#2f8f83</small>
                 </div>
             </div>
         </section>
 
         <!-- 排版样式 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>排版系统</h2>
             <div class="card">
                 <h1>这是一级标题 H1</h1>
@@ -60,10 +62,10 @@
         </section>
 
         <!-- 按钮样式 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>按钮样式</h2>
             <div class="card">
-                <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+                <div class="action-row">
                     <button class="btn">主要按钮</button>
                     <button class="btn btn-secondary">次要按钮</button>
                     <button class="btn btn-outline">轮廓按钮</button>
@@ -72,7 +74,7 @@
         </section>
 
         <!-- 卡片样式 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>卡片样式</h2>
             <div class="card">
                 <h3>普通卡片</h3>
@@ -86,7 +88,7 @@
         </section>
 
         <!-- 时间显示组件 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>时间组件</h2>
             <div class="card">
                 <h3>时间显示</h3>
@@ -95,7 +97,7 @@
         </section>
 
         <!-- 链接样式 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>链接样式</h2>
             <div class="card">
                 <p>
@@ -105,21 +107,21 @@
         </section>
 
         <!-- 间距系统 -->
-        <section style="margin-top: var(--spacing-xl);">
+        <section class="section-stack">
             <h2>间距系统</h2>
             <div class="card">
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
-                    <div style="background: var(--primary-light); padding: var(--spacing-xs); border-radius: var(--radius-sm);">xs - 0.5rem</div>
-                    <div style="background: var(--primary-light); padding: var(--spacing-sm); border-radius: var(--radius-sm);">sm - 1rem</div>
-                    <div style="background: var(--primary-light); padding: var(--spacing-md); border-radius: var(--radius-sm);">md - 1.5rem</div>
-                    <div style="background: var(--primary-light); padding: var(--spacing-lg); border-radius: var(--radius-sm);">lg - 2rem</div>
-                    <div style="background: var(--primary-light); padding: var(--spacing-xl); border-radius: var(--radius-sm);">xl - 3rem</div>
+                <div class="section-stack">
+                    <div class="card-note">xs - 0.5rem</div>
+                    <div class="card-note">sm - 1rem</div>
+                    <div class="card-note">md - 1.5rem</div>
+                    <div class="card-note">lg - 2rem</div>
+                    <div class="card-note">xl - 3rem</div>
                 </div>
             </div>
         </section>
 
         <!-- 返回首页 -->
-        <div style="text-align: center; margin-top: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+        <div class="page-return">
             <a href="index.html" class="btn btn-secondary">
                 返回首页
             </a>

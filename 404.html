@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
@@ -30,22 +31,22 @@
     </header>
 
     <!-- 主内容 -->
-    <main>
+    <main id="main-content" class="site-main" tabindex="-1">
         <div class="error-page">
             <div class="error-code">404</div>
             
-            <h1 style="font-size: 2rem; margin: var(--spacing-md) 0;">
+            <h1 class="error-title">
                 页面未找到 
             </h1>
             
-            <div class="card" style="max-width: 600px; text-align: center;">
-                <p style="margin-bottom: var(--spacing-sm);">
+            <div class="card error-panel">
+                <p>
                     您访问的页面可能已经被删除或移动
                 </p>
-                <p style="margin-bottom: var(--spacing-sm);">
+                <p>
                     可能的原因
                 </p>
-                <ul style="list-style: none; padding: 0; color: var(--text-secondary);">
+                <ul class="error-list">
                     <li> URL地址输入错误</li>
                     <li> 页面已被删除或移动</li>
                     <li> 网络连接问题</li>
@@ -53,16 +54,16 @@
                 </ul>
             </div>
 
-            <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: var(--spacing-lg); flex-wrap: wrap;">
-                <a href="index.html" class="btn">
+            <div class="action-row action-row--center page-return">
+                <a href="index.html" class="btn" data-history="true" data-title="首页">
                      返回首页
                 </a>
-                <button onclick="history.back()" class="btn btn-outline">
+                <button type="button" onclick="history.back()" class="btn btn-outline">
                      返回上一页
                 </button>
             </div>
 
-            <p class="text-small" style="margin-top: var(--spacing-xl);">
+            <p class="text-small">
                 如果问题持续存在，请<a href="mailto:personalpagefeedback@calvin-xia.com">联系网站管理员</a>
             </p>
         </div>
@@ -70,5 +71,11 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+
+    <!-- 页面过渡指示器 -->
+    <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
+        <div class="spinner" role="status" aria-label="页面加载中"></div>
+    </div>
 </body>
 </html>

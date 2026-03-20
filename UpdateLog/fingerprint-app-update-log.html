@@ -6,114 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>指纹验证应用 - 更新日志</title>
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .update-log {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .version-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-md);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .version-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary-color);
-        }
-        .version-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        .update-date {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-        .update-content {
-            margin-left: 1rem;
-        }
-        .update-item {
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-        .update-type {
-            font-weight: 600;
-            margin-right: 0.5rem;
-        }
-        .type-new {
-            color: var(--accent-color);
-        }
-        .type-update {
-            color: var(--primary-color);
-        }
-        .type-fix {
-            color: var(--secondary-color);
-        }
-        .type-optimize {
-            color: var(--text-primary);
-        }
-        .type-cancel {
-            color: var(--text-secondary);
-        }
-        .bug-item {
-            color: var(--secondary-color);
-            margin-top: 0.5rem;
-        }
-        .note-item {
-            color: var(--primary-color);
-            margin-top: 0.5rem;
-            font-style: italic;
-        }
-        .back-link {
-            display: inline-block;
-            margin: 1rem 0;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        .type-note {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-    </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
     <!-- 页眉导航 -->
     <header>
-        <nav>
+        <nav aria-label="主导航">
             <div class="logo">Mr.Xia</div>
-            <ul class="nav-links">
-                <li><a href="../index.html">首页</a></li>
-                <li><a href="../Works.html">作品</a></li>
-                <li><a href="../timetable.html">工具</a></li>
-                <li><a href="../statement.html">文章</a></li>
-                <li><a href="../about.html">关于</a></li>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="../index.html" data-history="true" data-title="首页" role="menuitem">首页</a></li>
+                <li role="none"><a href="../Works.html" data-history="true" data-title="作品" role="menuitem" aria-current="page">作品</a></li>
+                <li role="none"><a href="../timetable.html" data-history="true" data-title="工具" role="menuitem">工具</a></li>
+                <li role="none"><a href="../statement.html" data-history="true" data-title="文章" role="menuitem">文章</a></li>
+                <li role="none"><a href="../about.html" data-history="true" data-title="关于" role="menuitem">关于</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- 主内容 -->
-    <main>
-        <div class="update-log">
-            <h1 style="text-align: center; margin-bottom: 2rem;">🔄 指纹验证应用 - 更新日志</h1>
-            
-            <a href="../Works.html" class="back-link">
-                ← 返回作品页
-            </a>
+    <main id="main-content" class="site-main update-log-page" tabindex="-1">
+        <section class="page-intro page-intro--center">
+            <p class="section-kicker">版本时间线</p>
+            <h1 class="page-title">指纹验证应用更新日志</h1>
+            <p class="page-subtitle">集中记录版本迭代、问题修复和已知事项，方便回溯应用历史。</p>
+        </section>
+
+        <section class="update-log" aria-label="版本时间线">
+            <div class="page-return">
+                <a href="../Works.html" class="btn btn-secondary back-link" data-history="true" data-title="作品">
+                    返回作品页
+                </a>
+            </div>
 
             <!-- 2.0.0 -->
             <div class="version-section">
@@ -580,21 +506,26 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         <!-- 页脚 -->
-        <div class="footer" style="text-align: right;">
+        <footer class="site-footer">
             <p class="footer-text">
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
-                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="../storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;">
+                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" class="record-link" rel="noreferrer" target="_blank">
+                    <img src="../storage/Beian.png" alt="公安备案" class="record-icon" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
-        </div>
+        </footer>
     </main>
+
+    <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
+        <div class="spinner" role="status" aria-label="页面加载中"></div>
+    </div>
 
     <!-- JavaScript -->
     <script src="../js/main.js"></script>
+    <script src="../js/navigation.js"></script>
 </body>
 </html>

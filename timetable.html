@@ -10,59 +10,9 @@
     <meta name="description" content="在线计时器工具">
     <title>工具 - Mr.Xia</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- 选项卡样式 -->
-    <style>
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-lg);
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            padding: var(--spacing-sm) var(--spacing-md);
-            border: none;
-            border-radius: var(--radius-md);
-            background-color: var(--background-color);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn:hover {
-            background-color: var(--hover-color);
-            border-color: var(--primary-color);
-        }
-
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .tab-content {
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .tab-panel {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
@@ -81,19 +31,18 @@
     </header>
 
     <!-- 主内容 -->
-    <main>
-        <section>
-            <h1 style="text-align: center;">工具集 🛠️</h1>
-            <p style="text-align: center; color: var(--text-secondary); margin-bottom: var(--spacing-xl);">
-                实用工具集合，包括在线计时器和随机选择器
+    <main id="main-content" class="site-main" tabindex="-1">
+        <section class="page-intro page-intro--center page-intro--compact tools-intro">
+            <p class="section-kicker">效率工具</p>
+            <h1>工具集</h1>
+            <p class="page-subtitle">
+                实用工具集合，包括在线计时器和随机选择器，适合快速完成轻量任务。
             </p>
+            <div class="tabs" role="tablist" aria-label="工具选项卡">
+                <button class="tab-btn active" data-tab="timer" role="tab" aria-selected="true" aria-controls="timer" id="tab-timer">在线计时器</button>
+                <button class="tab-btn" data-tab="random-selector" role="tab" aria-selected="false" aria-controls="random-selector" id="tab-random-selector">随机选择器</button>
+            </div>
         </section>
-
-        <!-- 选项卡导航 -->
-        <div class="tabs" role="tablist" aria-label="工具选项卡">
-            <button class="tab-btn active" data-tab="timer" role="tab" aria-selected="true" aria-controls="timer" id="tab-timer">在线计时器 ⏱️</button>
-            <button class="tab-btn" data-tab="random-selector" role="tab" aria-selected="false" aria-controls="random-selector" id="tab-random-selector">随机选择器 🎲</button>
-        </div>
 
         <!-- 选项卡内容 -->
         <div class="tab-content">
@@ -103,7 +52,7 @@
                 <div class="card timer-container">
                     <!-- 时间设置区域 -->
                     <div class="timer-setup">
-                        <h3 style="margin-bottom: var(--spacing-md); text-align: center;">⏱️ 设置计时时间</h3>
+                        <h3 class="tool-heading">设置计时时间</h3>
                         <div class="time-inputs">
                             <div class="time-input-group">
                                 <label for="hours">小时</label>
@@ -132,7 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="set-time" class="btn btn-outline" style="margin-top: var(--spacing-md);">设置时间</button>
+                        <button id="set-time" class="btn btn-outline">设置时间</button>
                     </div>
 
                     <!-- 时间显示 -->
@@ -153,39 +102,39 @@
                     <!-- 控制按钮 -->
                     <div class="timer-controls">
                         <button id="start" class="btn">
-                            ▶️ 开始
+                            开始
                         </button>
                         <button id="pause" class="btn btn-secondary">
-                            ⏸️ 暂停
+                            暂停
                         </button>
                         <button id="reset" class="btn btn-outline">
-                            🔄 重置
+                            重置
                         </button>
                     </div>
 
                     <!-- 使用说明 -->
                     <div class="timer-info">
                         <p id="timer-instructions" class="text-small">
-                            💡 提示：设置计时时间后，点击"开始"按钮开始计时，"暂停"暂停计时，"重置"清零计时器
+                            提示：先设置时间，再开始计时；暂停用于临时中断，重置会回到刚设置的时长。
                         </p>
                     </div>
                 </div>
 
                 <!-- 功能说明 -->
-                <div class="shadowbox">
-                    <h3>✨ 功能特点</h3>
-                    <ul style="list-style: none; padding: 0; margin-top: var(--spacing-md);">
-                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                            ✓ 精确到秒的计时功能
+                <div class="shadowbox tool-feature-card">
+                    <h3>功能特点</h3>
+                    <ul class="feature-list">
+                        <li>
+                            精确到秒的计时功能
                         </li>
-                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                            ✓ 支持暂停和继续计时
+                        <li>
+                            支持暂停和继续计时
                         </li>
-                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                            ✓ 一键重置计时器
+                        <li>
+                            一键重置计时器
                         </li>
-                        <li style="padding: var(--spacing-sm) 0; color: var(--text-secondary);">
-                            ✓ 简洁美观的界面设计
+                        <li>
+                            简洁清晰的界面结构
                         </li>
                     </ul>
                 </div>
@@ -193,41 +142,41 @@
 
             <!-- 随机选择器选项卡 -->
             <div id="random-selector" class="tab-panel" role="tabpanel" aria-labelledby="tab-random-selector">
-                <div class="random-selector-container">
-                    <h2 style="text-align: center; color: var(--primary-color); margin-bottom: var(--spacing-lg);">随机选择器 By Copilot</h2>
-                    <div class="actions" style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm); justify-content: center; margin-bottom: var(--spacing-md);">
-                        <input type="text" id="itemInput" placeholder="请输入选项，回车或点击添加" style="flex: 1 0 110px; min-width: 0; padding: var(--spacing-sm); font-size: 1em; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); outline: none; transition: border 0.2s;" />
+                <div class="card random-selector-container selector-shell">
+                    <h2 class="tool-heading">随机选择器 By Copilot</h2>
+                    <div class="selector-actions">
+                        <input type="text" id="itemInput" class="selector-input" placeholder="请输入选项，回车或点击添加" aria-label="输入待抽取选项" autocomplete="off" />
                         <button class="btn" onclick="RandomSelector.addItem()">添加</button>
                         <button class="btn" onclick="RandomSelector.deleteAll()">清空</button>
                     </div>
-                    <ul id="items" style="list-style: none; padding-left: 0; margin-bottom: var(--spacing-lg); min-height: 30px; width: 100%; max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: var(--spacing-sm);"></ul>
-                    <div class="actions" style="display: flex; justify-content: center; margin-bottom: var(--spacing-md);">
+                    <ul id="items" class="selector-list"></ul>
+                    <div class="selector-actions selector-actions--center">
                         <button class="btn" onclick="RandomSelector.chooseRandom()">随机抽取</button>
                     </div>
-                    <span id="chosen" style="display: block; text-align: center; color: var(--primary-color); font-size: 1.25em; font-weight: 600; margin: var(--spacing-md) 0; min-height: 25px; letter-spacing: 1px;"></span>
-                    <div id="upload" style="text-align: center; margin-top: var(--spacing-md);">
-                        <input type="file" id="fileInput" accept=".txt,.md,.docx" multiple aria-label="上传文档文件" style="font-size: 1em; border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 5px; margin-bottom: var(--spacing-sm); background: var(--background-color);" />
+                    <span id="chosen" class="selector-result"></span>
+                    <div id="upload" class="tool-upload">
+                        <input type="file" id="fileInput" class="tool-upload-input" accept=".txt,.md,.docx" multiple aria-label="上传文档文件" />
                         <button class="btn" onclick="RandomSelector.handleFiles()" aria-label="上传文档并自动填充">上传文档并自动填充</button>
-                        <div class="note" style="font-size: 0.92em; color: var(--text-secondary); margin-top: var(--spacing-xs);">支持TXT、Markdown、Word文档</div>
+                        <div class="tool-note">支持TXT、Markdown、Word文档</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- 返回首页 -->
-        <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
+        <div class="page-return">
+            <a href="index.html" class="btn btn-secondary" data-history="true" data-title="首页">
                 ← 返回首页
             </a>
         </div>
 
         <!-- 页脚 -->
-        <div class="footer" style="text-align: right;">
+        <div class="site-footer">
             <p class="footer-text">
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
-                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
+                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" class="record-link" rel="noreferrer" target="_blank">
+                    <img src="storage/Beian.png" alt="公安备案" class="record-icon" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
@@ -240,6 +189,8 @@
     <script>
         // 选项卡切换功能
         document.addEventListener('DOMContentLoaded', function() {
+            const SELECTOR_ITEM_TEXT_CLASS = 'selector-item-text';
+
             // 选项卡切换
             const tabBtns = document.querySelectorAll('.tab-btn');
             const tabPanels = document.querySelectorAll('.tab-panel');
@@ -402,7 +353,7 @@
                 items.forEach((item, idx) => {
                     const li = document.createElement('li');
                     const span = document.createElement('span');
-                    span.style.flex = '1 1 0%';
+                    span.className = SELECTOR_ITEM_TEXT_CLASS;
                     span.textContent = item;
                     li.appendChild(span);
 
@@ -504,14 +455,15 @@
                     }
                 },
                 chooseRandom: function() {
+                    const chosen = document.getElementById('chosen');
                     if (items.length === 0) {
-                        document.getElementById('chosen').textContent = '请先添加选项';
-                        document.getElementById('chosen').style.color = 'var(--error-color, #e05260)';
+                        chosen.textContent = '请先添加选项';
+                        chosen.classList.add('selector-result--error');
                         return;
                     }
                     const idx = Math.floor(Math.random() * items.length);
-                    document.getElementById('chosen').textContent = '抽中：' + items[idx];
-                    document.getElementById('chosen').style.color = 'var(--primary-color)';
+                    chosen.textContent = '抽中：' + items[idx];
+                    chosen.classList.remove('selector-result--error');
                 },
                 handleFiles: async function() {
                     const input = document.getElementById('fileInput');
@@ -540,60 +492,7 @@
             });
         })();
     </script>
-    <!-- 随机选择器样式 -->
-    <style>
-        /* 随机选择器样式调整 */
-        .random-selector-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
 
-        #items li {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--spacing-sm);
-            background: rgba(99, 102, 241, 0.05);
-            margin-bottom: var(--spacing-xs);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-md);
-            font-size: 1em;
-            word-break: break-all;
-        }
-
-        .remove-btn {
-            color: var(--error-color, #e05260);
-            background: none;
-            border: none;
-            font-size: 0.98em;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            margin-left: var(--spacing-sm);
-            cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: all 0.18s ease;
-        }
-
-        .remove-btn:hover {
-            background: rgba(224, 82, 96, 0.1);
-            color: var(--error-color, #b6353e);
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 600px) {
-            .actions {
-                flex-direction: column;
-                gap: var(--spacing-sm);
-            }
-
-            #itemInput, .btn, button {
-                width: 100%;
-                margin: 0;
-            }
-        }
-    </style>
-    
     <!-- 页面过渡指示器 -->
     <div id="page-transition-indicator" aria-hidden="true" aria-busy="false">
         <div class="spinner" role="status" aria-label="页面加载中"></div>

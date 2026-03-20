@@ -30,11 +30,12 @@ const TimeDisplay = {
         const timeString = this.formatTime(now);
         const dateString = this.formatDate(now);
         
-        const timeElement = document.getElementById('currentTime');
+        const timeElement = document.querySelector('.current-time');
         if (timeElement) {
             timeElement.innerHTML = `
-                <span style="font-size: 0.9em; opacity: 0.8;">📅 ${dateString}</span>
-                <span style="font-weight: 700;">⏰ ${timeString}</span>
+                <span class="current-time__label">当前时间</span>
+                <span class="current-time__clock">${timeString}</span>
+                <span class="current-time__date">${dateString}</span>
             `;
         }
     },
@@ -300,9 +301,12 @@ const PageAnimations = {
      * 初始化页面动画
      */
     init() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
         this.addFadeInAnimations();
         this.addScrollAnimations();
-        this.initMouseFollower();
         this.initFloatingElements();
     },
 
@@ -338,48 +342,6 @@ const PageAnimations = {
     },
 
     /**
-     * 初始化鼠标跟随效果
-     */
-    initMouseFollower() {
-        const follower = document.createElement('div');
-        follower.className = 'mouse-follower';
-        follower.style.cssText = `
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.3), transparent);
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.15s ease-out, opacity 0.3s ease;
-            opacity: 0;
-        `;
-        document.body.appendChild(follower);
-
-        let mouseX = 0, mouseY = 0;
-        let followerX = 0, followerY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            follower.style.opacity = '1';
-        });
-
-        document.addEventListener('mouseleave', () => {
-            follower.style.opacity = '0';
-        });
-
-        const animateFollower = () => {
-            followerX += (mouseX - followerX) * 0.1;
-            followerY += (mouseY - followerY) * 0.1;
-            follower.style.transform = `translate(${followerX - 10}px, ${followerY - 10}px)`;
-            requestAnimationFrame(animateFollower);
-        };
-
-        animateFollower();
-    },
-
-    /**
      * 初始化漂浮元素动画
      */
     initFloatingElements() {
@@ -405,7 +367,7 @@ const EmailProtection = {
             const link = document.createElement('a');
             link.href = `mailto:${email}`;
             link.textContent = '点击这里';
-            link.style.color = 'var(--primary-color)';
+            link.className = 'email-link';
             container.appendChild(link);
         });
     }
@@ -430,8 +392,7 @@ const Navigation = {
         navLinks.forEach(link => {
             const linkPath = link.getAttribute('href');
             if (linkPath === currentPath) {
-                link.style.color = 'var(--primary-color)';
-                link.style.background = 'rgba(249, 115, 22, 0.1)';
+                link.classList.add('is-active');
             }
         });
     }

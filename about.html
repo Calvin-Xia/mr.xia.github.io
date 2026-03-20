@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
     
@@ -30,61 +31,63 @@
     </header>
     
     <!-- 主内容 -->
-    <main>
-        <section>
-            <h1>关于本站 📋</h1>
-            
-            <div class="shadowbox">
-                <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">
-                    📚 版权声明
-                </h2>
-                <p class="indent">
-                    本网站所有原创内容版权归 <a href="https://github.com/calvin-xia" target="_blank" rel="noopener" style="color: var(--primary-color);">Mr.Xia</a> 所有。未经许可，请勿转载或商业使用。
-                </p>
-                
-                <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">
-                    🔒 隐私政策
-                </h2>
-                <p class="indent">
-                    本站尊重并保护所有访问者的隐私。我们不会收集您的个人信息，也不会使用 Cookie 追踪您的行为。
-                </p>
-                
-                <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">
-                    ⚠️ 免责声明
-                </h2>
-                <p class="indent">
-                    本站内容仅供学习交流使用，不构成任何专业建议。访问者使用本站内容产生的任何后果，本站不承担责任。
-                </p>
-                
-                <h2 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">
-                    📧 联系方式
-                </h2>
-                <p class="indent">
-                    如有任何问题或建议，欢迎通过以下方式联系：
-                </p>
-                <p class="indent">
-                    邮箱：<span data-email-placeholder></span>来联系我
-                </p>
-            </div>
+    <main id="main-content" class="site-main" tabindex="-1">
+        <section class="page-intro">
+            <p class="section-kicker">站点说明</p>
+            <h1 class="page-title">关于本站</h1>
+            <p class="page-subtitle">版权、隐私、免责声明与联系方式都集中在这里。</p>
         </section>
-        
+
+        <section class="shadowbox legal-stack">
+            <h2>
+                版权声明
+            </h2>
+            <p class="indent">
+                本网站所有原创内容版权归 <a href="https://github.com/calvin-xia" target="_blank" rel="noopener">Mr.Xia</a> 所有。未经许可，请勿转载或商业使用。
+            </p>
+
+            <h2>
+                隐私政策
+            </h2>
+            <p class="indent">
+                本站尊重并保护所有访问者的隐私。我们不会收集您的个人信息，也不会使用 Cookie 追踪您的行为。
+            </p>
+
+            <h2>
+                免责声明
+            </h2>
+            <p class="indent">
+                本站内容仅供学习交流使用，不构成任何专业建议。访问者使用本站内容产生的任何后果，本站不承担责任。
+            </p>
+
+            <h2>
+                联系方式
+            </h2>
+            <p class="indent">
+                如有任何问题或建议，欢迎通过以下方式联系：
+            </p>
+            <p class="indent">
+                邮箱：<span data-email-placeholder></span>来联系我
+            </p>
+        </section>
+
         <!-- 返回首页 -->
-        <div style="text-align: center; margin-top: var(--spacing-xl);">
-            <a href="index.html" class="btn btn-secondary" onclick="NavigationController.goHome(); return false;">
+        <div class="page-return">
+            <a href="index.html" class="btn btn-secondary" data-history="true" data-title="首页">
                 ← 返回首页
             </a>
         </div>
 
-        <div class="footer" style="text-align: right;">
+        <footer class="site-footer">
             <p class="footer-text">
                 <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                 <br>
-                <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                    <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
+                <a class="record-link" href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
+                    <img class="record-icon" src="storage/Beian.png" alt="公安备案" loading="lazy">
                     渝公网安备50010102001439号
                 </a>
             </p>
-        </div>
+        </footer>
     </main>
     
     <!-- JavaScript -->

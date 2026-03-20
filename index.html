@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <!-- 动态背景 -->
     <div class="bg-img"></div>
 
@@ -21,6 +22,7 @@
     <header>
         <nav aria-label="主导航">
             <div class="logo">Mr.Xia</div>
+            <!-- data-history enables transition/scroll restoration; data-title preserves the destination label in navigation state. -->
             <ul class="nav-links" role="menubar">
                 <li role="none"><a href="index.html" data-history="true" data-title="首页" aria-current="page" role="menuitem">首页</a></li>
                 <li role="none"><a href="Works.html" data-history="true" data-title="作品" role="menuitem">作品</a></li>
@@ -32,77 +34,84 @@
     </header>
 
     <!-- 主内容 -->
-    <main>
-        <section class="hero">
-            <h1>Hello, World! 👋</h1>
-            <h2>欢迎来到 Mr.Xia 的个人网站</h2>
-            <p style="font-size: 1.125rem; color: var(--text-secondary); margin-top: var(--spacing-md);">
-                这里记录我的学习历程、创意作品和技术探索
+    <main id="main-content" class="site-main" tabindex="-1">
+        <section class="hero hero-home page-intro page-intro--center">
+            <p class="hero-kicker">你好，欢迎来访</p>
+            <h1 class="page-title">欢迎来到 Mr.Xia 的小站</h1>
+            <p class="page-subtitle">
+                这里集中整理我的作品、常用工具与文章索引，方便快速浏览与持续更新。
             </p>
+            <div class="hero-status">
+                <div id="currentTime" class="current-time">加载中...</div>
+            </div>
+            <div class="action-row hero-actions">
+                <a href="Works.html" class="btn" data-history="true" data-title="作品">查看作品</a>
+                <a href="about.html" class="btn btn-secondary" data-history="true" data-title="关于">关于本站</a>
+            </div>
         </section>
 
-        <!-- 时间显示卡片 -->
-        <div class="card">
-            <div id="currentTime">加载中...</div>
-        </div>
-
         <!-- 快速导航 -->
-        <section style="margin-top: var(--spacing-xl);">
-            <h2 style="margin-bottom: var(--spacing-md);">快速导航</h2>
-            
-            <div class="card">
-                <h3>📂 个人作品</h3>
-                <p>查看我的创意作品和项目成果</p>
-                <a href="Works.html" class="btn" style="margin-top: var(--spacing-sm);" data-history="true" data-title="作品">查看作品</a>
-            </div>
+        <section class="section-stack home-discovery">
+            <div class="cards-grid cards-grid--quick">
+                <div class="card quick-card">
+                    <h3>个人作品</h3>
+                    <p>集中查看我正在维护的项目、实验与创意实践，是了解站点内容结构最快的入口。</p>
+                    <div class="action-row">
+                        <a href="Works.html" class="btn" data-history="true" data-title="作品">查看作品</a>
+                    </div>
+                </div>
 
-            <div class="card">
-                <h3>🛠️ 实用工具</h3>
-                <p>在线计时器等实用小工具</p>
-                <a href="timetable.html" class="btn btn-secondary" style="margin-top: var(--spacing-sm);" data-history="true" data-title="工具">使用工具</a>
-            </div>
+                <div class="card quick-card">
+                    <h3>实用工具</h3>
+                    <p>在线计时器和随机选择器等轻量工具，适合需要马上开始操作时使用。</p>
+                    <div class="action-row">
+                        <a href="timetable.html" class="btn btn-secondary" data-history="true" data-title="工具">使用工具</a>
+                    </div>
+                </div>
 
-            <div class="card">
-                <h3>📋 网站文章</h3>
-                <p>了解网站相关声明与文章</p>
-                <a href="statement.html" class="btn btn-outline" style="margin-top: var(--spacing-sm);" data-history="true" data-title="文章">查看文章</a>
+                <div class="card quick-card">
+                    <h3>网站文章</h3>
+                    <p>按关键词和标签快速定位文章内容，也可以从最近更新的文章继续阅读。</p>
+                    <div class="action-row">
+                        <a href="statement.html" class="btn btn-outline" data-history="true" data-title="文章">查看文章</a>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- 站点信息 -->
-        <section class="shadowbox" style="margin-top: var(--spacing-xl);">
+        <section class="shadowbox section-stack home-summary">
             <h3>关于本站</h3>
             <p class="indent">
-                Mr.Xia个人网站是一个简约现代的个人作品展示平台，记录学习历程、创意作品和技术探索。采用响应式设计，适配各种设备屏幕，提供流畅的用户体验。
+                这里主要用来整理作品、工具入口和文章索引，整体保持简洁直达，方便日常浏览与维护。
             </p>
             
-            <div style="background: var(--bg-secondary); padding: var(--spacing-lg); border-radius: var(--radius-md); margin-top: var(--spacing-lg);">
-                <p style="margin-bottom: var(--spacing-md);">
-                    了解网站的详细声明、隐私政策和使用说明
+            <div class="card-note">
+                <p>
+                    想看站点说明、使用约定和更多背景信息，可以直接进入关于页。
                 </p>
-                <a href="about.html" class="btn btn-primary" style="display: inline-block; margin-right: var(--spacing-sm);" data-history="true" data-title="关于">
-                    查看关于页面 →
-                </a>
+                <div class="action-row">
+                    <a href="about.html" class="btn btn-primary" data-history="true" data-title="关于">
+                        查看关于页面
+                    </a>
+                </div>
             </div>
             
-            <p class="indent" style="margin-top: var(--spacing-lg);">
-                项目地址：<a href="https://github.com/Calvin-Xia/mr.xia.github.io" target="_blank" rel="noopener">GitHub Repository</a>
-                采用现代化简约设计风格，注重用户体验与视觉美感。
-            </p>
             <p class="indent">
-                感谢您的访问，祝您浏览愉快！ 😊
+                项目地址：<a href="https://github.com/Calvin-Xia/mr.xia.github.io" target="_blank" rel="noopener">GitHub Repository</a>
+                ，当前持续维护中。
             </p>
-            
-            <div class="footer" style="text-align: right;">
+
+            <footer class="site-footer">
                 <p class="footer-text">
                     <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
                     <br>
-                    <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
-                        <img src="storage/Beian.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-left: 5px;" loading="lazy">
+                    <a class="record-link" href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439" rel="noreferrer" target="_blank">
+                        <img class="record-icon" src="storage/Beian.png" alt="公安备案" loading="lazy">
                         渝公网安备50010102001439号
                     </a>
                 </p>
-            </div>
+            </footer>
 
         </section>
     </main>
