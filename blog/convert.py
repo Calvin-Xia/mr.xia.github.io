@@ -34,6 +34,28 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 '''
 
+MOBILE_QUOTE_FIX_MARKER = 'blog-mobile-blockquote-fix'
+MOBILE_QUOTE_FIX_STYLE = f'''
+<style id="{MOBILE_QUOTE_FIX_MARKER}">
+@media (max-width: 768px) {{
+    blockquote,
+    .md-blockquote {{
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        box-sizing: border-box;
+    }}
+
+    blockquote > p,
+    .md-blockquote-p {{
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }}
+}}
+</style>
+'''
+
 def process_lazyload(content):
     img_count = 0
     
@@ -75,6 +97,16 @@ def inject_lazyload_script(content):
     content = re.sub(r'(</body>)', LAZYLOAD_SCRIPT + r'\n\1', content)
     return content, True
 
+def inject_mobile_quote_fix(content):
+    if MOBILE_QUOTE_FIX_MARKER in content:
+        return content, False
+
+    if '</head>' not in content:
+        return content, False
+
+    content = re.sub(r'(</head>)', MOBILE_QUOTE_FIX_STYLE + r'\n\1', content, count=1)
+    return content, True
+
 def convert_html_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -98,6 +130,11 @@ def convert_html_file(file_path):
         )
         changes.append("添加favicon标签")
     
+    content, quote_fix_injected = inject_mobile_quote_fix(content)
+    if quote_fix_injected:
+        changes.append("注入移动端引用块宽度修复")
+
+    container_before = content
     content = re.sub(
         r'style="(?:max-width:\s*750px;\s*)?(?:width:\s*100%;\s*)?width:\s*750px;\s*margin:\s*auto;\s*padding:\s*20px;"',
         r'style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;"',
@@ -111,9 +148,8 @@ def convert_html_file(file_path):
             content
         )
     
-    if 'box-sizing: border-box' in content and 'max-width: 750px' in content:
-        if "修改容器样式" not in changes:
-            pass
+    if content != container_before:
+        changes.append("修改容器样式")
     
     content, img_count = process_lazyload(content)
     if img_count > 0:

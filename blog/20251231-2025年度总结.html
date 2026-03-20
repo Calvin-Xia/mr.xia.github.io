@@ -581,6 +581,26 @@ img {
 }.alert-icon-cite {
 }
 </style>
+
+<style id="blog-mobile-blockquote-fix">
+@media (max-width: 768px) {
+    blockquote,
+    .md-blockquote {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        box-sizing: border-box;
+    }
+
+    blockquote > p,
+    .md-blockquote-p {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+</style>
+
 </head>
 <body>
   <div style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;">
