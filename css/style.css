@@ -1279,6 +1279,23 @@ textarea:focus-visible {
     gap: 0.72rem;
 }
 
+.selector-actions--editor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+}
+
+.selector-actions--compact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.72rem;
+    align-self: stretch;
+}
+
+.selector-action-btn {
+    min-width: 6.5rem;
+}
+
 .selector-actions--center {
     justify-content: center;
 }
@@ -1386,6 +1403,50 @@ textarea:focus {
     gap: 0.72rem;
     padding-top: 1rem;
     border-top: 1px solid rgba(184, 107, 70, 0.1);
+}
+
+.tool-upload-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 0.72rem;
+}
+
+.tool-file-trigger {
+    width: 100%;
+}
+
+.tool-upload-submit {
+    width: 100%;
+}
+
+.tool-upload-input--hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.tool-upload-status {
+    min-height: 1.6rem;
+    padding: 0.8rem 0.95rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(184, 107, 70, 0.12);
+    background: rgba(255, 252, 248, 0.78);
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.tool-upload-status--error {
+    border-color: rgba(191, 93, 103, 0.22);
+    background: rgba(191, 93, 103, 0.08);
+    color: var(--error-color);
 }
 
 .tool-note {
@@ -2354,6 +2415,19 @@ textarea {
     .tool-upload-input,
     #search-input {
         flex-basis: 100%;
+    }
+
+    .selector-actions--editor,
+    .tool-upload-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .selector-actions--compact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .selector-actions--compact .btn {
+        width: 100%;
     }
 
     .version-header {
