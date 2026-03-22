@@ -79,6 +79,39 @@
             </div>
         </section>
 
+        <section class="shadowbox section-stack home-search-panel">
+            <div class="home-section-head">
+                <div>
+                    <p class="section-kicker">全站搜索</p>
+                    <h2 class="section-heading">从一个入口搜索文章、作品和工具</h2>
+                </div>
+                <a href="statement.html#content-search" class="btn btn-outline" data-history="true" data-title="文章">
+                    搜索全站内容
+                </a>
+            </div>
+            <p class="section-copy">
+                文章页现在兼任内容中枢，默认展示博客文章，也支持跨栏目搜索作品和工具。
+            </p>
+        </section>
+
+        <section id="recent-updates" class="section-stack home-updates">
+            <div class="home-section-head">
+                <div>
+                    <p class="section-kicker">最近更新</p>
+                    <h2 class="section-heading">最新整理的内容</h2>
+                </div>
+                <a href="statement.html#content-search" class="btn btn-secondary" data-history="true" data-title="文章">
+                    查看更多内容
+                </a>
+            </div>
+            <div id="recent-updates-list" class="cards-grid home-updates-grid" aria-live="polite">
+                <div class="card recent-update-card recent-update-card--empty">
+                    <p class="recent-update-title">最近更新正在整理中</p>
+                    <p class="recent-update-excerpt">内容索引生成后，这里会显示最新的文章、作品和更新日志。</p>
+                </div>
+            </div>
+        </section>
+
         <!-- 站点信息 -->
         <section class="shadowbox section-stack home-summary">
             <h3>关于本站</h3>
@@ -118,6 +151,7 @@
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>
+    <script src="js/content-hub.js?v=phase1"></script>
     <script src="js/navigation.js"></script>
     
     <!-- 页面过渡指示器 -->

@@ -1,0 +1,201 @@
+[
+  {
+    "id": "tool-markdown-to-html",
+    "type": "tool",
+    "title": "Markdown 转 HTML 工具",
+    "excerpt": "独立的 Markdown 渲染工具，支持代码高亮、数学公式、预览折叠与导出 HTML。",
+    "date": "2026-03-21",
+    "filePath": "markdown-to-html-tool.html",
+    "tags": [
+      "Markdown",
+      "HTML",
+      "渲染"
+    ],
+    "source": "markdown-to-html-tool.html",
+    "category": "内容工具",
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "id": "20260315-两小时，环线，慢行",
+    "type": "article",
+    "title": "两小时，环线，慢行",
+    "excerpt": "这是我第一次乘坐不带前缀的慢绿皮火车。",
+    "date": "2026-03-15",
+    "filePath": "blog/20260315-两小时，环线，慢行.html",
+    "tags": [
+      "生活总结",
+      "火车运转",
+      "旅行"
+    ],
+    "source": "blog/blog-metadata.json",
+    "category": "生活总结",
+    "featured": true
+  },
+  {
+    "id": "20260312-返校宣讲回顾",
+    "type": "article",
+    "title": "返校宣讲回顾",
+    "excerpt": "Momentous but Momentary——何谓生涯规划？",
+    "date": "2026-03-12",
+    "filePath": "blog/20260312-返校宣讲回顾.html",
+    "tags": [
+      "学业总结",
+      "武汉大学",
+      "宣讲"
+    ],
+    "source": "blog/blog-metadata.json",
+    "category": "学业总结",
+    "featured": true
+  },
+  {
+    "id": "tool-online-timer",
+    "type": "tool",
+    "title": "在线计时器",
+    "excerpt": "支持小时、分钟、秒的可视化设置，并提供进度显示、暂停和重置操作的轻量计时工具。",
+    "date": "2026-02-18",
+    "filePath": "timetable.html#timer",
+    "tags": [
+      "计时",
+      "倒计时",
+      "效率工具"
+    ],
+    "source": "timetable.html",
+    "category": "效率工具",
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "id": "20260204-返校宣讲稿",
+    "type": "article",
+    "title": "返校宣讲 破局·成长",
+    "excerpt": "各位同学大家好，非常荣幸能够收到骆老师的邀请，结合自己的一些学习经验，来给大家讲一讲高中生物、化学这两门学科的学习方法。",
+    "date": "2026-02-04",
+    "filePath": "blog/20260204-返校宣讲稿.html",
+    "tags": [
+      "学业总结",
+      "武汉大学",
+      "宣讲"
+    ],
+    "source": "blog/blog-metadata.json",
+    "category": "学业总结",
+    "featured": true
+  },
+  {
+    "id": "20251231-2025年度总结",
+    "type": "article",
+    "title": "2025年度总结",
+    "excerpt": "此刻我正坐在武汉大学信息学部的宿舍之中，打开了新下载的Obsidian开始写这篇文章。又是一年终了。2025年，对于我而言，必定是非同寻常的一年——这一年发生了太多故事。",
+    "date": "2025-12-31",
+    "filePath": "blog/20251231-2025年度总结.html",
+    "tags": [
+      "年度总结",
+      "大学",
+      "高考",
+      "旅行",
+      "武汉大学"
+    ],
+    "source": "blog/blog-metadata.json",
+    "category": "生活总结"
+  },
+  {
+    "id": "work-button-block-designer",
+    "type": "work",
+    "title": "网页按钮块设计器",
+    "excerpt": "使用 Next.js 编写的按钮块设计工具，适合快速探索按钮层次、原型样式和组件视觉方案。",
+    "date": "2025-12-27",
+    "filePath": "Works.html#work-button-block-designer",
+    "tags": [
+      "Next.js",
+      "设计工具",
+      "在线体验"
+    ],
+    "source": "Works.html",
+    "category": "设计工具",
+    "externalUrl": "https://vibeui-generator.pages.dev/",
+    "status": "active"
+  },
+  {
+    "id": "tool-random-selector",
+    "type": "tool",
+    "title": "随机选择器",
+    "excerpt": "支持手动输入与导入 TXT、Markdown、Word 文档后快速抽取选项的随机选择工具。",
+    "date": "2025-12-25",
+    "filePath": "timetable.html#random-selector",
+    "tags": [
+      "随机选择",
+      "文件导入",
+      "Word 支持"
+    ],
+    "source": "timetable.html",
+    "category": "效率工具",
+    "status": "active"
+  },
+  {
+    "id": "work-favorites-collection",
+    "type": "work",
+    "title": "网址收藏夹",
+    "excerpt": "包含静态版与动态版两种实现，方便对比轻量部署和完整应用架构下的收藏导航体验。",
+    "date": "2025-12-24",
+    "filePath": "Works.html#work-favorites-collection",
+    "tags": [
+      "静态版",
+      "动态版",
+      "Next.js"
+    ],
+    "source": "Works.html",
+    "category": "收藏与导航",
+    "status": "active"
+  },
+  {
+    "id": "work-class1-map",
+    "type": "work",
+    "title": "金鹰一班蹭饭地图",
+    "excerpt": "以可视化地图的方式展示高 2022 级 1 班毕业去向，兼顾纪念意义与在线浏览体验。",
+    "date": "2025-12-24",
+    "filePath": "Works.html#work-class1-map",
+    "tags": [
+      "公开站点",
+      "地图展示",
+      "纪念项目"
+    ],
+    "source": "Works.html",
+    "category": "班级地图",
+    "externalUrl": "https://class1forever.pages.dev/",
+    "status": "active"
+  },
+  {
+    "id": "work-fingerprint-app",
+    "type": "work",
+    "title": "指纹验证应用",
+    "excerpt": "使用 FusionApp 2.0 编写的轻量指纹验证应用，提供下载入口并配套展示版本更新日志。",
+    "date": "2024-10-01",
+    "filePath": "Works.html#work-fingerprint-app",
+    "tags": [
+      "Android APK",
+      "FusionApp 2.0",
+      "持续更新"
+    ],
+    "source": "Works.html",
+    "category": "Android 应用",
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "id": "update-log-fingerprint-app",
+    "type": "update-log",
+    "title": "指纹验证应用更新日志",
+    "excerpt": "集中记录指纹验证应用的版本迭代、问题修复和已知事项，便于回看历史变更。",
+    "date": "2024-10-01",
+    "filePath": "UpdateLog/fingerprint-app-update-log.html",
+    "tags": [
+      "版本日志",
+      "Android APK",
+      "指纹验证"
+    ],
+    "source": "UpdateLog/fingerprint-app-update-log.html",
+    "category": "版本时间线",
+    "featured": true,
+    "status": "active"
+  }
+]

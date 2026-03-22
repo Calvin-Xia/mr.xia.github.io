@@ -1,0 +1,27 @@
+name: Content Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  content-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate content metadata and regenerate manifest
+        run: python scripts/content_pipeline.py check
+
+      - name: Ensure committed manifest is up to date
+        run: |
+          git diff --exit-code -- content/content-manifest.json

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "work-fingerprint-app",
+    "type": "work",
+    "title": "指纹验证应用",
+    "excerpt": "使用 FusionApp 2.0 编写的轻量指纹验证应用，提供下载入口并配套展示版本更新日志。",
+    "date": "2024-10-01",
+    "filePath": "Works.html#work-fingerprint-app",
+    "tags": ["Android APK", "FusionApp 2.0", "持续更新"],
+    "source": "Works.html",
+    "category": "Android 应用",
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "id": "work-favorites-collection",
+    "type": "work",
+    "title": "网址收藏夹",
+    "excerpt": "包含静态版与动态版两种实现，方便对比轻量部署和完整应用架构下的收藏导航体验。",
+    "date": "2025-12-24",
+    "filePath": "Works.html#work-favorites-collection",
+    "tags": ["静态版", "动态版", "Next.js"],
+    "source": "Works.html",
+    "category": "收藏与导航",
+    "status": "active"
+  },
+  {
+    "id": "work-class1-map",
+    "type": "work",
+    "title": "金鹰一班蹭饭地图",
+    "excerpt": "以可视化地图的方式展示高 2022 级 1 班毕业去向，兼顾纪念意义与在线浏览体验。",
+    "date": "2025-12-24",
+    "filePath": "Works.html#work-class1-map",
+    "tags": ["公开站点", "地图展示", "纪念项目"],
+    "source": "Works.html",
+    "category": "班级地图",
+    "externalUrl": "https://class1forever.pages.dev/",
+    "status": "active"
+  },
+  {
+    "id": "work-button-block-designer",
+    "type": "work",
+    "title": "网页按钮块设计器",
+    "excerpt": "使用 Next.js 编写的按钮块设计工具，适合快速探索按钮层次、原型样式和组件视觉方案。",
+    "date": "2025-12-27",
+    "filePath": "Works.html#work-button-block-designer",
+    "tags": ["Next.js", "设计工具", "在线体验"],
+    "source": "Works.html",
+    "category": "设计工具",
+    "externalUrl": "https://vibeui-generator.pages.dev/",
+    "status": "active"
+  }
+]

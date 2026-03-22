@@ -14,6 +14,18 @@
     --text-secondary: #62524b;
     --text-muted: #796960;
     --text-subtle: #94867c;
+    --badge-article-bg: rgba(211, 93, 38, 0.1);
+    --badge-article-border: rgba(211, 93, 38, 0.14);
+    --badge-article-text: var(--primary-color);
+    --badge-work-bg: rgba(47, 143, 131, 0.12);
+    --badge-work-border: rgba(47, 143, 131, 0.18);
+    --badge-work-text: var(--accent-color);
+    --badge-tool-bg: rgba(87, 96, 132, 0.1);
+    --badge-tool-border: rgba(87, 96, 132, 0.14);
+    --badge-tool-text: #4f5a83;
+    --badge-update-log-bg: rgba(191, 93, 103, 0.1);
+    --badge-update-log-border: rgba(191, 93, 103, 0.16);
+    --badge-update-log-text: #b55463;
     --surface-base: rgba(255, 249, 244, 0.88);
     --surface-strong: rgba(255, 252, 248, 0.96);
     --surface-soft: rgba(250, 242, 234, 0.8);
@@ -861,6 +873,108 @@ textarea:focus-visible {
     color: var(--text-subtle);
 }
 
+.home-search-panel,
+.home-updates {
+    display: grid;
+    gap: 1rem;
+}
+
+.home-section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.home-section-head .section-heading {
+    margin: 0.16rem 0 0;
+}
+
+.home-search-panel .section-copy,
+.home-updates .section-copy {
+    margin: 0;
+    max-width: 44rem;
+}
+
+.home-updates-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.recent-update-card {
+    display: grid;
+    gap: 0.8rem;
+    align-content: start;
+}
+
+.recent-update-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.recent-update-date {
+    font-size: 0.84rem;
+    color: var(--text-subtle);
+}
+
+.recent-update-title {
+    margin: 0;
+    font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+    color: var(--text-primary);
+}
+
+.recent-update-excerpt {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.66;
+}
+
+.recent-update-actions {
+    margin-top: auto;
+}
+
+.recent-update-card--empty {
+    justify-items: start;
+}
+
+.content-type-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.38rem 0.72rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.content-type-badge--article {
+    background: var(--badge-article-bg);
+    border-color: var(--badge-article-border);
+    color: var(--badge-article-text);
+}
+
+.content-type-badge--work {
+    background: var(--badge-work-bg);
+    border-color: var(--badge-work-border);
+    color: var(--badge-work-text);
+}
+
+.content-type-badge--tool {
+    background: var(--badge-tool-bg);
+    border-color: var(--badge-tool-border);
+    color: var(--badge-tool-text);
+}
+
+.content-type-badge--update-log {
+    background: var(--badge-update-log-bg);
+    border-color: var(--badge-update-log-border);
+    color: var(--badge-update-log-text);
+}
+
 .legal-stack {
     display: grid;
     gap: 1rem;
@@ -1333,6 +1447,12 @@ textarea:focus {
     margin-left: 0.2rem;
 }
 
+.search-status {
+    min-height: 1.25rem;
+    margin-left: 0.2rem;
+    color: var(--text-subtle);
+}
+
 .search-suggestions {
     display: none;
     border-radius: 1.1rem;
@@ -1380,6 +1500,10 @@ textarea:focus {
     display: grid;
     gap: 1rem;
     padding: 1.2rem 1.25rem;
+}
+
+.filter-nav.is-hidden {
+    display: none;
 }
 
 .filter-section {
@@ -1435,6 +1559,10 @@ textarea:focus {
     gap: 0.1rem;
 }
 
+.blog-card--mixed {
+    overflow: hidden;
+}
+
 .blog-card-link {
     display: grid;
     gap: 0.55rem;
@@ -1469,6 +1597,12 @@ textarea:focus {
     color: var(--text-subtle);
 }
 
+.blog-card-action-note {
+    padding: 0 1.32rem 1rem;
+    font-size: 0.84rem;
+    color: var(--text-subtle);
+}
+
 .blog-card-tag {
     padding: 0.42rem 0.7rem;
     background: rgba(47, 143, 131, 0.1);
@@ -1499,6 +1633,14 @@ textarea:focus {
 
 .retry-btn {
     margin-top: 0.6rem;
+}
+
+.no-results-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 0.35rem;
 }
 
 .error-page {
@@ -2185,6 +2327,12 @@ textarea {
         grid-template-columns: 1fr;
     }
 
+    .home-section-head,
+    .no-results-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .time-inputs {
         gap: 0.6rem;
     }
@@ -2277,9 +2425,14 @@ textarea {
         justify-content: center;
     }
 
+    .recent-update-card {
+        gap: 0.72rem;
+    }
+
     .blog-card-link,
     .blog-card-meta,
-    .blog-card-date {
+    .blog-card-date,
+    .blog-card-action-note {
         padding-left: 1rem;
         padding-right: 1rem;
     }

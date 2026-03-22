@@ -22,4 +22,5 @@ Thumbs.db
 tmp/
 temp/
 .npm-cache/
+prd/
 

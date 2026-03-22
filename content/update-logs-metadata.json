@@ -1,0 +1,15 @@
+[
+  {
+    "id": "update-log-fingerprint-app",
+    "type": "update-log",
+    "title": "指纹验证应用更新日志",
+    "excerpt": "集中记录指纹验证应用的版本迭代、问题修复和已知事项，便于回看历史变更。",
+    "date": "2024-10-01",
+    "filePath": "UpdateLog/fingerprint-app-update-log.html",
+    "tags": ["版本日志", "Android APK", "指纹验证"],
+    "source": "UpdateLog/fingerprint-app-update-log.html",
+    "category": "版本时间线",
+    "featured": true,
+    "status": "active"
+  }
+]

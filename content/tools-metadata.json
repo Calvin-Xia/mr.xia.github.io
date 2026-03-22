@@ -1,0 +1,40 @@
+[
+  {
+    "id": "tool-online-timer",
+    "type": "tool",
+    "title": "在线计时器",
+    "excerpt": "支持小时、分钟、秒的可视化设置，并提供进度显示、暂停和重置操作的轻量计时工具。",
+    "date": "2026-02-18",
+    "filePath": "timetable.html#timer",
+    "tags": ["计时", "倒计时", "效率工具"],
+    "source": "timetable.html",
+    "category": "效率工具",
+    "featured": true,
+    "status": "active"
+  },
+  {
+    "id": "tool-random-selector",
+    "type": "tool",
+    "title": "随机选择器",
+    "excerpt": "支持手动输入与导入 TXT、Markdown、Word 文档后快速抽取选项的随机选择工具。",
+    "date": "2025-12-25",
+    "filePath": "timetable.html#random-selector",
+    "tags": ["随机选择", "文件导入", "Word 支持"],
+    "source": "timetable.html",
+    "category": "效率工具",
+    "status": "active"
+  },
+  {
+    "id": "tool-markdown-to-html",
+    "type": "tool",
+    "title": "Markdown 转 HTML 工具",
+    "excerpt": "独立的 Markdown 渲染工具，支持代码高亮、数学公式、预览折叠与导出 HTML。",
+    "date": "2026-03-21",
+    "filePath": "markdown-to-html-tool.html",
+    "tags": ["Markdown", "HTML", "渲染"],
+    "source": "markdown-to-html-tool.html",
+    "category": "内容工具",
+    "featured": true,
+    "status": "active"
+  }
+]
