@@ -1,5 +1,22 @@
 [
   {
+    "id": "20260328-pre-reflection",
+    "type": "article",
+    "title": "From Nervousness to Growth: A Reflection on Our Presentation",
+    "excerpt": "At first, it seemed almost impossible for me to complete this 15-minute presentation with my partner, Zhu.",
+    "date": "2026-03-28",
+    "filePath": "blog/20260328-pre-reflection.html",
+    "tags": [
+      "学业总结",
+      "英语",
+      "自我"
+    ],
+    "source": "blog/blog-metadata.json",
+    "category": "学业总结",
+    "featured": true,
+    "status": "active"
+  },
+  {
     "id": "tool-markdown-to-html",
     "type": "tool",
     "title": "Markdown 转 HTML 工具",

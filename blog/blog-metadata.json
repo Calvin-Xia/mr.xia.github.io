@@ -1,49 +1,79 @@
 [
   {
+    "id": "20260328-pre-reflection",
+    "title": "From Nervousness to Growth: A Reflection on Our Presentation",
+    "excerpt": "At first, it seemed almost impossible for me to complete this 15-minute presentation with my partner, Zhu.",
+    "category": "学业总结",
+    "tags": [
+      "学业总结",
+      "英语",
+      "自我"
+    ],
+    "date": "2026-03-28",
+    "filePath": "blog/20260328-pre-reflection.html",
+    "featured": true,
+    "status": "active"
+  },
+  {
     "id": "20260315-两小时，环线，慢行",
     "title": "两小时，环线，慢行",
     "excerpt": "这是我第一次乘坐不带前缀的慢绿皮火车。",
     "category": "生活总结",
-    "tags": ["生活总结", "火车运转", "旅行"],
+    "tags": [
+      "生活总结",
+      "火车运转",
+      "旅行"
+    ],
     "date": "2026-03-15",
     "filePath": "blog/20260315-两小时，环线，慢行.html",
     "author": "Mr.Xia",
     "readTime": "7分钟",
     "featured": true
   },
-
   {
     "id": "20260312-返校宣讲回顾",
     "title": "返校宣讲回顾",
     "excerpt": "Momentous but Momentary——何谓生涯规划？",
     "category": "学业总结",
-    "tags": ["学业总结", "武汉大学", "宣讲"],
+    "tags": [
+      "学业总结",
+      "武汉大学",
+      "宣讲"
+    ],
     "date": "2026-03-12",
     "filePath": "blog/20260312-返校宣讲回顾.html",
     "author": "Mr.Xia",
     "readTime": "7分钟",
     "featured": true
   },
-
   {
     "id": "20260204-返校宣讲稿",
     "title": "返校宣讲 破局·成长",
     "excerpt": "各位同学大家好，非常荣幸能够收到骆老师的邀请，结合自己的一些学习经验，来给大家讲一讲高中生物、化学这两门学科的学习方法。",
     "category": "学业总结",
-    "tags": ["学业总结", "武汉大学", "宣讲"],
+    "tags": [
+      "学业总结",
+      "武汉大学",
+      "宣讲"
+    ],
     "date": "2026-02-04",
     "filePath": "blog/20260204-返校宣讲稿.html",
     "author": "Mr.Xia",
     "readTime": "25分钟",
     "featured": true
   },
-
   {
     "id": "20251231-2025年度总结",
     "title": "2025年度总结",
     "excerpt": "此刻我正坐在武汉大学信息学部的宿舍之中，打开了新下载的Obsidian开始写这篇文章。又是一年终了。2025年，对于我而言，必定是非同寻常的一年——这一年发生了太多故事。",
     "category": "生活总结",
-    "tags": ["年度总结", "大学", "高考", "旅行", "武汉大学"],
+    "tags": [
+      "年度总结",
+      "大学",
+      "高考",
+      "旅行",
+      "武汉大学"
+    ],
     "date": "2025-12-31",
     "filePath": "blog/20251231-2025年度总结.html"
   }

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="../storage/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Nervousness to Growth_ A Reflection on Our Presentation</title>
+  <style>:root {
+  /* 动态配置变量 */
+  --md-primary-color: #0F4C81;
+  --md-font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --md-font-size: 16px;
+}
+
+/* 段落缩进和对齐 */
+p {
+  
+  text-align: justify;
+}
+
+/**
+ * MD 基础主题样式
+ * 包含所有元素的基础样式和 CSS 变量定义
+ */
+
+/* ==================== 容器样式 ==================== */
+section,
+container {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 确保 容器应用基础样式 */
+body {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+/* 去除第一个元素的 margin-top */
+section > :first-child {
+  margin-top: 0 !important;
+}
+
+.mermaid-diagram .nodeLabel p {
+  color: unset !important;
+  letter-spacing: unset !important;
+}
+
+
+/**
+ * MD 默认主题（经典主题）
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ */
+
+/* ==================== 一级标题 ==================== */
+h1 {
+  display: table;
+  padding: 0 1em;
+  border-bottom: 2px solid #0F4C81;
+  margin: 2em auto 1em;
+  color: hsl(var(--foreground));
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 二级标题 ==================== */
+h2 {
+  display: table;
+  padding: 0 0.2em;
+  margin: 4em auto 2em;
+  color: #fff;
+  background: #0F4C81;
+  font-size: 19.2px;
+  font-weight: bold;
+  text-align: center;
+}/* ==================== 三级标题 ==================== */
+h3 {
+  padding-left: 8px;
+  border-left: 3px solid #0F4C81;
+  margin: 2em 8px 0.75em 0;
+  color: hsl(var(--foreground));
+  font-size: 17.6px;
+  font-weight: bold;
+  line-height: 1.2;
+}/* ==================== 四级标题 ==================== */
+h4 {
+  margin: 2em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 五级标题 ==================== */
+h5 {
+  margin: 1.5em 8px 0.5em;
+  color: #0F4C81;
+  font-size: 16px;
+  font-weight: bold;
+}/* ==================== 六级标题 ==================== */
+h6 {
+  margin: 1.5em 8px 0.5em;
+  font-size: 16px;
+  color: #0F4C81;
+}/* ==================== 段落 ==================== */
+p {
+  margin: 1.5em 8px;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: normal;
+  padding: 1em;
+  border-left: 4px solid #0F4C81;
+  border-radius: 6px;
+  color: hsl(var(--foreground));
+  background: var(--blockquote-background);
+  margin-bottom: 1em;
+}blockquote > p {
+  display: block;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  color: hsl(var(--foreground));
+  margin: 0;
+}/* ==================== GFM 警告块 ==================== */
+.alert-title-note,
+.alert-title-tip,
+.alert-title-info,
+.alert-title-important,
+.alert-title-warning,
+.alert-title-caution,
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr,
+.alert-title-todo,
+.alert-title-success,
+.alert-title-done,
+.alert-title-question,
+.alert-title-help,
+.alert-title-faq,
+.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing,
+.alert-title-danger,
+.alert-title-error,
+.alert-title-bug,
+.alert-title-example,
+.alert-title-quote,
+.alert-title-cite {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}.alert-title-note {
+  color: #478be6;
+}.alert-title-tip {
+  color: #57ab5a;
+}.alert-title-info {
+  color: #93c5fd;
+}.alert-title-important {
+  color: #986ee2;
+}.alert-title-warning {
+  color: #c69026;
+}.alert-title-caution {
+  color: #e5534b;
+}/* Obsidian-style callout colors */
+.alert-title-abstract,
+.alert-title-summary,
+.alert-title-tldr {
+  color: #00bfff;
+}.alert-title-todo {
+  color: #478be6;
+}.alert-title-success,
+.alert-title-done {
+  color: #57ab5a;
+}.alert-title-question,
+.alert-title-help,
+.alert-title-faq {
+  color: #c69026;
+}.alert-title-failure,
+.alert-title-fail,
+.alert-title-missing {
+  color: #e5534b;
+}.alert-title-danger,
+.alert-title-error {
+  color: #e5534b;
+}.alert-title-bug {
+  color: #e5534b;
+}.alert-title-example {
+  color: #986ee2;
+}.alert-title-quote,
+.alert-title-cite {
+  color: #9ca3af;
+}/* GFM Alert SVG 图标颜色 */
+.alert-icon-note {
+  fill: #478be6;
+}.alert-icon-tip {
+  fill: #57ab5a;
+}.alert-icon-info {
+  fill: #93c5fd;
+}.alert-icon-important {
+  fill: #986ee2;
+}.alert-icon-warning {
+  fill: #c69026;
+}.alert-icon-caution {
+  fill: #e5534b;
+}/* Obsidian-style callout icon colors */
+.alert-icon-abstract,
+.alert-icon-summary,
+.alert-icon-tldr {
+  fill: #00bfff;
+}.alert-icon-todo {
+  fill: #478be6;
+}.alert-icon-success,
+.alert-icon-done {
+  fill: #57ab5a;
+}.alert-icon-question,
+.alert-icon-help,
+.alert-icon-faq {
+  fill: #c69026;
+}.alert-icon-failure,
+.alert-icon-fail,
+.alert-icon-missing {
+  fill: #e5534b;
+}.alert-icon-danger,
+.alert-icon-error {
+  fill: #e5534b;
+}.alert-icon-bug {
+  fill: #e5534b;
+}.alert-icon-example {
+  fill: #986ee2;
+}.alert-icon-quote,
+.alert-icon-cite {
+  fill: #9ca3af;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  font-size: 90%;
+  overflow-x: auto;
+  border-radius: 8px;
+  padding: 0 !important;
+  line-height: 1.5;
+  margin: 10px 8px;
+}/* ==================== 图片 ==================== */
+img {
+  display: block;
+  max-width: 100%;
+  margin: 0.1em auto 0.5em;
+  border-radius: 4px;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}ul {
+  list-style: circle;
+  padding-left: 1em;
+  margin-left: 0;
+  color: hsl(var(--foreground));
+}li {
+  display: block;
+  margin: 0.2em 8px;
+  color: hsl(var(--foreground));
+}/* ==================== 脚注 ==================== */
+/* footnotes 在 buildFootnotes() 中渲染为 <p> 标签 */
+p.footnotes {
+  margin: 0.5em 8px;
+  font-size: 80%;
+  color: hsl(var(--foreground));
+}/* ==================== 图表 ==================== */
+figure {
+  margin: 1.5em 8px;
+  color: hsl(var(--foreground));
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 分隔线 ==================== */
+hr {
+  border-style: solid;
+  border-width: 2px 0 0;
+  border-color: rgba(0, 0, 0, 0.1);
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(1, 0.5);
+  transform-origin: 0 0;
+  transform: scale(1, 0.5);
+  height: 0.4em;
+  margin: 1.5em 0;
+}/* ==================== 行内代码 ==================== */
+code {
+  font-size: 90%;
+  color: #d14;
+  background: rgba(27, 31, 35, 0.05);
+  padding: 3px 5px;
+  border-radius: 4px;
+}/* 代码块内的 code 标签需要特殊处理（覆盖行内 code 样式） */
+pre.code__pre > code,
+.hljs.code__pre > code {
+  display: -webkit-box;
+  padding: 0.5em 1em 1em;
+  overflow-x: auto;
+  text-indent: 0;
+  color: inherit;
+  background: none;
+  white-space: nowrap;
+  margin: 0;
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}/* ==================== 粗体 ==================== */
+strong {
+  color: #0F4C81;
+  font-weight: bold;
+  font-size: inherit;
+}/* ==================== 表格 ==================== */
+table {
+  color: hsl(var(--foreground));
+}thead {
+  font-weight: bold;
+  color: hsl(var(--foreground));
+}th {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+  background: rgba(0, 0, 0, 0.05);
+}td {
+  border: 1px solid #dfdfdf;
+  padding: 0.25em 0.5em;
+  color: hsl(var(--foreground));
+  word-break: keep-all;
+}/* ==================== KaTeX 公式 ==================== */
+.katex-inline {
+  max-width: 100%;
+  overflow-x: auto;
+}.katex-block {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5em 0;
+  text-align: center;
+}/* ==================== 标记高亮 ==================== */
+.markup-highlight {
+  background-color: #0F4C81;
+  padding: 2px 4px;
+  border-radius: 2px;
+  color: #fff;
+}.markup-underline {
+  text-decoration: underline;
+  text-decoration-color: #0F4C81;
+}.markup-wavyline {
+  text-decoration: underline wavy;
+  text-decoration-color: #0F4C81;
+  text-decoration-thickness: 2px;
+}/**
+ * MD 简洁主题 (@okooo5km)
+ * 简洁现代的设计风格
+ */
+
+/* ==================== 标题样式 ==================== */
+h1 {
+  padding: 0.5em 1em;
+  font-size: 22.4px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+}section h2 {
+  padding: 0.3em 1.2em;
+  font-size: 20.8px;
+  border-radius: 8px 24px 8px 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}section h3 {
+  padding-left: 12px;
+  font-size: 19.2px;
+  border-radius: 6px;
+  line-height: 2.4em;
+  border-left: 4px solid #0F4C81;
+  border-right: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  border-top: 1px solid color-mix(in srgb, #0F4C81 10%, transparent);
+  background: color-mix(in srgb, #0F4C81 8%, transparent);
+}section h4 {
+  font-size: 17.6px;
+  border-radius: 6px;
+}section h5 {
+  font-size: 16px;
+  border-radius: 6px;
+}section h6 {
+  font-size: 16px;
+  border-radius: 6px;
+}/* ==================== 引用块 ==================== */
+blockquote {
+  font-style: italic;
+  padding: 1em 1em 1em 2em;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-top: 0.2px solid rgba(0, 0, 0, 0.04);
+  border-right: 0.2px solid rgba(0, 0, 0, 0.04);
+}/* GFM Alert 样式覆盖 */
+.markdown-alert-note,
+.markdown-alert-tip,
+.markdown-alert-info,
+.markdown-alert-important,
+.markdown-alert-warning,
+.markdown-alert-caution {
+  font-style: italic;
+}/* ==================== 代码块 ==================== */
+pre.code__pre,
+.hljs.code__pre {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}pre.code__pre > code,
+.hljs.code__pre > code {
+  font-family:
+    'Fira Code',
+    Menlo,
+    Operator Mono,
+    Consolas,
+    Monaco,
+    monospace;
+}/* ==================== 图片 ==================== */
+img {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}figcaption,
+.md-figcaption {
+  text-align: center;
+  color: #888;
+  font-size: 0.8em;
+}/* ==================== 列表 ==================== */
+ol {
+  padding-left: 1.5em;
+}ul {
+  list-style: none;
+  padding-left: 1.5em;
+}li {
+  margin: 0.5em 8px;
+}/* ==================== 分隔线 ==================== */
+hr {
+  height: 1px;
+  border: none;
+  margin: 2em 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+}/* ==================== 强调 ==================== */
+em {
+  font-style: italic;
+  font-size: inherit;
+}/* ==================== 链接 ==================== */
+a {
+  color: #576b95;
+  text-decoration: none;
+}
+
+
+h2 {
+  display: block;
+  text-align: left;
+  background: transparent;
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 4px solid #0F4C81;
+  color: #0F4C81;
+}
+
+/**
+ * 按 Alt/Option + Shift + F 可格式化
+ * 如需使用主题色，请使用 var(--md-primary-color) 代替颜色值
+ * 如：color: var(--md-primary-color);
+ * 新主题系统已全面支持 CSS 写法，你可以 F12 打开控制台查看具体的类名及标签
+ *
+ * 召集令：如果你有好看的主题样式，欢迎分享，让更多人能够使用到你的主题。
+ * 提交区：https://github.com/doocs/md/discussions/426
+ */
+
+/* 全局变量定义 */
+:root {
+}/* 根容器 */
+.md-container {
+}/* 标题样式 */
+h1 {
+}section h2 {
+}section h3 {
+}section h4 {
+}section h5 {
+}section h6 {
+}/* 段落和文本 */
+p {
+}strong {
+}em {
+}/* 引用块 */
+blockquote {
+}blockquote > p {
+}/* 代码 */
+/* 行内代码 */
+code {
+}/* 代码块容器 */
+pre.code__pre,
+.hljs.code__pre {
+}/* 代码块内的 code */
+pre.code__pre > code,
+.hljs.code__pre > code {
+}/* 列表 */
+ol {
+}ul {
+}li {
+}/* 表格 */
+table {
+}thead {
+}th {
+}td {
+}/* 其他元素 */
+img {
+}hr {
+}figure {
+}figcaption {
+}/* KaTeX 公式 */
+.katex-inline {
+}.katex-block {
+}/* Markup 标记 */
+/* 高亮 ==文本== */
+.markup-highlight {
+}/* 下划线 ++文本++ */
+.markup-underline {
+}/* 波浪线 ~文本~ */
+.markup-wavyline {
+}/* GFM Alert 警告块 */
+/* Alert 标题 */
+.alert-title-note {
+}.alert-title-tip {
+}.alert-title-info {
+}.alert-title-important {
+}.alert-title-warning {
+}.alert-title-caution {
+}.alert-title-abstract {
+}.alert-title-summary {
+}.alert-title-tldr {
+}.alert-title-todo {
+}.alert-title-success {
+}.alert-title-done {
+}.alert-title-question {
+}.alert-title-help {
+}.alert-title-faq {
+}.alert-title-failure {
+}.alert-title-fail {
+}.alert-title-missing {
+}.alert-title-danger {
+}.alert-title-error {
+}.alert-title-bug {
+}.alert-title-example {
+}.alert-title-quote {
+}.alert-title-cite {
+}/* Alert SVG 图标 */
+.alert-icon-note {
+}.alert-icon-tip {
+}.alert-icon-info {
+}.alert-icon-important {
+}.alert-icon-warning {
+}.alert-icon-caution {
+}/* Obsidian-style Callout SVG 图标 */
+.alert-icon-abstract {
+}.alert-icon-summary {
+}.alert-icon-tldr {
+}.alert-icon-todo {
+}.alert-icon-success {
+}.alert-icon-done {
+}.alert-icon-question {
+}.alert-icon-help {
+}.alert-icon-faq {
+}.alert-icon-failure {
+}.alert-icon-fail {
+}.alert-icon-missing {
+}.alert-icon-danger {
+}.alert-icon-error {
+}.alert-icon-bug {
+}.alert-icon-example {
+}.alert-icon-quote {
+}.alert-icon-cite {
+}
+</style><style>pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#24292e;background:#fff}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#d73a49}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#6f42c1}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-variable{color:#005cc5}.hljs-meta .hljs-string,.hljs-regexp,.hljs-string{color:#032f62}.hljs-built_in,.hljs-symbol{color:#e36209}.hljs-code,.hljs-comment,.hljs-formula{color:#6a737d}.hljs-name,.hljs-quote,.hljs-selector-pseudo,.hljs-selector-tag{color:#22863a}.hljs-subst{color:#24292e}.hljs-section{color:#005cc5;font-weight:700}.hljs-bullet{color:#735c0f}.hljs-emphasis{color:#24292e;font-style:italic}.hljs-strong{color:#24292e;font-weight:700}.hljs-addition{color:#22863a;background-color:#f0fff4}.hljs-deletion{color:#b31d28;background-color:#ffeef0}</style>
+
+<style id="blog-mobile-blockquote-fix">
+@media (max-width: 768px) {
+    blockquote,
+    .md-blockquote {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        box-sizing: border-box;
+    }
+
+    blockquote > p,
+    .md-blockquote-p {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+</style>
+
+</head>
+<body>
+  <div style="max-width: 750px; width: 100%; margin: auto; padding: 20px; box-sizing: border-box;">
+    <section class="container">
+      <blockquote class="md-blockquote">
+        <p class="md-blockquote-p">字数 707，阅读大约需 4 分钟</p>
+      </blockquote>
+    <h1 class="h1" data-heading="true" id="0">From Nervousness to Growth: A Reflection on Our Presentation</h1><h2 class="h2" data-heading="true" id="1">An Unexpected Start</h2><p class="p">At first, it seemed almost impossible for me to complete this 15-minute presentation with my partner, Zhu.</p><p class="p">Looking back on the first class, I can still remember the moment when I randomly—but unfortunately—picked the slip with a big, lonely “1” on it. We were the first group, and that immediately made me nervous. Just like last term’s oral test, being first meant that we would have very limited time to prepare. Unlike the other groups, we would not even have the chance to learn from our classmates’ performances beforehand.</p><p class="p">The first challenge was choosing a topic. I brainstormed on my own and even sought some help from a large language model. We came up with many possible ideas, such as Shakespeare, Harry Potter, British humour, and the weather in Great Britain. However, finding a topic that both of us were familiar with turned out to be much harder than expected. After a great deal of discussion, we finally found a balance and decided to take English football as our entry point, hoping to explore British culture through a subject that was both distinctive and engaging.</p><h2 class="h2" data-heading="true" id="2">Preparation, Cooperation, and the Presentation</h2><p class="p">Since I did not know much about English football, Zhu took on a large share of the work. He searched for video clips, designed the slides, and wrote the first drafts of the script. He also left the interaction parts to me, which I truly appreciated.</p><p class="p">For my part, I focused on improving the script. I read it carefully, compared it with the slides, thought about how to attract the audience’s attention, and rewrote many parts in my own words so that I could present them more naturally. It was a long and demanding process, but I can honestly say that I tried my best and brought out the best in myself.</p><p class="p">Then came the day of the presentation. To be honest, I was still not fully confident, and I made some oral mistakes from time to time. As I stepped onto the stage, I felt nervous. Yet when I saw the eyes of our teacher and classmates fixed on us, waiting for our performance, that nervousness gradually turned into courage.</p><p class="p">When it was my turn to speak, I walked to the front and began my part. Our topic was somewhat professional, so I tried to make it livelier by adding guessing games and a cultural quiz. However, the audience did not seem truly involved, and few people were willing to answer. At that moment, I felt a little disappointed. Later, I realized that this was not the audience’s fault. The real problem was that we had not designed those interactive parts well enough. They were not clear, attractive, or easy enough to join in. This experience taught me that interaction in a presentation is not simply about asking questions; it is about designing questions that people genuinely want to answer.</p><h2 class="h2" data-heading="true" id="3">Reflection and Growth</h2><p class="p">After the final words faded, I bowed and stood before our teacher, waiting for comments and suggestions. Although I remained silent on the outside, I was actually eager to hear her feedback.</p><p class="p">Our teacher spoke gently and patiently, pointing out both our strengths and our weaknesses. More importantly, she gave us practical suggestions for improvement. From ways of engaging the audience more effectively to advice on how to design comprehension questions based on video clips, I learned many useful techniques for giving a better presentation.</p><p class="p">So what did this experience mean to me? In my summary for last term’s English course, I wrote that oral speaking and lecturing were still among my weaknesses. This time, I tried to face that weakness directly. Pushing myself forward was not easy, but the process itself was meaningful and rewarding. For the first time, I gained a basic understanding of English football. More importantly, I stepped forward, expressed myself in front of others, and showed the value of teamwork with my partner.</p><p class="p"><strong class="strong">It was only a beginning, but it was a good one.</strong> I believe I can still do more—to become more passionate, more energetic, more open, and, above all, more aware of my own potential.</p><p class="p">March 28th, 2026<br>Calvin Xia</p>
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  
+    <style>
+      .hljs.code__pre > .mac-sign {
+        display: none;
+      }
+    </style>
+  
+    <style>
+      h2 strong {
+        color: inherit !important;
+      }
+    </style>
+  </section>
+  </div>
+</body>
+</html>
