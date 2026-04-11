@@ -1,5 +1,20 @@
 [
   {
+    "id": "20260411-ai-reliance",
+    "title": "我与大语言模型的初次邂逅",
+    "excerpt": "去找寻人类智能中那些无法被人工智能取代的部分，让大语言模型成为辅助工具，更重要的是，保持思考，笔耕不辍。",
+    "category": "生活总结",
+    "tags": [
+      "生活总结",
+      "人工智能",
+      "思考"
+    ],
+    "date": "2026-04-11",
+    "filePath": "blog/20260411-ai-reliance.html",
+    "featured": true,
+    "status": "active"
+  },
+  {
     "id": "20260328-pre-reflection",
     "title": "From Nervousness to Growth: A Reflection on Our Presentation",
     "excerpt": "At first, it seemed almost impossible for me to complete this 15-minute presentation with my partner, Zhu.",
