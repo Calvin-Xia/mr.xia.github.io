@@ -25,6 +25,16 @@
 | Phase 3 | 工具页迁移 | 迁移 tools（计时器+随机选择器）和 markdown-tool 页面 |
 | Phase 4 | 清理与收尾 | 删除旧文件，旧 URL 重定向，CI/CD 更新，文档更新，全站验证 |
 
+### 执行状态
+
+| Phase | 状态 | 说明 |
+|---|---|---|
+| Phase 0 | 已完成 | 已创建 Astro 根目录配置、BaseLayout、共享组件、首页验证页和 `src/styles/global.css`，并通过 `npm run build`、`npm run dev`、`npm run preview` 验证 |
+| Phase 1 | 待开始 | 依赖 Phase 0 输出 |
+| Phase 2 | 待开始 | 依赖 Phase 1 页面和脚本拆分 |
+| Phase 3 | 待开始 | 依赖 Phase 0 布局和脚本组织 |
+| Phase 4 | 待开始 | 依赖 Phase 1-3 完成 |
+
 ### 目标目录结构（迁移后）
 
 ```

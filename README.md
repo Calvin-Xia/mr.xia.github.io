@@ -1,8 +1,8 @@
 # Mr.Xia 个人网站
 
-这是一个静态个人站点仓库，当前用于维护首页、作品页、工具页、文章页，以及一套基于 JSON 的内容索引。
+这是一个静态个人站点仓库，当前用于维护首页、作品页、工具页、文章页，以及一套基于 JSON 的内容索引。仓库已开始迁移到 Astro；Phase 0 已建立 Astro 基础环境，旧 HTML/CSS/JS 页面仍保留并与新项目共存。
 
-站点不依赖构建工具。页面由 HTML、CSS、原生 JavaScript 组成；内容索引和发布辅助流程由 Python 脚本维护。
+旧站页面由 HTML、CSS、原生 JavaScript 组成；Astro 迁移版本由 `src/`、`public/` 和 npm 脚本维护。内容索引和发布辅助流程仍由 Python 脚本维护，后续 Phase 会逐步替换为 Astro 内容集合。
 
 如果你是第一次接手这个仓库，建议先看 [QUICKSTART.md](./QUICKSTART.md)，再按需要查看 [site-maintenance-guide.md](./site-maintenance-guide.md)。
 
@@ -17,6 +17,19 @@ mr.xia.github.io/
 ├── statement.html                # 文章页 / 全站搜索入口
 ├── markdown-to-html-tool.html    # Markdown 转 HTML 工具
 ├── 404.html                      # 404 页面
+├── package.json                  # Astro 项目脚本与依赖
+├── astro.config.mjs              # Astro 站点配置
+├── tsconfig.json                 # Astro TypeScript 配置
+├── src/
+│   ├── components/               # Astro 共享组件
+│   ├── layouts/                  # BaseLayout 等布局
+│   ├── pages/                    # Astro 页面
+│   ├── scripts/                  # Astro 客户端脚本模块
+│   └── styles/global.css         # 从 css/style.css 迁入的全局样式
+├── public/
+│   ├── storage/                  # Astro 静态资源
+│   ├── .well-known/              # 域名/证书验证文件
+│   └── libs/mammoth/             # mammoth 本地回退
 ├── css/
 │   └── style.css                 # 全站样式
 ├── js/
@@ -44,7 +57,20 @@ mr.xia.github.io/
 
 ## 本地预览
 
-推荐始终通过本地服务器预览，避免 `fetch` 读取 JSON 时受到 `file://` 限制。
+Astro 迁移版本：
+
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
+
+默认访问：
+
+- `http://localhost:4321/`
+
+旧 HTML 版本仍可通过本地服务器预览，避免 `fetch` 读取 JSON 时受到 `file://` 限制。
 
 ```bash
 python -m http.server 3001
@@ -60,6 +86,14 @@ python -m http.server 3001
 如果你刚修改了 `js/content-hub.js`、`content/content-manifest.json`，但浏览器里还是旧结果，先做一次强制刷新。必要时可以同步调整 `index.html` 和 `statement.html` 中 `js/content-hub.js?v=...` 的版本戳。
 
 ## 常用命令
+
+Astro 迁移相关命令：
+
+```bash
+npm run dev
+npm run build
+npm run preview
+```
 
 内容维护相关命令都在仓库根目录执行：
 
@@ -133,6 +167,7 @@ python scripts/content_pipeline.py generate-manifest
 在提交或发布前，建议至少做一轮本地检查：
 
 ```bash
+npm run build
 python scripts/content_pipeline.py check
 python -m http.server 3001
 ```
@@ -156,8 +191,9 @@ python -m http.server 3001
 
 ## 仓库说明
 
-- 这是静态站点仓库，不需要打包构建。
+- 这是静态站点仓库；旧站不需要打包构建，Astro 迁移版本需要运行 `npm run build` 生成 `dist/`。
 - 修改页面样式时，优先复用 `css/style.css` 中已有变量和结构。
+- Astro 全局样式入口为 `src/styles/global.css`，Phase 0 中与 `css/style.css` 保持一致。
 - 修改文章内容时，要注意 `blog/blog-files.json` 和 `blog/blog-metadata.json` 保持一致。
 - 修改作品、工具、更新日志相关入口时，要注意同步更新对应 metadata 和 manifest。
 - 仓库已配置内容一致性检查，提交或发起 PR 时会运行 `python scripts/content_pipeline.py check` 并校验 `content/content-manifest.json` 是否已同步更新。

@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import DynamicBackground from '../components/DynamicBackground.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import SkipLink from '../components/SkipLink.astro';
+import TransitionIndicator from '../components/TransitionIndicator.astro';
+
+interface Props {
+    title?: string;
+    description?: string;
+    currentPage?: string;
+}
+
+const {
+    title = 'Mr.Xia - 个人小站',
+    description = 'Mr.Xia的个人网站 - 展示个人作品与创意',
+    currentPage = '',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/png" href="/storage/icon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        <meta name="description" content={description} />
+        <meta name="keywords" content="Mr.Xia, 个人网站, 作品集" />
+        <meta name="author" content="Mr.Xia" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <SkipLink />
+        <DynamicBackground />
+        <Header currentPage={currentPage} />
+        <main id="main-content" class="site-main" tabindex="-1">
+            <slot />
+        </main>
+        <Footer />
+        <TransitionIndicator />
+    </body>
+</html>

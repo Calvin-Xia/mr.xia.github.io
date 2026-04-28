@@ -1,23 +1,29 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a static website with page files at the root and shared assets in dedicated folders.
+This repository is a static website currently migrating from root-level HTML/CSS/vanilla JS to Astro. Keep legacy files and Astro files coexisting until the cleanup phase.
 - Root pages: `index.html`, `about.html`, `Works.html`, `timetable.html`, `statement.html`, `404.html`.
 - Styles: `css/style.css`.
 - Scripts: `js/main.js`, `js/navigation.js`.
+- Astro config and source: `package.json`, `astro.config.mjs`, `tsconfig.json`, `src/`.
+- Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, and selected local fallback libraries.
 - Blog content and metadata: `blog/` (including `blog-files.json` and `blog-metadata.json`).
 - Other assets: `storage/`, `UpdateLog/`, `.well-known/`.
 
 When adding new files, keep them in the existing folder conventions and use relative links.
 
 ## Build, Test, and Development Commands
-No build step is required; this is plain HTML/CSS/JS.
-- `python -m http.server 8000`: Start a local static server.
-- `npx http-server`: Alternative local server for Node users.
-- Open `http://localhost:8000` and verify pages manually.
+Legacy pages can still be previewed without a build step; Astro pages require npm scripts.
+- `npm install`: Install Astro and npm-managed libraries.
+- `npm run dev`: Start the Astro development server, usually at `http://localhost:4321`.
+- `npm run build`: Build the Astro static output into `dist/`.
+- `npm run preview`: Preview the Astro production build locally.
+- `python -m http.server 8000`: Start a local static server for legacy HTML pages.
+- `npx http-server`: Alternative local server for legacy static preview.
 
 ## Coding Style & Naming Conventions
 - Languages: HTML5, CSS3, vanilla JavaScript (ES6+).
+- Astro migration files use Astro components and TypeScript modules.
 - Indentation: 4 spaces across HTML, CSS, and JS.
 - Naming: prefer `kebab-case` for asset files; keep existing page naming patterns (for example `Works.html`).
 - Reuse CSS variables in `:root` before introducing one-off colors/spacings.
@@ -26,6 +32,7 @@ No build step is required; this is plain HTML/CSS/JS.
 ## Testing Guidelines
 There is no automated test framework configured in this repository.
 Before submitting changes:
+- Run `npm run build` for Astro changes.
 - Check layout and behavior on desktop and mobile widths.
 - Validate navigation and interactive components (for example timer/tool interactions).
 - Confirm browser console has no new errors.

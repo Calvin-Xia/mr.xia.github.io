@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+    title="Mr.Xia - 个人小站"
+    description="Mr.Xia的个人网站 - 展示个人作品与创意"
+    currentPage="home"
+>
+    <section class="hero hero-home page-intro page-intro--center">
+        <p class="hero-kicker">你好，欢迎来访</p>
+        <h1 class="page-title">欢迎来到 Mr.Xia 的小站</h1>
+        <p class="page-subtitle">
+            这里集中整理我的作品、常用工具与文章索引，方便快速浏览与持续更新。
+        </p>
+        <div class="hero-status">
+            <div id="currentTime" class="current-time">加载中...</div>
+        </div>
+        <div class="action-row hero-actions">
+            <a href="/works/" class="btn" data-history="true" data-title="作品">查看作品</a>
+            <a href="/about/" class="btn btn-secondary" data-history="true" data-title="关于">关于本站</a>
+        </div>
+    </section>
+
+    <section class="section-stack home-discovery">
+        <div class="cards-grid cards-grid--quick">
+            <div class="card quick-card">
+                <h3>个人作品</h3>
+                <p>集中查看我正在维护的项目、实验与创意实践，是了解站点内容结构最快的入口。</p>
+                <div class="action-row">
+                    <a href="/works/" class="btn" data-history="true" data-title="作品">查看作品</a>
+                </div>
+            </div>
+
+            <div class="card quick-card">
+                <h3>实用工具</h3>
+                <p>在线计时器和随机选择器等轻量工具，适合需要马上开始操作时使用。</p>
+                <div class="action-row">
+                    <a href="/tools/" class="btn btn-secondary" data-history="true" data-title="工具">使用工具</a>
+                </div>
+            </div>
+
+            <div class="card quick-card">
+                <h3>网站文章</h3>
+                <p>按关键词和标签快速定位文章内容，也可以从最近更新的文章继续阅读。</p>
+                <div class="action-row">
+                    <a href="/articles/" class="btn btn-outline" data-history="true" data-title="文章">查看文章</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="shadowbox section-stack home-search-panel">
+        <div class="home-section-head">
+            <div>
+                <p class="section-kicker">全站搜索</p>
+                <h2 class="section-heading">从一个入口搜索文章、作品和工具</h2>
+            </div>
+            <a href="/articles/#content-search" class="btn btn-outline" data-history="true" data-title="文章">
+                搜索全站内容
+            </a>
+        </div>
+        <p class="section-copy">
+            文章页现在兼任内容中枢，默认展示博客文章，也支持跨栏目搜索作品和工具。
+        </p>
+    </section>
+
+    <section id="recent-updates" class="section-stack home-updates">
+        <div class="home-section-head">
+            <div>
+                <p class="section-kicker">最近更新</p>
+                <h2 class="section-heading">最新整理的内容</h2>
+            </div>
+            <a href="/articles/#content-search" class="btn btn-secondary" data-history="true" data-title="文章">
+                查看更多内容
+            </a>
+        </div>
+        <div id="recent-updates-list" class="cards-grid home-updates-grid" aria-live="polite">
+            <div class="card recent-update-card recent-update-card--empty">
+                <p class="recent-update-title">最近更新正在整理中</p>
+                <p class="recent-update-excerpt">内容索引生成后，这里会显示最新的文章、作品和更新日志。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="shadowbox section-stack home-summary">
+        <h3>关于本站</h3>
+        <p class="indent">
+            这里主要用来整理作品、工具入口和文章索引，整体保持简洁直达，方便日常浏览与维护。
+        </p>
+
+        <div class="card-note">
+            <p>
+                想看站点说明、使用约定和更多背景信息，可以直接进入关于页。
+            </p>
+            <div class="action-row">
+                <a href="/about/" class="btn btn-primary" data-history="true" data-title="关于">
+                    查看关于页面
+                </a>
+            </div>
+        </div>
+
+        <p class="indent">
+            项目地址：<a
+                href="https://github.com/Calvin-Xia/mr.xia.github.io"
+                target="_blank"
+                rel="noopener"
+            >GitHub Repository</a>
+            ，当前持续维护中。
+        </p>
+    </section>
+</BaseLayout>
+
+<script>
+    import { initEmailProtection } from '../scripts/email-protection';
+    import { initButtonRipples, initPageAnimations } from '../scripts/page-animations';
+    import { initTimeDisplay } from '../scripts/time-display';
+
+    function safeInit(moduleName: string, initFn: () => void): void {
+        try {
+            initFn();
+        } catch (error) {
+            console.error(`[模块初始化错误] ${moduleName}:`, error);
+        }
+    }
+
+    function initHomePage(): void {
+        safeInit('TimeDisplay', initTimeDisplay);
+        safeInit('PageAnimations', initPageAnimations);
+        safeInit('EmailProtection', initEmailProtection);
+        safeInit('ButtonRipples', initButtonRipples);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHomePage, { once: true });
+    } else {
+        initHomePage();
+    }
+</script>

@@ -1,5 +1,12 @@
 # Phase 0：环境搭建与验证 Spec
 
+## Status
+
+- 状态：已完成
+- 完成日期：2026-04-28
+- 验证：`npm run build`、`npm run dev`、`npm run preview` 均已执行；首页标题、时间显示、导航当前态和控制台错误已通过浏览器验证。
+- 说明：旧 HTML/CSS/JS 文件保持共存；Astro 新文件作为后续 Phase 的迁移底座。
+
 ## Why
 将现有纯 HTML/CSS/JS 静态站点迁移到 Astro 框架，需要一个可运行的基础环境作为后续所有迁移工作的底座。此阶段需初始化 Astro 项目、迁入现有 CSS 资产、建立共享布局组件，并验证 GitHub Pages 部署配置正确。
 
