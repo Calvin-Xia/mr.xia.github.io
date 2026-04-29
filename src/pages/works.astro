@@ -1,0 +1,187 @@
+---
+import PageIntro from '../components/PageIntro.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Mr.Xia - 个人作品" description="Mr.Xia的个人作品展示" currentPage="works">
+    <PageIntro
+        kicker="项目归档"
+        title="个人作品"
+        subtitle="这里收录我正在维护与持续更新的项目、实验与创意实践。"
+    />
+
+    <section class="section-stack project-list">
+        <div class="shadowbox status-panel project-status-panel">
+            <p class="section-kicker">持续维护</p>
+            <h2 class="section-heading">作品陆续更新中...</h2>
+            <p class="section-copy">
+                当前优先展示仍在维护或可直接访问的项目，后续会继续补充更多实验与归档内容。
+            </p>
+        </div>
+
+        <div id="work-fingerprint-app" class="card project-card project-card--featured">
+            <div class="project-card-layout">
+                <div class="project-card-copy">
+                    <p class="card-kicker">Android 应用</p>
+                    <h3>指纹验证应用</h3>
+                    <p>
+                        使用 FusionApp 2.0 编写的指纹验证框架式应用，聚焦轻量验证流程与持续版本迭代。
+                    </p>
+                    <p class="project-meta">适用场景：本地安装体验、版本更新记录、历史功能追踪</p>
+                </div>
+                <aside class="project-card-side" aria-label="项目摘要与操作">
+                    <div class="project-tag-list" aria-label="项目标签">
+                        <span class="project-tag">Android APK</span>
+                        <span class="project-tag">FusionApp 2.0</span>
+                        <span class="project-tag">持续更新</span>
+                    </div>
+                    <p class="project-side-note">
+                        面向本地安装与版本回顾，适合快速下载、回看迭代与验证当前功能状态。
+                    </p>
+                    <div class="action-row project-card-actions">
+                        <a
+                            href="/storage/指纹验证-myapp.zhiwenyanzheng-2.0.0beta-48.apk"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn"
+                        >
+                            下载应用
+                        </a>
+                        <a href="/UpdateLog/fingerprint-app-update-log.html" class="btn btn-outline">
+                            查看更新日志
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <div id="work-favorites-collection" class="card project-card">
+            <div class="project-card-layout">
+                <div class="project-card-copy">
+                    <p class="card-kicker">收藏与导航</p>
+                    <h3>网址收藏夹</h3>
+                    <p>
+                        包含静态版与动态版两种实现，分别对应纯前端部署和 Next.js 驱动的完整网页应用。
+                    </p>
+                    <p class="project-meta">技术形态：静态 HTML/CSS/JS 与 Next.js 双版本并行维护</p>
+                </div>
+                <aside class="project-card-side" aria-label="项目摘要与操作">
+                    <div class="project-tag-list" aria-label="项目标签">
+                        <span class="project-tag">静态版</span>
+                        <span class="project-tag">动态版</span>
+                        <span class="project-tag">Next.js</span>
+                    </div>
+                    <p class="project-side-note">
+                        适合对比轻量部署与完整应用架构，也便于继续扩展收藏、标签与登录能力。
+                    </p>
+                    <div class="action-row project-card-actions">
+                        <a
+                            href="https://github.com/Calvin-Xia/listmyfavorites.github.io/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn"
+                        >
+                            静态网页 GitHub Repository
+                        </a>
+                        <a
+                            href="https://github.com/Calvin-Xia/VibeVault2/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn btn-outline"
+                        >
+                            动态网页 GitHub Repository
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <div id="work-class1-map" class="card project-card">
+            <div class="project-card-layout">
+                <div class="project-card-copy">
+                    <p class="card-kicker">班级地图</p>
+                    <h3>金鹰一班蹭饭地图</h3>
+                    <p>
+                        以可视化地图的方式动态展示高 2022 级 1 班毕业去向，兼顾纪念性与可访问性。
+                    </p>
+                    <p class="project-meta">内容重点：毕业去向展示、在线访问、公开维护</p>
+                </div>
+                <aside class="project-card-side" aria-label="项目摘要与操作">
+                    <div class="project-tag-list" aria-label="项目标签">
+                        <span class="project-tag">公开站点</span>
+                        <span class="project-tag">地图展示</span>
+                        <span class="project-tag">纪念项目</span>
+                    </div>
+                    <p class="project-side-note">
+                        更偏向纪念性与浏览体验，适合直接访问，也方便继续维护班级去向信息。
+                    </p>
+                    <div class="action-row project-card-actions">
+                        <a
+                            href="https://github.com/Calvin-Xia/class1forever.github.io/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn"
+                        >
+                            GitHub Repository
+                        </a>
+                        <a
+                            href="https://class1forever.pages.dev/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn btn-outline"
+                        >
+                            访问地址
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <div id="work-button-block-designer" class="card project-card">
+            <div class="project-card-layout">
+                <div class="project-card-copy">
+                    <p class="card-kicker">设计工具</p>
+                    <h3>网页按钮块设计器</h3>
+                    <p>
+                        使用 Next.js 编写的网页按钮块设计器，用于更快生成带视觉层次的按钮与组件块样式。
+                    </p>
+                    <p class="project-meta">适合场景：快速原型、按钮样式探索、组件视觉试验</p>
+                </div>
+                <aside class="project-card-side" aria-label="项目摘要与操作">
+                    <div class="project-tag-list" aria-label="项目标签">
+                        <span class="project-tag">Next.js</span>
+                        <span class="project-tag">设计工具</span>
+                        <span class="project-tag">在线体验</span>
+                    </div>
+                    <p class="project-side-note">
+                        更适合快速试样式、搭原型与验证按钮层次，侧重输出效率与可视反馈。
+                    </p>
+                    <div class="action-row project-card-actions">
+                        <a
+                            href="https://github.com/Calvin-Xia/VibeUIgenerator/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn"
+                        >
+                            GitHub Repository
+                        </a>
+                        <a
+                            href="https://vibeui-generator.pages.dev/"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn btn-outline"
+                        >
+                            访问地址
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <div class="page-return">
+        <a href="/" class="btn btn-secondary" data-history="true" data-title="首页">
+            ← 返回首页
+        </a>
+    </div>
+</BaseLayout>

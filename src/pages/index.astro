@@ -112,9 +112,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-    import { initEmailProtection } from '../scripts/email-protection';
-    import { initButtonRipples, initPageAnimations } from '../scripts/page-animations';
-    import { initTimeDisplay } from '../scripts/time-display';
+    import { initButtonRipples, PageAnimations } from '../scripts/page-animations';
+    import { TimeDisplay } from '../scripts/time-display';
 
     function safeInit(moduleName: string, initFn: () => void): void {
         try {
@@ -125,9 +124,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     const homePageModules = [
-        { name: 'TimeDisplay', init: initTimeDisplay },
-        { name: 'PageAnimations', init: initPageAnimations },
-        { name: 'EmailProtection', init: initEmailProtection },
+        { name: 'TimeDisplay', init: () => TimeDisplay.init() },
+        { name: 'PageAnimations', init: () => PageAnimations.init() },
         { name: 'ButtonRipples', init: initButtonRipples },
     ];
 

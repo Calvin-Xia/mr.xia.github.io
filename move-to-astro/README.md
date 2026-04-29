@@ -30,7 +30,7 @@
 | Phase | 状态 | 说明 |
 |---|---|---|
 | Phase 0 | 已完成 | 已创建 Astro 根目录配置、BaseLayout、共享组件、首页验证页和 `src/styles/global.css`，并通过 `npm run build`、`npm run dev`、`npm run preview` 验证 |
-| Phase 1 | 待开始 | 依赖 Phase 0 输出 |
+| Phase 1 | 已完成 | 已迁移 about、works、404、styleguide 页面，完善首页脚本接线并完成脚本模块对象导出 |
 | Phase 2 | 待开始 | 依赖 Phase 1 页面和脚本拆分 |
 | Phase 3 | 待开始 | 依赖 Phase 0 布局和脚本组织 |
 | Phase 4 | 待开始 | 依赖 Phase 1-3 完成 |

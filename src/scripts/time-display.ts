@@ -36,22 +36,32 @@ function updateTime(): void {
     `;
 }
 
+export const TimeDisplay = {
+    init(): void {
+        if (intervalId) {
+            window.clearInterval(intervalId);
+        }
+
+        updateTime();
+        intervalId = window.setInterval(updateTime, 1000);
+
+        window.addEventListener(
+            'beforeunload',
+            () => {
+                if (intervalId) {
+                    window.clearInterval(intervalId);
+                    intervalId = undefined;
+                }
+            },
+            { once: true },
+        );
+    },
+
+    updateTime,
+    formatTime,
+    formatDate,
+};
+
 export function initTimeDisplay(): void {
-    if (intervalId) {
-        window.clearInterval(intervalId);
-    }
-
-    updateTime();
-    intervalId = window.setInterval(updateTime, 1000);
-
-    window.addEventListener(
-        'beforeunload',
-        () => {
-            if (intervalId) {
-                window.clearInterval(intervalId);
-                intervalId = undefined;
-            }
-        },
-        { once: true },
-    );
+    TimeDisplay.init();
 }

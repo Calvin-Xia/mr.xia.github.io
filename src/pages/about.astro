@@ -1,0 +1,63 @@
+---
+import PageIntro from '../components/PageIntro.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于本站 - Mr.Xia" description="关于本站 - Mr.Xia" currentPage="about">
+    <PageIntro
+        kicker="站点说明"
+        title="关于本站"
+        subtitle="版权、隐私、免责声明与联系方式都集中在这里。"
+    />
+
+    <section class="shadowbox legal-stack">
+        <h2>版权声明</h2>
+        <p class="indent">
+            本网站所有原创内容版权归
+            <a href="https://github.com/calvin-xia" target="_blank" rel="noopener">Mr.Xia</a>
+            所有。未经许可，请勿转载或商业使用。
+        </p>
+
+        <h2>隐私政策</h2>
+        <p class="indent">
+            本站尊重并保护所有访问者的隐私。我们不会收集您的个人信息，也不会使用 Cookie 追踪您的行为。
+        </p>
+
+        <h2>免责声明</h2>
+        <p class="indent">
+            本站内容仅供学习交流使用，不构成任何专业建议。访问者使用本站内容产生的任何后果，本站不承担责任。
+        </p>
+
+        <h2>联系方式</h2>
+        <p class="indent">如有任何问题或建议，欢迎通过以下方式联系：</p>
+        <p class="indent">邮箱：<span data-email-placeholder></span>来联系我</p>
+    </section>
+
+    <div class="page-return">
+        <a href="/" class="btn btn-secondary" data-history="true" data-title="首页">
+            ← 返回首页
+        </a>
+    </div>
+</BaseLayout>
+
+<script>
+    import { EmailProtection } from '../scripts/email-protection';
+
+    function safeInit(moduleName: string, initFn: () => void): void {
+        try {
+            initFn();
+        } catch (error) {
+            console.error(`[模块初始化错误] ${moduleName}:`, error);
+        }
+    }
+
+    function initAboutPage(): void {
+        safeInit('EmailProtection', () => EmailProtection.init());
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAboutPage, { once: true });
+    } else {
+        initAboutPage();
+    }
+</script>
