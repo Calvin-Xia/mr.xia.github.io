@@ -2,17 +2,21 @@ const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四
 
 let intervalId: number | undefined;
 
+function pad2(value: number): string {
+    return String(value).padStart(2, '0');
+}
+
 function formatTime(date: Date): string {
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const hours = pad2(date.getHours());
+    const minutes = pad2(date.getMinutes());
+    const seconds = pad2(date.getSeconds());
     return `${hours}:${minutes}:${seconds}`;
 }
 
 function formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = pad2(date.getMonth() + 1);
+    const day = pad2(date.getDate());
     const weekday = weekdays[date.getDay()];
     return `${year}-${month}-${day} ${weekday}`;
 }

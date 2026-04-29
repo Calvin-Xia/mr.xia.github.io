@@ -1,3 +1,4 @@
+// Visual obfuscation only, not a security boundary against crawlers.
 const encodedEmail = 'cGVyc29uYWxwYWdlZmVlZGJhY2tAY2FsdmluLXhpYS5jb20=';
 
 export function initEmailProtection(): void {

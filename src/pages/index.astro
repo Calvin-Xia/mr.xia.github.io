@@ -124,11 +124,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }
     }
 
+    const homePageModules = [
+        { name: 'TimeDisplay', init: initTimeDisplay },
+        { name: 'PageAnimations', init: initPageAnimations },
+        { name: 'EmailProtection', init: initEmailProtection },
+        { name: 'ButtonRipples', init: initButtonRipples },
+    ];
+
     function initHomePage(): void {
-        safeInit('TimeDisplay', initTimeDisplay);
-        safeInit('PageAnimations', initPageAnimations);
-        safeInit('EmailProtection', initEmailProtection);
-        safeInit('ButtonRipples', initButtonRipples);
+        homePageModules.forEach(({ name, init }) => {
+            safeInit(name, init);
+        });
     }
 
     if (document.readyState === 'loading') {

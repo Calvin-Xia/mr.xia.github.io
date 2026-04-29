@@ -1,3 +1,8 @@
+const SECTION_STAGGER_MS = 100;
+const SHADOWBOX_STAGGER_MS = 150;
+const SHADOWBOX_OFFSET_MS = 500;
+const CARD_STAGGER_S = 0.1;
+
 export function initPageAnimations(): void {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return;
@@ -8,17 +13,17 @@ export function initPageAnimations(): void {
         element.style.animation = '';
         window.setTimeout(() => {
             element.classList.add('fade-in-up');
-        }, index * 100);
+        }, index * SECTION_STAGGER_MS);
     });
 
     document.querySelectorAll<HTMLElement>('.shadowbox:not(.markdown-container)').forEach((element, index) => {
         window.setTimeout(() => {
             element.classList.add('fade-in-up');
-        }, index * 150 + 500);
+        }, index * SHADOWBOX_STAGGER_MS + SHADOWBOX_OFFSET_MS);
     });
 
     document.querySelectorAll<HTMLElement>('.card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animationDelay = `${index * CARD_STAGGER_S}s`;
     });
 }
 

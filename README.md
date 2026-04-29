@@ -196,4 +196,4 @@ python -m http.server 3001
 - Astro 全局样式入口为 `src/styles/global.css`，Phase 0 中与 `css/style.css` 保持一致。
 - 修改文章内容时，要注意 `blog/blog-files.json` 和 `blog/blog-metadata.json` 保持一致。
 - 修改作品、工具、更新日志相关入口时，要注意同步更新对应 metadata 和 manifest。
-- 仓库已配置内容一致性检查，提交或发起 PR 时会运行 `python scripts/content_pipeline.py check` 并校验 `content/content-manifest.json` 是否已同步更新。
+- 仓库已配置内容一致性检查和 Astro 构建检查，提交或发起 PR 时会运行 `python scripts/content_pipeline.py check`、`npm run build`，并校验 `content/content-manifest.json` 与 `dist/index.html`。
