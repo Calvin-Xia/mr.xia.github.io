@@ -1,35 +1,51 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a static website with page files at the root and shared assets in dedicated folders.
+This repository is a static website currently migrating from root-level HTML/CSS/vanilla JS to Astro. Keep legacy files and Astro files coexisting until the cleanup phase.
 - Root pages: `index.html`, `about.html`, `Works.html`, `timetable.html`, `statement.html`, `404.html`.
 - Styles: `css/style.css`.
 - Scripts: `js/main.js`, `js/navigation.js`.
-- Blog content and metadata: `blog/` (including `blog-files.json` and `blog-metadata.json`).
+- Astro config and source: `package.json`, `astro.config.mjs`, `tsconfig.json`, `src/`.
+- Astro content collections: `src/content.config.ts`, `src/content/blog/`, `src/content/works/`, `src/content/tools/`, `src/content/updates/`.
+- Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, and selected local fallback libraries.
+- Legacy blog content and metadata: `blog/` (including `blog-files.json` and `blog-metadata.json`) remain until cleanup.
+- Publishing and local authoring scripts: `scripts/publish-post.js`, `scripts/post-utils.js`, `tools/api-server.js`.
 - Other assets: `storage/`, `UpdateLog/`, `.well-known/`.
 
 When adding new files, keep them in the existing folder conventions and use relative links.
 
 ## Build, Test, and Development Commands
-No build step is required; this is plain HTML/CSS/JS.
-- `python -m http.server 8000`: Start a local static server.
-- `npx http-server`: Alternative local server for Node users.
-- Open `http://localhost:8000` and verify pages manually.
+Legacy pages can still be previewed without a build step; Astro pages require npm scripts.
+- `npm install`: Install Astro and npm-managed libraries.
+- `npm run dev`: Start the Astro development server, usually at `http://localhost:4321`.
+- `npm run build`: Build the Astro static output into `dist/`.
+- `npm run preview`: Preview the Astro production build locally.
+- `npm test`: Run Node test suites for content migration, publishing, and local API behavior.
+- `npm run test:coverage`: Run the same tests with Node's experimental coverage report.
+- `npm run api`: Start the local new-post API server on `127.0.0.1:4322`.
+- `npm run publish -- --dry-run <obsidian-post-dir>`: Preview an Obsidian→R2 publish plan without writing files or uploading.
+- `npm run publish <obsidian-post-dir>`: Publish an Obsidian post copy into Astro content and upload assets to R2.
+- `python -m http.server 8000`: Start a local static server for legacy HTML pages.
+- `npx http-server`: Alternative local server for legacy static preview.
 
 ## Coding Style & Naming Conventions
 - Languages: HTML5, CSS3, vanilla JavaScript (ES6+).
+- Astro migration files use Astro components and TypeScript modules.
 - Indentation: 4 spaces across HTML, CSS, and JS.
 - Naming: prefer `kebab-case` for asset files; keep existing page naming patterns (for example `Works.html`).
 - Reuse CSS variables in `:root` before introducing one-off colors/spacings.
 - Keep JS organized by feature modules, matching `js/main.js` style.
 
 ## Testing Guidelines
-There is no automated test framework configured in this repository.
 Before submitting changes:
+- Run `npm test` for code, content, publishing, or local API changes.
+- Run `npm run test:coverage` when modifying file operation features or review-driven test coverage.
+- Run `npm run build` for Astro changes.
 - Check layout and behavior on desktop and mobile widths.
 - Validate navigation and interactive components (for example timer/tool interactions).
 - Confirm browser console has no new errors.
-- For blog updates, ensure both `blog/blog-files.json` and `blog/blog-metadata.json` are updated consistently.
+- For Astro blog updates, ensure `src/content/blog/*.md` frontmatter is valid.
+- For legacy blog updates, ensure both `blog/blog-files.json` and `blog/blog-metadata.json` remain consistent.
 
 ## CI/CD Requirements
 When implementing or modifying file operation features (such as content pipelines, build scripts, data generators, or any logic that reads/writes project files), a corresponding CI/CD configuration and workflow must be provided alongside the implementation. These CI/CD components should:
@@ -59,7 +75,8 @@ After completing a phased milestone or a significant feature:
 - Update affected spec files, task lists, and checklists to reflect the new state (mark completed items, remove stale entries, add follow-up work).
 - If a plan document exists (under `.trae/documents/`), update its status and progress summary.
 - Review `AGENTS.md` and `README.md` and update them if the project structure, build commands, or conventions have changed.
-- For blog or content changes, ensure `blog/blog-files.json` and `blog/blog-metadata.json` remain consistent with the actual content files.
+- For Astro blog or content changes, ensure `src/content/` entries match their collection schema and related phase docs are updated.
+- For legacy blog or content changes, ensure `blog/blog-files.json`, `blog/blog-metadata.json`, and `content/content-manifest.json` remain consistent.
 
 ## Security & Configuration Tips
 - Do not commit secrets or private credentials.

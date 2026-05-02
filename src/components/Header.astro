@@ -1,0 +1,38 @@
+---
+interface Props {
+    currentPage?: string;
+}
+
+const { currentPage = '' } = Astro.props;
+
+const navItems = [
+    { label: '首页', href: '/', page: 'home' },
+    { label: '作品', href: '/works/', page: 'works' },
+    { label: '工具', href: '/tools/', page: 'tools' },
+    { label: '文章', href: '/articles/', page: 'articles' },
+    { label: '关于', href: '/about/', page: 'about' },
+];
+---
+
+<header>
+    <nav aria-label="主导航">
+        <div class="logo">Mr.Xia</div>
+        <ul class="nav-links" role="menubar">
+            {
+                navItems.map((item) => (
+                    <li role="none">
+                        <a
+                            href={item.href}
+                            data-history="true"
+                            data-title={item.label}
+                            aria-current={currentPage === item.page ? 'page' : undefined}
+                            role="menuitem"
+                        >
+                            {item.label}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+</header>

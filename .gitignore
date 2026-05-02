@@ -24,3 +24,11 @@ temp/
 .npm-cache/
 prd/
 
+# Astro / Node
+.astro/
+dist/
+node_modules/
+
+# Local secrets
+.env
+
