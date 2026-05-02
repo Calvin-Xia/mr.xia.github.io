@@ -34,6 +34,14 @@
   - [ ] SubTask 2.5.4.6: 点击目录项平滑滚动到标题，并更新 URL hash
   - [ ] SubTask 2.5.4.7: 对标题少于 3 个的短文章隐藏侧栏目录，只保留正文
 
+- [ ] Task 2.5.4.5: 行内 TeX 公式渲染修复
+  - [ ] SubTask 2.5.4.5.1: 安装 `remark-math` 和 `rehype-katex` 为 npm 依赖
+  - [ ] SubTask 2.5.4.5.2: 在 `astro.config.mjs` 的 markdown 配置中注册 remark-math 和 rehype-katex 插件
+  - [ ] SubTask 2.5.4.5.3: 在文章页面（`articles/[...slug].astro`）或 BaseLayout 中引入 `katex/dist/katex.min.css`
+  - [ ] SubTask 2.5.4.5.4: 补充 KaTeX CSS 变量适配，确保公式颜色、大小与站点主题一致
+  - [ ] SubTask 2.5.4.5.5: 验证行内 `$...$` 和块级 `$$...$$` 公式在 dev 和 build 下均正确渲染
+  - [ ] SubTask 2.5.4.5.6: 验证 CSS 加载失败时公式降级为原始文本
+
 - [ ] Task 2.5.5: 集成、验证与文档
   - [ ] SubTask 2.5.5.1: 创建 `src/lib/article-enhancements/article-enhancements.js` 统一初始化入口
   - [ ] SubTask 2.5.5.2: 在 `src/pages/articles/[...slug].astro` 调用统一初始化入口
@@ -47,5 +55,6 @@
 
 - [Task 2.5.3] should run before [Task 2.5.4]
 - [Task 2.5.1] and [Task 2.5.3] can be implemented independently
+- [Task 2.5.4.5] (TeX 公式修复) 独立于其他任务，可先行实施
 - [Task 2.5.2] should be integrated after [Task 2.5.1, Task 2.5.3, Task 2.5.4] so re-initialization hooks are known
 - [Task 2.5.5] depends on all previous tasks

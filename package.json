@@ -21,7 +21,8 @@
         "dompurify": "^3.3.1",
         "highlight.js": "^11.11.1",
         "katex": "^0.16.25",
-        "marked": "^17.0.1"
+        "marked": "^17.0.1",
+        "wrangler": "^4.87.0"
     },
     "devDependencies": {
         "@aws-sdk/client-s3": "^3.1039.0",

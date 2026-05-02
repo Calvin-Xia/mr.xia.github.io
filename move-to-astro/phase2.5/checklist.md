@@ -44,3 +44,13 @@
 - [ ] `npm run build` 通过且无新增警告
 - [ ] 浏览器验证桌面宽度、平板宽度和手机宽度
 - [ ] Phase 2.5 文档状态已更新
+
+## 行内 TeX 公式渲染
+- [ ] `remark-math` 和 `rehype-katex` 已安装为 npm dependencies
+- [ ] `astro.config.mjs` markdown 配置已注册两个插件
+- [ ] KaTeX CSS 已在文章页正确引入，不阻塞页面渲染
+- [ ] 行内公式 `$...$` 在 dev 和 build 下正确渲染为行内数学公式
+- [ ] 块级公式 `$$...$$` 在 dev 和 build 下正确渲染为居中数学公式
+- [ ] 公式颜色、字体大小与站点整体主题适配
+- [ ] KaTeX CSS 加载失败时公式降级为可读原始文本
+- [ ] 无 KaTeX 渲染导致的 build 警告或错误

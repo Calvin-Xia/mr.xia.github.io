@@ -13,6 +13,24 @@ Phase 2 已完成内容集合、文章列表、文章详情页和搜索能力。
 - 标题层级排版优化：按层级增加适度文字间隔，悬浮时显示 `#` 锚点
 - 长文侧栏目录：按标题跳转、当前阅读位置高亮、阅读进度显示
 
+## Bug Fix: 行内 TeX 公式渲染
+
+### 问题
+
+`package.json` 中已安装 `katex` (v0.16.25) 但从未被任何 Astro 组件引用。Astro 的 Markdown 渲染管线（`astro.config.mjs`）没有配置 `remark-math` 和 `rehype-katex`，也没有在客户端调用 `renderMathInElement`。导致博客文章中所有 `$...$`（行内公式）和 `$$...$$`（块级公式）以原始文本形式显示，不渲染为数学公式。
+
+受影响文章：`20260312-返校宣讲回顾.md` 中的 `$Momentous\ but\ Momentary$` 等。
+
+### 推荐方案：服务端渲染（remark-math + rehype-katex）
+
+在 `astro.config.mjs` 的 markdown 管线中注册 `remark-math` 和 `rehype-katex` 插件，公式在构建时预渲染为 KaTeX HTML。同时在文章页面或 BaseLayout 中引入 KaTeX CSS。
+
+**优势**：纯静态输出，零客户端 JS 依赖，公式在无 JS 环境下也能显示。
+
+### 备选方案：客户端渲染
+
+在 `articles/[...slug].astro` 中加载 KaTeX CSS/JS，对 `.markdown-content` 调用 `renderMathInElement`。适合需要动态渲染的场合，但增加客户端体积。
+
 ## Non-Goals
 
 - 不引入 React/Vue 等重型运行时
@@ -112,6 +130,22 @@ Phase 2 已完成内容集合、文章列表、文章详情页和搜索能力。
 - **WHEN** 视口宽度不足以显示侧栏
 - **THEN** 目录折叠为浮动按钮或文章顶部折叠区
 - **AND** 展开后不遮挡正文主要阅读区域
+
+### Requirement: 行内 TeX 公式渲染
+
+#### Scenario: 服务端渲染行内公式
+- **WHEN** 文章 Markdown 包含 `$...$` 行内数学公式
+- **THEN** 构建时通过 `remark-math` + `rehype-katex` 预渲染为 KaTeX HTML
+- **AND** 页面正确引入 KaTeX CSS 使公式样式正常
+
+#### Scenario: 服务端渲染块级公式
+- **WHEN** 文章 Markdown 包含 `$$...$$` 块级数学公式
+- **THEN** 构建时渲染为 display-mode KaTeX HTML
+- **AND** 公式在页面中居中显示，与正文间距合理
+
+#### Scenario: 降级与兜底
+- **WHEN** KaTeX CSS 加载失败或浏览器不支持
+- **THEN** 公式仍以原始 LaTeX 文本显示，不影响正文阅读
 
 ## Open Decisions
 
