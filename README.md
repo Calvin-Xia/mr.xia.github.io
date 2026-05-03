@@ -1,6 +1,6 @@
 # Mr.Xia 个人网站
 
-这是一个静态个人站点仓库，正在从根目录 HTML/CSS/vanilla JS 迁移到 Astro。Phase 2 已完成：Astro 内容集合已接管博客、作品、工具和更新日志的数据层，`/articles/`、文章详情页、首页最近更新、新建文章工具和 Obsidian→R2 发布管线已经可用。
+这是一个静态个人站点仓库，正在从根目录 HTML/CSS/vanilla JS 迁移到 Astro。Phase 2 已完成：Astro 内容集合已接管博客、作品、工具和更新日志的数据层，`/articles/`、文章详情页、首页最近更新、新建文章工具和 Obsidian→R2 发布管线已经可用。Phase 2.5 已完成文章阅读体验增强：图片灯箱、标题锚点、阅读目录、阅读进度、文章切换和 TeX 公式渲染已经接入 Astro 文章页。
 
 旧 HTML/JSON/Python 管线仍保留到 Phase 4 清理阶段，用于兼容旧页面和旧 URL。新开发优先放在 `src/`、`src/content/`、`scripts/*.js` 和 `tools/` 中。
 
@@ -15,9 +15,9 @@ mr.xia.github.io/
 │   ├── content/                  # blog / works / tools / updates 内容集合
 │   ├── components/               # Astro 共享组件
 │   ├── layouts/                  # BaseLayout 等布局
-│   ├── lib/                      # 内容转换、排序、Markdown 增强工具
+│   ├── lib/                      # 内容转换、排序、Markdown 与文章体验增强工具
 │   ├── pages/                    # Astro 页面与动态路由
-│   ├── scripts/                  # Astro 客户端脚本
+│   ├── scripts/                  # Astro 客户端脚本和文章运行时
 │   └── styles/global.css         # Astro 全局样式
 ├── scripts/                      # 发布、slug、Markdown、Content-Type 工具
 ├── tools/api-server.js           # 本地 new-post API
@@ -58,7 +58,7 @@ python -m http.server 3001
 
 复制 `.env.example` 为 `.env`，填入本机配置和 R2 凭证。
 
-- `BASE_URL`：Astro 构建使用的单一 canonical 主域名，默认 `https://calvin-xia.cn`
+- `BASE_URL`：Astro 构建使用的单一 canonical 主域名，例如 `https://your-site.example`
 - `OKP_VAULT`：Obsidian vault 路径
 - `R2_*`：Cloudflare R2 S3 兼容上传配置
 - `NEW_POST_SECRET`：`/new-post/` 本地 API 鉴权密钥
@@ -76,12 +76,13 @@ npm test
 npm run test:coverage
 npm run api
 npm run publish -- --dry-run <obsidian-post-dir>
-npm run publish <obsidian-post-dir>
+npm run publish -- <obsidian-post-dir>
 ```
 
 - `npm run api` 启动本地 new-post API，默认监听 `127.0.0.1:4322`
 - `npm run publish -- --dry-run <dir>` 只打印 Obsidian→R2 发布计划，不写文件、不上传
-- `npm run publish <dir>` 复制 Obsidian Markdown 到 `src/content/blog/`，上传 `file/` 资源到 R2，并替换副本中的资源 URL
+- `npm run publish -- <dir>` 复制 Obsidian Markdown 到 `src/content/blog/`，上传 `file/` 资源到 R2，并替换副本中的资源 URL
+- 文章阅读体验增强由 `src/scripts/article-runtime.js` 统一初始化，并在 Astro `ClientRouter` 页面切换后重新绑定
 
 旧站内容索引仍可用：
 
@@ -99,14 +100,57 @@ python scripts/content_pipeline.py check
 
 1. 在 Obsidian 中准备文章目录与 `file/` 资源。
 2. 运行 `npm run publish -- --dry-run <dir>` 预览目标 Markdown 和 R2 key。
-3. 确认后运行 `npm run publish <dir>`。
+3. 确认后运行 `npm run publish -- <dir>`。
 4. 运行 `npm test` 和 `npm run build`。
 
-临时本地写作也可以使用：
+`<dir>` 是 `.env` 中 `OKP_VAULT` 目录下的文章文件夹名，不是完整路径。推荐目录名保持 `YYYYMMDD-slug`：
 
-1. 同时运行 `npm run api` 和 `npm run dev`。
-2. 打开 `/new-post/`。
-3. 使用 `NEW_POST_SECRET` 提交表单，生成 `src/content/blog/*.md`。
+```text
+OKP_VAULT=C:\path\to\obsidian-posts
+
+<OKP_VAULT>\20260429-my-new-post\
+  draft.md
+  file\cover.png
+  file\a b.png
+```
+
+此时 `<dir>` 写 `20260429-my-new-post`：
+
+```bash
+npm run publish -- --dry-run 20260429-my-new-post
+npm run publish -- 20260429-my-new-post
+```
+
+发布脚本会把资源前缀推导为去掉日期后的 `my-new-post/`，并只修改仓库副本，不修改 Obsidian 原文。例如：
+
+```md
+![封面](./file/cover.png)
+![带空格](./File/a b.png)
+![已有 CDN](https://cdn.example.com/old-post/image.png)
+```
+
+会在仓库副本中变为：
+
+```md
+![封面](https://cdn.example.com/my-new-post/cover.png)
+![带空格](https://cdn.example.com/my-new-post/a%20b.png)
+![已有 CDN](https://cdn.example.com/old-post/image.png)
+```
+
+`/new-post/` 表单只负责把正文写成 `src/content/blog/*.md`，不会上传本地图片，也不会转换 `./file/...` 路径；带本地附件的文章优先走 `npm run publish`。
+
+临时本地写作也可以同时运行 `npm run api` 和 `npm run dev`，打开 `/new-post/` 后用 `NEW_POST_SECRET` 提交表单，生成 `src/content/blog/*.md`。
+
+### 文章阅读体验维护
+
+Phase 2.5 的文章页增强集中在 `src/lib/article-enhancements/`，入口是 `src/scripts/article-runtime.js`，目录容器是 `src/components/ArticleToc.astro`，样式在 `src/styles/global.css`。
+
+- 图片：正文图片会按 `alt` 生成灰色说明文字，点击后打开原生 `<dialog>` 灯箱，支持切换、1x–4x 缩放、滚轮、移动端双指缩放和多种关闭方式。
+- 标题：`.markdown-content h2/h3/h4` 会生成稳定 id、去重 hash 和可访问 `#` 锚点；标题少于 3 个时目录隐藏。
+- 目录：桌面端显示右侧目录和阅读进度，移动端折叠到文章顶部；滚动时高亮当前章节，重复初始化通过 cleanup 防止事件堆叠。
+- 公式：文章 Markdown 支持 `$...$` 与 `$$...$$`，由 `remark-math` + `rehype-katex` 在构建时渲染，文章页引入 KaTeX CSS。
+- 切换：`/articles/` 与 `/updates/` 的低风险站内链接使用 Astro `ClientRouter`/View Transitions 渐进增强；`prefers-reduced-motion: reduce` 会关闭相关动画。
+- CDN：项目配置的 CDN 图片会被灯箱信任；本地 dev 下 CDN 图片会临时代理到 `/__cdn/...`，代理请求使用配置的 worker origin 作为 Referer。
 
 ### 更新作品、工具或更新日志
 
@@ -141,6 +185,8 @@ git diff --check
 ```bash
 python scripts/content_pipeline.py check
 ```
+
+文章体验相关改动还应在桌面、平板和手机宽度检查：灯箱按钮不溢出、图片不遮挡正文、目录不与页脚重叠、浏览器控制台无新增运行时错误。
 
 ## CI/CD
 

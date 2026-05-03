@@ -1,5 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
+import 'katex/dist/katex.min.css';
+import ArticleToc from '../../components/ArticleToc.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isFreshDate } from '../../lib/content';
 
@@ -39,16 +41,13 @@ const { Content } = await render(post);
             </div>
         </header>
 
-        <section class="markdown-container" aria-label="文章正文">
-            <div class="markdown-content">
-                <Content />
-            </div>
-        </section>
+        <div class="article-reading-layout">
+            <section class="markdown-container" aria-label="文章正文">
+                <div class="markdown-content">
+                    <Content />
+                </div>
+            </section>
+            <ArticleToc />
+        </div>
     </article>
-
-    <script>
-        import { enhanceArticleImageCaptions } from '../../lib/article-image-captions.js';
-
-        enhanceArticleImageCaptions(document.querySelector('.markdown-content'));
-    </script>
 </BaseLayout>

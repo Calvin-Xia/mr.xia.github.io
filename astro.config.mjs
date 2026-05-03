@@ -2,9 +2,12 @@
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import { remarkBlockquoteBreaks } from './src/lib/remark-blockquote-breaks.js';
 
 const defaultSiteUrl = 'https://calvin-xia.cn';
+const cdnProxyReferer = 'https://workers.calvin-xia.cn/';
 
 function normalizeSiteUrl(value = process.env.BASE_URL || defaultSiteUrl) {
     const siteUrl = String(value || '').trim() || defaultSiteUrl;
@@ -33,7 +36,8 @@ export default defineConfig({
     base: '/',
     outDir: './dist',
     markdown: {
-        remarkPlugins: [remarkBlockquoteBreaks],
+        remarkPlugins: [remarkBlockquoteBreaks, remarkMath],
+        rehypePlugins: [rehypeKatex],
     },
     vite: {
         plugins: [resolveAstroPrerenderEntrypoint()],
@@ -42,13 +46,13 @@ export default defineConfig({
                 '/__cdn/content': {
                     target: 'https://content.calvin-xia.cn',
                     changeOrigin: true,
-                    headers: { Referer: 'https://calvin-xia.cn/' },
+                    headers: { Referer: cdnProxyReferer },
                     rewrite: (requestPath) => requestPath.replace(/^\/__cdn\/content/, ''),
                 },
                 '/__cdn/assets': {
                     target: 'https://assets.calvin-xia.cn',
                     changeOrigin: true,
-                    headers: { Referer: 'https://calvin-xia.cn/' },
+                    headers: { Referer: cdnProxyReferer },
                     rewrite: (requestPath) => requestPath.replace(/^\/__cdn\/assets/, ''),
                 },
             },

@@ -1,10 +1,12 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import DynamicBackground from '../components/DynamicBackground.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SkipLink from '../components/SkipLink.astro';
 import TransitionIndicator from '../components/TransitionIndicator.astro';
+import articleRuntimeScriptUrl from '../scripts/article-runtime.js?url';
 import localCdnProxyScriptUrl from '../scripts/local-cdn-proxy.js?url';
 
 interface Props {
@@ -35,16 +37,18 @@ const enableLocalCdnProxy = import.meta.env.DEV;
         <meta name="keywords" content="Mr.Xia, 个人网站, 作品集" />
         <meta name="author" content="Mr.Xia" />
         <title>{title}</title>
+        <ClientRouter fallback="swap" />
     </head>
     <body>
         <SkipLink />
         <DynamicBackground />
         <Header currentPage={currentPage} />
-        <main id="main-content" class="site-main" tabindex="-1">
+        <main id="main-content" class="site-main" tabindex="-1" transition:name="site-main" transition:animate="fade">
             <slot />
         </main>
         <Footer />
         <TransitionIndicator />
+        <script type="module" src={articleRuntimeScriptUrl}></script>
         {enableLocalCdnProxy && <script type="module" src={localCdnProxyScriptUrl}></script>}
     </body>
 </html>

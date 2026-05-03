@@ -1,6 +1,6 @@
 # 站点维护与界面更新说明
 
-这份文档描述 Phase 2 完成后的维护方式。当前推荐维护入口是 Astro 内容集合；旧 HTML/JSON/Python 管线仍保留到 Phase 4 清理。
+这份文档描述 Phase 2 和 Phase 2.5 完成后的维护方式。当前推荐维护入口是 Astro 内容集合；旧 HTML/JSON/Python 管线仍保留到 Phase 4 清理。
 
 ## 当前内容结构
 
@@ -38,6 +38,7 @@ Astro 内容集合：
 - 文章详情 `/articles/{slug}/`
   - 从 `src/content/blog/*.md` 静态生成。
   - 图片 `alt` 会渲染为灰色说明文字。
+  - 图片灯箱、标题锚点、目录、阅读进度和 TeX 公式渲染由 Phase 2.5 文章运行时增强。
 - 作品页 `/works/`
   - 使用 Astro 页面和内容集合入口。
 - 更新日志 `/updates/fingerprint-app-update-log/`
@@ -58,7 +59,7 @@ npm run publish -- --dry-run <obsidian-post-dir>
 4. 确认后运行：
 
 ```bash
-npm run publish <obsidian-post-dir>
+npm run publish -- <obsidian-post-dir>
 ```
 
 5. 运行：

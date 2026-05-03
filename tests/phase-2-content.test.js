@@ -80,11 +80,12 @@ describe('Phase 2 content collections', () => {
         assert.match(markdown, /https:\/\/assets\.calvin-xia\.cn\/image_%E7%BB%B5%E9%98%B33\.JPG/);
     });
 
-    test('base layout keeps cross-origin image previews from sending localhost referrers', async () => {
+    test('base layout keeps the browser referrer policy compatible with CDN access', async () => {
         const layoutPath = await assertFileExists('src', 'layouts', 'BaseLayout.astro');
         const layout = readFileSync(layoutPath, 'utf8');
 
-        assert.match(layout, /<meta\s+name="referrer"\s+content="same-origin"\s*\/>/);
+        assert.match(layout, /<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin"\s*\/>/);
+        assert.doesNotMatch(layout, /<meta\s+name="referrer"\s+content="same-origin"\s*\/>/);
     });
 
     test('astro config derives the canonical site URL from BASE_URL', async () => {
@@ -129,7 +130,8 @@ describe('Phase 2 content collections', () => {
 
         assert.match(config, /\/__cdn\/content/);
         assert.match(config, /\/__cdn\/assets/);
-        assert.match(config, /Referer:\s*'https:\/\/calvin-xia\.cn\/'/);
+        assert.match(config, /const\s+cdnProxyReferer\s*=\s*'https:\/\/workers\.calvin-xia\.cn\/'/);
+        assert.match(config, /Referer:\s*cdnProxyReferer/);
         assert.match(layout, /enableLocalCdnProxy/);
         assert.match(layout, /local-cdn-proxy\.js\?url/);
         assert.doesNotMatch(layout, /new MutationObserver/);

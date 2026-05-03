@@ -81,3 +81,5 @@ After completing a phased milestone or a significant feature:
 ## Security & Configuration Tips
 - Do not commit secrets or private credentials.
 - Modify `.well-known/` files only when domain/certificate verification requires it.
+- Keep the site-wide referrer meta policy at `strict-origin-when-cross-origin`; do not change it to `same-origin` because CDN requests need an origin Referer.
+- For local Astro dev CDN proxy routes (`/__cdn/content` and `/__cdn/assets`), use `https://workers.calvin-xia.cn/` as the proxy `Referer` so CDN assets remain accessible without leaking localhost.

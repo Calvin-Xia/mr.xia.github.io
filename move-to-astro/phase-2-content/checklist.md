@@ -37,7 +37,7 @@
 - [x] 图片说明宽度通过 `.markdown-image-figure--sized` 和 `--markdown-image-width` 由 CSS 接管，脚本不写入普通 `style.width`
 - [x] 详情页含 "← 返回文章列表" 链接
 - [x] 详情页显示日期、分类、标签信息
-- [x] `BaseLayout` 设置 `<meta name="referrer" content="same-origin" />`，本地预览跨域 CDN 图片时不发送 localhost Referer
+- [x] `BaseLayout` 设置 `<meta name="referrer" content="strict-origin-when-cross-origin" />`，HTTPS 跨域 CDN 请求保留 origin referer；本地预览由 dev-only CDN 代理发送 `https://workers.calvin-xia.cn/` Referer，避免 localhost Referer 被防盗链拦截
 - [x] dev-only CDN 图片代理实现位于 `src/scripts/local-cdn-proxy.js`，`BaseLayout` 只引用脚本 URL，不内联维护 MutationObserver 逻辑
 - [x] `local-cdn-proxy.js` 在页面无 `content.calvin-xia.cn` / `assets.calvin-xia.cn` 图片时早退，不创建 `MutationObserver`
 

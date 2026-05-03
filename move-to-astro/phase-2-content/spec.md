@@ -18,7 +18,7 @@
 - 新增文章可视化加载反馈：skeleton 骨架屏、新鲜度 `NEW` 徽章、交错入场动画、空状态
 - 新增可视化博客编辑器：`/new-post/` 表单页面 + 本地 API 服务端，通过密钥鉴权创建 `.md` 文件；表单与提交脚本仅在 Astro dev 模式渲染，生产构建不暴露本地 API 地址，本地 API CORS 使用精确 origin 白名单而非 `*`，并通过 HTTP 集成测试覆盖 401 / 422 / 201 路径
 - 新增 Obsidian→R2 文章发布管线：`npm run publish <dir-name>` 一键复制 `.md`、上传图片到 R2、替换图片路径；`npm run publish -- --dry-run <dir-name>` 仅打印发布计划，不写文件、不上传 R2
-- 文章图片迁移遵循已上传资源位置：`20251231-2025年度总结` 使用 `https://assets.calvin-xia.cn/` 根目录；其他既有文章使用 `https://content.calvin-xia.cn/<slug>/` 目录；本地预览通过 `same-origin` referrer policy 和 dev-only CDN 代理避免 localhost Referer 被 Cloudflare 防盗链规则拦截
+- 文章图片迁移遵循已上传资源位置：`20251231-2025年度总结` 使用 `https://assets.calvin-xia.cn/` 根目录；其他既有文章使用 `https://content.calvin-xia.cn/<slug>/` 目录；页面使用 `strict-origin-when-cross-origin` referrer policy，保留 HTTPS 跨域 origin referer；本地预览通过 dev-only CDN 代理发送 `https://workers.calvin-xia.cn/` Referer，避免 localhost Referer 被 Cloudflare 防盗链规则拦截
 - dev-only CDN 代理脚本从 `BaseLayout.astro` 抽取到 `src/scripts/local-cdn-proxy.js`，并在页面无 CDN 图片时跳过 `MutationObserver`
 - 发布管线支持更多图片/附件格式，并对 `file/` 目录名和扩展名做大小写不敏感处理（如 `File/`、`FILE/`、`.jpeg`、`.PNG`）
 - 将内容类型映射、日期解析、排序和新鲜度判定抽取到 `src/lib/shared-content.js`，由服务端内容工具和 `/articles/` 客户端搜索脚本共用，避免排名逻辑和类型文案重复维护

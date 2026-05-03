@@ -29,7 +29,7 @@ python -m http.server 3001
 
 关键字段：
 
-- `BASE_URL=https://calvin-xia.cn`
+- `BASE_URL=https://your-site.example`
 - `OKP_VAULT=C:\path\to\your\ObsidianVault`
 - `R2_ENDPOINT` / `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` / `R2_BUCKET` / `R2_PUBLIC_URL`
 - `NEW_POST_SECRET`
@@ -46,7 +46,7 @@ npm test
 npm run test:coverage
 npm run api
 npm run publish -- --dry-run <obsidian-post-dir>
-npm run publish <obsidian-post-dir>
+npm run publish -- <obsidian-post-dir>
 ```
 
 旧内容索引检查：
@@ -63,7 +63,7 @@ python scripts/content_pipeline.py check
 
 1. 在 Obsidian vault 中准备文章目录。
 2. 先运行 `npm run publish -- --dry-run <dir>` 检查 Markdown 目标路径和 R2 key。
-3. 确认后运行 `npm run publish <dir>`。
+3. 确认后运行 `npm run publish -- <dir>`。
 4. 运行 `npm test` 和 `npm run build`。
 
 这条流程只修改仓库副本，不修改 Obsidian vault 原文。
