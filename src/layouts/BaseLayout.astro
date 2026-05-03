@@ -6,7 +6,6 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import SkipLink from '../components/SkipLink.astro';
 import TransitionIndicator from '../components/TransitionIndicator.astro';
-import articleRuntimeScriptUrl from '../scripts/article-runtime.js?url';
 import localCdnProxyScriptUrl from '../scripts/local-cdn-proxy.js?url';
 
 interface Props {
@@ -48,7 +47,9 @@ const enableLocalCdnProxy = import.meta.env.DEV;
         </main>
         <Footer />
         <TransitionIndicator />
-        <script type="module" src={articleRuntimeScriptUrl}></script>
+        <script>
+            import '../scripts/article-runtime.js';
+        </script>
         {enableLocalCdnProxy && <script type="module" src={localCdnProxyScriptUrl}></script>}
     </body>
 </html>

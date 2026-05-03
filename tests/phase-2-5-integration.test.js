@@ -54,7 +54,9 @@ describe('Phase 2.5 article experience integration', () => {
         const layout = readProjectFile('src', 'layouts', 'BaseLayout.astro');
 
         assert.match(layout, /import\s+\{\s*ClientRouter\s*\}\s+from\s+['"]astro:transitions['"]/);
-        assert.match(layout, /article-runtime\.js\?url/);
+        assert.match(layout, /<script>\s*import\s+['"]\.\.\/scripts\/article-runtime\.js['"];\s*<\/script>/s);
+        assert.doesNotMatch(layout, /article-runtime\.js\?url/);
+        assert.doesNotMatch(layout, /articleRuntimeScriptUrl/);
         assert.match(layout, /<ClientRouter\s+fallback="swap"\s*\/>/);
         assert.match(layout, /transition:name="site-main"/);
         assert.match(layout, /<meta\s+name="referrer"\s+content="strict-origin-when-cross-origin"\s*\/>/);
