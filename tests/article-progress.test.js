@@ -106,4 +106,11 @@ describe('article reading progress', () => {
         assert.match(source, /tocCleanupCallbacks\.set\(tocRoot,\s*cleanup\)/);
         assert.doesNotMatch(source, /_articleProgressCleanup/);
     });
+
+    test('updates the visual progress bar with transform instead of width', () => {
+        const source = readProjectFile('src', 'lib', 'article-enhancements', 'reading-progress.js');
+
+        assert.match(source, /setProperty\(\s*['"]transform['"]\s*,\s*`scaleX\(\$\{progress\s*\/\s*100\}\)`\s*\)/);
+        assert.doesNotMatch(source, /setProperty\(\s*['"]width['"]/);
+    });
 });

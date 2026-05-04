@@ -29,7 +29,7 @@ export function createTocItems(entries) {
 }
 
 function setProgress(tocRoot, progress) {
-    tocRoot.querySelector?.('[data-reading-progress-bar]')?.style?.setProperty('width', `${progress}%`);
+    tocRoot.querySelector?.('[data-reading-progress-bar]')?.style?.setProperty('transform', `scaleX(${progress / 100})`);
 
     const progressText = tocRoot.querySelector?.('[data-reading-progress-text]');
     if (progressText) {

@@ -59,6 +59,7 @@
     --transition-fast: 180ms ease;
     --transition-base: 260ms ease;
     --transition-slow: 420ms ease;
+    --swap-fade-duration: 260ms;
     --blur-panel: blur(22px);
 }
 
@@ -1753,7 +1754,7 @@ textarea:focus {
 
 .content-card-enter {
     opacity: 0;
-    animation: fadeInUp 460ms ease forwards;
+    animation: fadeInUp 350ms ease forwards;
     animation-delay: calc(var(--stagger-index, 0) * 55ms);
 }
 
@@ -1821,11 +1822,14 @@ textarea:focus {
 
 .article-progress span {
     display: block;
-    width: 0;
+    width: 100%;
     height: 100%;
     border-radius: inherit;
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    transition: width 100ms linear;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 100ms linear;
+    will-change: transform;
 }
 
 .article-toc {
@@ -2057,6 +2061,24 @@ textarea:focus {
     font-size: 1.05rem;
     line-height: 1.35;
     letter-spacing: 0;
+}
+
+.article-section-reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 360ms ease,
+        transform 360ms ease;
+    transition-delay: calc(var(--section-reveal-index, 0) * 25ms);
+}
+
+.article-section-reveal:not(.is-visible) {
+    will-change: opacity, transform;
+}
+
+.article-section-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .markdown-content > h1:first-child,
@@ -2498,11 +2520,30 @@ textarea:focus {
 @keyframes siteViewExit {
     from {
         opacity: 1;
+        transform: translateY(0);
     }
 
     to {
         opacity: 0;
+        transform: translateY(-10px);
     }
+}
+
+@keyframes siteSwapFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.site-main.is-swap-fade-in {
+    animation: siteSwapFadeIn var(--swap-fade-duration) ease both;
+    will-change: opacity, transform;
 }
 
 ::view-transition-new(site-main) {
@@ -2551,6 +2592,11 @@ textarea:focus {
     width: 3rem;
     height: 3rem;
     border-width: 3px;
+    animation-play-state: paused;
+}
+
+#page-transition-indicator.active .spinner {
+    animation-play-state: running;
 }
 
 @keyframes spin {
