@@ -2,8 +2,9 @@ import { enhanceArticleImageCaptions } from '../article-image-captions.js';
 import { buildHeadingIndex } from './heading-index.js';
 import { initImageLightbox } from './image-lightbox.js';
 import { initReadingProgress } from './reading-progress.js';
+import { initSectionReveals } from './section-reveals.js';
 
-let progressCleanup = () => {};
+const enhancementCleanups = new WeakMap();
 
 function resolveDocument(root) {
     if (root?.nodeType === 9) {
@@ -19,27 +20,37 @@ export function initArticleEnhancements(root = document) {
     const markdownContent = searchRoot.querySelector?.('.markdown-content');
     const tocRoot = documentRef.querySelector?.('[data-article-toc]');
 
-    progressCleanup();
+    enhancementCleanups.get(documentRef)?.();
+    enhancementCleanups.delete(documentRef);
 
     if (!markdownContent) {
         if (tocRoot) {
             tocRoot.hidden = true;
         }
 
-        progressCleanup = () => {};
         return { headings: [] };
     }
 
     enhanceArticleImageCaptions(markdownContent, documentRef);
     const headings = buildHeadingIndex(markdownContent, documentRef);
     initImageLightbox(markdownContent, { documentRef });
-    progressCleanup = initReadingProgress({
+    const progressCleanup = initReadingProgress({
         tocRoot,
         contentRoot: markdownContent,
         headings,
         documentRef,
         windowRef: documentRef.defaultView || window,
     });
+    const sectionRevealCleanup = initSectionReveals(markdownContent, {
+        windowRef: documentRef.defaultView || window,
+    });
+    const cleanup = () => {
+        progressCleanup();
+        sectionRevealCleanup();
+        enhancementCleanups.delete(documentRef);
+    };
+
+    enhancementCleanups.set(documentRef, cleanup);
 
     return { headings };
 }

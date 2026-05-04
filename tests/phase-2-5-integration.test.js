@@ -50,6 +50,31 @@ describe('Phase 2.5 article experience integration', () => {
         assert.match(styles, /@media\s*\(\s*prefers-reduced-motion:\s*reduce\s*\)[\s\S]*::view-transition-new\(site-main\)[\s\S]*::view-transition-old\(site-main\)[\s\S]*animation:\s*none/s);
     });
 
+    test('article animations use compositor-friendly properties and bounded durations', () => {
+        const styles = readProjectFile('src', 'styles', 'global.css');
+
+        assert.match(styles, /\.content-card-enter\s*\{[\s\S]*animation:\s*fadeInUp\s+350ms\s+ease\s+forwards/s);
+        assert.match(styles, /@keyframes\s+siteViewExit\s*\{[\s\S]*to\s*\{[\s\S]*opacity:\s*0;[\s\S]*transform:\s*translateY\(-10px\)/s);
+        assert.match(styles, /\.article-progress span\s*\{[\s\S]*width:\s*100%;[\s\S]*transform:\s*scaleX\(0\);[\s\S]*transition:\s*transform\s+100ms\s+linear/s);
+        assert.doesNotMatch(styles, /\.article-progress span\s*\{[\s\S]*transition:\s*width\s+100ms\s+linear/s);
+    });
+
+    test('swap fallback and spinner animations are paused unless active', () => {
+        const styles = readProjectFile('src', 'styles', 'global.css');
+        const transitions = readProjectFile('src', 'scripts', 'article-transitions.js');
+
+        assert.match(styles, /--swap-fade-duration:\s*260ms/);
+        assert.match(styles, /\.site-main\.is-swap-fade-in\s*\{[\s\S]*animation:\s*siteSwapFadeIn\s+var\(--swap-fade-duration\)\s+ease\s+both/s);
+        assert.match(styles, /#page-transition-indicator \.spinner\s*\{[\s\S]*animation-play-state:\s*paused/s);
+        assert.match(styles, /#page-transition-indicator\.active \.spinner\s*\{[\s\S]*animation-play-state:\s*running/s);
+        assert.doesNotMatch(transitions, /const\s+SWAP_FADE_DURATION_MS\s*=/);
+        assert.match(transitions, /getComputedStyle\(\s*documentRef\.documentElement\s*\)/);
+        assert.match(transitions, /documentRef\.addEventListener\(\s*['"]astro:page-load['"]/);
+        assert.match(transitions, /prefers-reduced-motion:\s*reduce/);
+        assert.match(transitions, /startViewTransition/);
+        assert.match(transitions, /is-swap-fade-in/);
+    });
+
     test('base layout enables Astro ClientRouter and a single article runtime', () => {
         const layout = readProjectFile('src', 'layouts', 'BaseLayout.astro');
 
@@ -71,5 +96,25 @@ describe('Phase 2.5 article experience integration', () => {
         assert.match(runtime, /once:\s*true/);
         assert.match(runtime, /startArticleRuntime\(\);/);
         assert.match(runtime, /document\.addEventListener\(\s*['"]astro:page-load['"]\s*,\s*initArticleRuntime\s*\)/);
+    });
+
+    test('article runtime initializes section reveals through the shared enhancement boundary', () => {
+        const enhancements = readProjectFile('src', 'lib', 'article-enhancements', 'article-enhancements.js');
+        const reveals = readProjectFile('src', 'lib', 'article-enhancements', 'section-reveals.js');
+
+        assert.match(enhancements, /import\s+\{\s*initSectionReveals\s*\}\s+from\s+['"]\.\/section-reveals\.js['"]/);
+        assert.match(enhancements, /sectionRevealCleanup\s*=\s*initSectionReveals\(/);
+        assert.match(reveals, /const\s+REVEAL_TAG_NAMES\s*=\s*new\s+Set\(\[[\s\S]*'H2'[\s\S]*'TABLE'[\s\S]*\]\)/);
+        assert.match(reveals, /prefers-reduced-motion:\s*reduce/);
+    });
+
+    test('article enhancement cleanup callbacks are scoped by document reference', () => {
+        const enhancements = readProjectFile('src', 'lib', 'article-enhancements', 'article-enhancements.js');
+
+        assert.match(enhancements, /const\s+enhancementCleanups\s*=\s*new\s+WeakMap\(\)/);
+        assert.match(enhancements, /enhancementCleanups\.get\(documentRef\)\?\.\(\)/);
+        assert.match(enhancements, /enhancementCleanups\.set\(documentRef,\s*cleanup\)/);
+        assert.doesNotMatch(enhancements, /let\s+progressCleanup\s*=/);
+        assert.doesNotMatch(enhancements, /let\s+sectionRevealCleanup\s*=/);
     });
 });
