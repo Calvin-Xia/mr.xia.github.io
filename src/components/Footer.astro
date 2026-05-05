@@ -1,15 +1,26 @@
 <footer class="site-footer">
-    <p class="footer-text">
-        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
-        <br />
-        <a
-            class="record-link"
-            href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439"
-            rel="noreferrer"
-            target="_blank"
-        >
-            <img class="record-icon" src="/storage/Beian.png" alt="公安备案" loading="lazy" />
-            渝公网安备50010102001439号
-        </a>
-    </p>
+    <div class="footer-content">
+        <nav class="footer-links" aria-label="站点服务">
+            <a href="/rss.xml" rel="alternate" type="application/rss+xml">RSS</a>
+            {import.meta.env.PROD && (
+                <>
+                    <span aria-hidden="true">·</span>
+                    <a href="/sitemap-index.xml">Sitemap</a>
+                </>
+            )}
+        </nav>
+        <p class="footer-text">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">渝ICP备2026000319号</a>
+            <br />
+            <a
+                class="record-link"
+                href="https://beian.mps.gov.cn/#/query/webSearch?code=50010102001439"
+                rel="noreferrer"
+                target="_blank"
+            >
+                <img class="record-icon" src="/storage/Beian.png" alt="公安备案" loading="lazy" />
+                渝公网安备50010102001439号
+            </a>
+        </p>
+    </div>
 </footer>

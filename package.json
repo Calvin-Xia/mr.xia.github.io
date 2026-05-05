@@ -17,6 +17,8 @@
         "test:coverage": "node --test --experimental-test-coverage tests/*.test.js"
     },
     "dependencies": {
+        "@astrojs/rss": "^4.0.18",
+        "@astrojs/sitemap": "^3.7.2",
         "astro": "^6.1.10",
         "dompurify": "^3.3.1",
         "highlight.js": "^11.11.1",

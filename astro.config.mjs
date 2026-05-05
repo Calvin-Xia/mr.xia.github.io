@@ -2,6 +2,7 @@
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import { remarkBlockquoteBreaks } from './src/lib/remark-blockquote-breaks.js';
@@ -35,6 +36,14 @@ export default defineConfig({
     site: normalizeSiteUrl(),
     base: '/',
     outDir: './dist',
+    integrations: [
+        sitemap({
+            filter: (page) =>
+                !page.includes('/new-post/') &&
+                !page.endsWith('/404') &&
+                !page.endsWith('/404.html'),
+        }),
+    ],
     markdown: {
         remarkPlugins: [remarkBlockquoteBreaks, remarkMath],
         rehypePlugins: [rehypeKatex],

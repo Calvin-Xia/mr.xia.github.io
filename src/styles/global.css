@@ -667,6 +667,31 @@ textarea:focus-visible {
     height: 20px;
 }
 
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    color: var(--text-subtle);
+}
+
+.footer-links a {
+    color: var(--text-subtle);
+    font-weight: 500;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+    color: var(--text-primary);
+}
+
 .current-time {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -1798,6 +1823,20 @@ textarea:focus {
 .article-reading-layout .markdown-container {
     min-width: 0;
     margin-top: 0;
+}
+
+.giscus-comments {
+    width: min(100%, var(--article-content-width));
+    margin-inline: auto;
+    margin-block: 4rem 2rem;
+    padding: 2rem 1rem 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.giscus-fallback {
+    text-align: center;
+    color: var(--text-subtle);
+    padding: 2rem 0;
 }
 
 .article-toc-shell {

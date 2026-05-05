@@ -25,6 +25,7 @@
 | Phase 2.5 | 文章体验增强 | 实现图片灯箱、文章平滑切换、标题锚点、阅读侧栏和 TeX 公式渲染 |
 | Phase 3 | 工具页迁移 | 迁移 tools（计时器+随机选择器）和 markdown-tool 页面 |
 | Phase 4 | 清理与收尾 | 删除旧文件，旧 URL 重定向，CI/CD 更新，文档更新，全站验证 |
+| Phase 5 | SEO 与评论系统 | RSS feed、sitemap 自动生成、giscus 评论区集成 |
 
 ### 执行状态
 
@@ -36,6 +37,7 @@
 | Phase 2.5 | 已完成 | 已完成图片灯箱、标题锚点、侧栏目录、阅读进度、Astro ClientRouter 渐进切换和 KaTeX 服务端渲染 |
 | Phase 3 | 待开始 | 依赖 Phase 0 布局和脚本组织 |
 | Phase 4 | 待开始 | 依赖 Phase 1-3 完成 |
+| Phase 5 | 已完成 | RSS feed、sitemap 自动生成、giscus 评论区（含 code review 修订），97 tests
 
 ### 目标目录结构（迁移后）
 
@@ -55,6 +57,7 @@
 │   │   └── updates/              # 更新日志元数据 JSON（1 个）
 │   ├── components/
 │   │   ├── ArticleToc.astro
+│   │   ├── GiscusComments.astro
 │   │   ├── Header.astro
 │   │   ├── Footer.astro
 │   │   ├── SkipLink.astro
@@ -80,6 +83,7 @@
 │   │   ├── articles.astro
 │   │   ├── articles/[...slug].astro
 │   │   ├── updates/[...slug].astro
+│   │   ├── rss.xml.ts
 │   │   ├── new-post.astro
 │   │   ├── markdown-tool.astro
 │   │   ├── styleguide.astro
@@ -113,6 +117,7 @@
 │   ├── blockquote-rendering.test.js
 │   ├── phase-2-5-integration.test.js
 │   ├── phase-2-content.test.js
+│   ├── phase-5-seo-comments.test.js
 │   ├── post-utils.test.js
 │   ├── publish-post.test.js
 │   └── shared-content.test.js
@@ -131,6 +136,8 @@
 | `checklist.md` | 验收检查清单，人工或自动化验证 |
 
 `phase2.5/` 目录用于记录文章阅读体验增强的实施规格、任务和验收结果，仍保持同样的 `spec.md` / `tasks.md` / `checklist.md` 链路。
+
+`phase-5-seo-comments/` 目录记录 RSS feed、sitemap 自动生成和 giscus 评论区的实施规格与验收。
 
 建议按 Phase 0 → 4 顺序执行，每个 Phase 的 `checklist.md` 全部通过后进入下一阶段。
 

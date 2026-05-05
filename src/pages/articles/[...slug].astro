@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import 'katex/dist/katex.min.css';
 import ArticleToc from '../../components/ArticleToc.astro';
+import GiscusComments from '../../components/GiscusComments.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isFreshDate } from '../../lib/content';
 
@@ -49,5 +50,6 @@ const { Content } = await render(post);
             </section>
             <ArticleToc />
         </div>
+        <GiscusComments />
     </article>
 </BaseLayout>
