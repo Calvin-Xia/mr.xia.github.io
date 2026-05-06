@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - codex-phase-2-content
   pull_request:
 
 jobs:
@@ -30,9 +29,8 @@ jobs:
       - name: Run coverage report
         run: npm run test:coverage
 
-      - name: Validate JSON content files
+      - name: Validate content structure
         run: |
-          node -e "const fs=require('fs'); for (const file of ['content/works-metadata.json','content/tools-metadata.json','content/update-logs-metadata.json','blog/blog-metadata.json']) JSON.parse(fs.readFileSync(file,'utf8'));"
           test -f src/content.config.ts
           test -f src/content/blog/20260411-ai-reliance.md
           test -f src/content/updates/fingerprint-app-update-log.json

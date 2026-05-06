@@ -1,8 +1,6 @@
 # Mr.Xia 个人网站
 
-这是一个静态个人站点仓库，正在从根目录 HTML/CSS/vanilla JS 迁移到 Astro。Phase 2 已完成：Astro 内容集合已接管博客、作品、工具和更新日志的数据层，`/articles/`、文章详情页、首页最近更新、新建文章工具和 Obsidian→R2 发布管线已经可用。Phase 2.5 已完成文章阅读体验增强：图片灯箱、标题锚点、阅读目录、阅读进度、文章切换和 TeX 公式渲染已经接入 Astro 文章页。Phase 3 已完成工具页迁移：作品页提供工具集入口，完整工具台位于 `/works/tools/`，Markdown 工具也保留独立 `/markdown-tool/` 页面。
-
-旧 HTML/JSON/Python 管线仍保留到 Phase 4 清理阶段，用于兼容旧页面和旧 URL。新开发优先放在 `src/`、`src/content/`、`scripts/*.js` 和 `tools/` 中。
+这是一个基于 [Astro](https://astro.build) 的静态个人站点，已从根目录 HTML/CSS/vanilla JS 全面迁移完成。Phase 0-3 及 Phase 5 均已完成：博客、作品、工具和更新日志由 Astro 内容集合驱动，所有页面已转为 Astro 组件，RSS feed、sitemap 和 giscus 评论区已上线。Phase 4 清理已执行，旧管线文件已移除。
 
 ## 当前结构
 
@@ -22,12 +20,11 @@ mr.xia.github.io/
 ├── scripts/                      # 发布、slug、Markdown、Content-Type 工具
 ├── tools/api-server.js           # 本地 new-post API
 ├── tests/                        # Node test suites
-├── public/                       # Astro 静态资源
-├── .github/workflows/            # Astro / legacy / Phase 2 CI
+├── public/                       # Astro 静态资源 + 旧 URL 重定向
+├── .github/workflows/            # CI：构建验证 + 自动部署到 GitHub Pages
 ├── .env.example                  # 本地配置模板，不含真实凭证
 ├── .gitattributes                # LF 行尾规则
-├── index.html 等旧页面           # 保留到 Phase 4 清理
-├── blog/、content/、UpdateLog/    # 旧内容索引与旧更新日志
+├── blog/                         # 旧 blog 说明文件（示例参考）
 └── move-to-astro/                # 迁移规格、任务和验收清单
 ```
 
@@ -47,14 +44,6 @@ npm run dev
 - `/works/tools/`
 - `/markdown-tool/`
 - `/new-post/`（仅 dev 模式启用可提交表单）
-
-旧 HTML 仍可用本地静态服务器预览：
-
-```bash
-python -m http.server 3001
-```
-
-然后访问 `http://localhost:3001/index.html` 或 `http://localhost:3001/statement.html`。
 
 ## 环境配置
 
@@ -85,14 +74,6 @@ npm run publish -- <obsidian-post-dir>
 - `npm run publish -- --dry-run <dir>` 只打印 Obsidian→R2 发布计划，不写文件、不上传
 - `npm run publish -- <dir>` 复制 Obsidian Markdown 到 `src/content/blog/`，上传 `file/` 资源到 R2，并替换副本中的资源 URL
 - 文章阅读体验增强由 `src/scripts/article-runtime.js` 统一初始化，并在 Astro `ClientRouter` 页面切换后重新绑定
-
-旧站内容索引仍可用：
-
-```bash
-python scripts/content_pipeline.py check
-```
-
-这条命令维护旧 `content/content-manifest.json`，主要服务旧页面，Phase 4 前仍保留。
 
 ## 内容维护
 
@@ -169,8 +150,6 @@ npm test
 npm run build
 ```
 
-旧页面和旧 metadata 仍保留到 Phase 4。如果修改的是旧 HTML 入口或旧 JSON，还需要运行 `python scripts/content_pipeline.py check`。
-
 ## 推荐验证流程
 
 在提交或发布前建议运行：
@@ -182,21 +161,16 @@ npm run build
 git diff --check
 ```
 
-如果改动影响旧页面或 legacy metadata，再加：
-
-```bash
-python scripts/content_pipeline.py check
-```
-
 文章体验相关改动还应在桌面、平板和手机宽度检查：灯箱按钮不溢出、图片不遮挡正文、目录不与页脚重叠、浏览器控制台无新增运行时错误。
 
 ## CI/CD
 
 当前 CI 包括：
 
+- `deploy.yml`：push main 时自动构建 Astro 并通过 GitHub Actions 部署到 GitHub Pages
+- `content-check.yml`：push/PR 时运行 `npm ci && npm run build` 验证构建
 - `astro-build-check.yml`：安装依赖、构建 Astro、验证关键静态输出
-- `phase-2-content-check.yml`：运行 `npm test`、`npm run test:coverage`、内容文件存在性检查和 Astro build
-- `content-check.yml`：保留旧 Python 内容 manifest 检查
+- `phase-2-content-check.yml`：运行 `npm test`、`npm run test:coverage`、内容结构检查和 Astro build
 
 ## 相关说明文档
 
@@ -204,5 +178,4 @@ python scripts/content_pipeline.py check
 - [site-maintenance-guide.md](./site-maintenance-guide.md)
 - [move-to-astro/README.md](./move-to-astro/README.md)
 - [AGENTS.md](./AGENTS.md)
-- [content/README.md](./content/README.md)
 - [blog/README.md](./blog/README.md)

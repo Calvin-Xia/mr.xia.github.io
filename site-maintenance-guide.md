@@ -1,6 +1,6 @@
 # 站点维护与界面更新说明
 
-这份文档描述 Phase 2 和 Phase 2.5 完成后的维护方式。当前推荐维护入口是 Astro 内容集合；旧 HTML/JSON/Python 管线仍保留到 Phase 4 清理。
+这份文档描述 Astro 迁移完成后的站点维护方式。Phase 4 清理已完成，所有维护入口通过 Astro 内容集合进行，旧 HTML/JSON/Python 管线已移除。
 
 ## 当前内容结构
 
@@ -18,16 +18,6 @@ Astro 内容集合：
 - `scripts/publish-post.js`：Obsidian→R2 发布管线
 - `scripts/post-utils.js`、`scripts/markdown-utils.js`、`scripts/slug.js`、`scripts/content-types.js`：发布和文件操作工具
 
-旧内容层：
-
-- `blog/blog-files.json`
-- `blog/blog-metadata.json`
-- `content/*.json`
-- `content/content-manifest.json`
-- `scripts/content_pipeline.py`
-
-旧内容层继续服务旧页面；新功能优先使用 Astro 内容集合。
-
 ## 页面联动
 
 - 首页 `/`
@@ -41,7 +31,7 @@ Astro 内容集合：
   - 图片灯箱、标题锚点、目录、阅读进度和 TeX 公式渲染由 Phase 2.5 文章运行时增强。
 - 作品页 `/works/`
   - 使用 Astro 页面和内容集合入口。
-- 更新日志 `/updates/fingerprint-app-update-log/`
+- 更新日志 `/updates/{slug}/`
   - 从 `src/content/updates/*.json` 的结构化 `timeline` 渲染。
 
 ## 新增文章
@@ -104,12 +94,6 @@ npm test
 npm run build
 ```
 
-如果改动影响旧页面入口或旧 manifest，再运行：
-
-```bash
-python scripts/content_pipeline.py check
-```
-
 ## 配置维护
 
 - `BASE_URL`：Astro canonical 主域名，一次构建只配置一个。
@@ -135,14 +119,9 @@ git diff --check
 npm run test:coverage
 ```
 
-涉及旧内容索引：
-
-```bash
-python scripts/content_pipeline.py check
-```
-
 ## CI
 
-- `astro-build-check.yml` 构建 Astro 并验证关键静态输出。
-- `phase-2-content-check.yml` 运行 npm 测试、coverage、内容文件检查和 Astro build。
-- `content-check.yml` 保留旧 Python manifest 检查。
+- `deploy.yml`：push main 时自动构建并部署到 GitHub Pages
+- `content-check.yml`：push/PR 时运行 `npm ci && npm run build`
+- `astro-build-check.yml`：构建 Astro 并验证关键静态输出
+- `phase-2-content-check.yml`：运行 npm 测试、coverage、内容结构检查和 Astro build

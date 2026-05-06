@@ -1,6 +1,6 @@
 # 快速开始
 
-这份文档用于第一次接手仓库时快速跑起当前 Astro 迁移版本。Phase 2 已完成，日常内容开发优先使用 Astro 内容集合和 npm 脚本；旧 HTML/Python 管线保留到 Phase 4 清理。
+这份文档用于第一次接手仓库时快速跑起 Astro 站点。Phase 4 清理已完成，所有内容管理通过 Astro 内容集合和 npm 脚本进行。
 
 ## 1. 安装与启动
 
@@ -14,14 +14,6 @@ npm run dev
 - `http://localhost:4321/`
 - `http://localhost:4321/articles/`
 - `http://localhost:4321/works/`
-
-旧页面预览仍可用：
-
-```bash
-python -m http.server 3001
-```
-
-然后打开 `http://localhost:3001/index.html` 或 `http://localhost:3001/statement.html`。
 
 ## 2. 配置本地环境
 
@@ -47,12 +39,6 @@ npm run test:coverage
 npm run api
 npm run publish -- --dry-run <obsidian-post-dir>
 npm run publish -- <obsidian-post-dir>
-```
-
-旧内容索引检查：
-
-```bash
-python scripts/content_pipeline.py check
 ```
 
 ## 4. 最常见修改场景
@@ -88,14 +74,6 @@ python scripts/content_pipeline.py check
 ```bash
 npm test
 npm run build
-```
-
-### 修改旧页面
-
-旧 HTML 页面仍在 Phase 4 前保留。如果你改了旧 `blog/`、`content/` 或 `UpdateLog/` 数据，运行：
-
-```bash
-python scripts/content_pipeline.py check
 ```
 
 ## 5. 提交前检查

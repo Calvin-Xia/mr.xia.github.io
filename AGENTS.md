@@ -1,24 +1,23 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a static website currently migrating from root-level HTML/CSS/vanilla JS to Astro. Keep legacy files and Astro files coexisting until the cleanup phase.
-- Root pages: `index.html`, `about.html`, `Works.html`, `timetable.html`, `statement.html`, `404.html`.
-- Styles: `css/style.css`.
-- Scripts: `js/main.js`, `js/navigation.js`.
+This repository is a static website fully migrated to Astro from root-level HTML/CSS/vanilla JS.
 - Astro config and source: `package.json`, `astro.config.mjs`, `tsconfig.json`, `src/`.
 - Astro content collections: `src/content.config.ts`, `src/content/blog/`, `src/content/works/`, `src/content/tools/`, `src/content/updates/`.
-- Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, and selected local fallback libraries.
+- Astro styles: `src/styles/global.css`.
+- Astro client scripts: `src/scripts/`.
+- Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, `libs/mammoth/`, and old-URL redirect files.
 - Astro tool routes: `src/pages/works/tools.astro` (作品体系下的工具集) and `src/pages/markdown-tool.astro` (Markdown 工具独立页).
 - RSS and SEO: `src/pages/rss.xml.ts` (RSS 2.0 feed), `astro.config.mjs` (`@astrojs/sitemap` integration).
 - Comments: `src/components/GiscusComments.astro` (giscus + GitHub Discussions).
-- Legacy blog content and metadata: `blog/` (including `blog-files.json` and `blog-metadata.json`) remain until cleanup.
+- Blog reference files: `blog/` (README.md, 移动端适配说明.md, example JSON files).
 - Publishing and local authoring scripts: `scripts/publish-post.js`, `scripts/post-utils.js`, `tools/api-server.js`.
-- Other assets: `storage/`, `UpdateLog/`, `.well-known/`.
+- Other assets: `storage/`, `.well-known/`.
+- CI/CD workflows: `.github/workflows/deploy.yml`, `content-check.yml`, `astro-build-check.yml`, `phase-2-content-check.yml`.
 
 When adding new files, keep them in the existing folder conventions and use relative links.
 
 ## Build, Test, and Development Commands
-Legacy pages can still be previewed without a build step; Astro pages require npm scripts.
 - `npm install`: Install Astro and npm-managed libraries.
 - `npm run dev`: Start the Astro development server, usually at `http://localhost:4321`.
 - `npm run build`: Build the Astro static output into `dist/`.
@@ -28,16 +27,13 @@ Legacy pages can still be previewed without a build step; Astro pages require np
 - `npm run api`: Start the local new-post API server on `127.0.0.1:4322`.
 - `npm run publish -- --dry-run <obsidian-post-dir>`: Preview an Obsidian→R2 publish plan without writing files or uploading.
 - `npm run publish <obsidian-post-dir>`: Publish an Obsidian post copy into Astro content and upload assets to R2.
-- `python -m http.server 8000`: Start a local static server for legacy HTML pages.
-- `npx http-server`: Alternative local server for legacy static preview.
 
 ## Coding Style & Naming Conventions
-- Languages: HTML5, CSS3, vanilla JavaScript (ES6+).
-- Astro migration files use Astro components and TypeScript modules.
-- Indentation: 4 spaces across HTML, CSS, and JS.
-- Naming: prefer `kebab-case` for asset files; keep existing page naming patterns (for example `Works.html`).
+- Languages: Astro components, TypeScript modules, CSS3, vanilla JavaScript (ES6+).
+- Indentation: 4 spaces across all source files.
+- Naming: prefer `kebab-case` for asset files; keep existing page naming patterns.
 - Reuse CSS variables in `:root` before introducing one-off colors/spacings.
-- Keep JS organized by feature modules, matching `js/main.js` style.
+- Keep JS organized by feature modules in `src/scripts/`.
 
 ## Testing Guidelines
 Before submitting changes:
@@ -48,7 +44,6 @@ Before submitting changes:
 - Validate navigation and interactive components (for example timer/tool interactions).
 - Confirm browser console has no new errors.
 - For Astro blog updates, ensure `src/content/blog/*.md` frontmatter is valid.
-- For legacy blog updates, ensure both `blog/blog-files.json` and `blog/blog-metadata.json` remain consistent.
 
 ## CI/CD Requirements
 When implementing or modifying file operation features (such as content pipelines, build scripts, data generators, or any logic that reads/writes project files), a corresponding CI/CD configuration and workflow must be provided alongside the implementation. These CI/CD components should:
@@ -79,7 +74,6 @@ After completing a phased milestone or a significant feature:
 - If a plan document exists (under `.trae/documents/`), update its status and progress summary.
 - Review `AGENTS.md` and `README.md` and update them if the project structure, build commands, or conventions have changed.
 - For Astro blog or content changes, ensure `src/content/` entries match their collection schema and related phase docs are updated.
-- For legacy blog or content changes, ensure `blog/blog-files.json`, `blog/blog-metadata.json`, and `content/content-manifest.json` remain consistent.
 
 ## Security & Configuration Tips
 - Do not commit secrets or private credentials.

@@ -9,11 +9,13 @@ Phase 0-3 已完成所有页面的 Astro 迁移。此阶段删除所有旧文件
 - 清理 `libs/` 目录：删除 `marked/`、`highlight.js/`、`katex/`、`dompurify/`（已 npm），保留 `libs/mammoth/`
 - 在 `public/` 下为所有旧 URL 创建 meta refresh 重定向 HTML
 - 更新 `.github/workflows/content-check.yml`：PY → npm build
+- 创建 `.github/workflows/deploy.yml`：自动构建 Astro 并部署到 GitHub Pages，替代 GitHub 自带的简单 Pages 构建
 - 更新项目文档
 
 ## Impact
 - Deleted files: 根目录 8 个 `.html`, `blog/*.html`(6), `blog/convert.py`, `blog/blog-files.json`, `blog/blog-metadata.json`, `css/style.css`, `js/main.js`, `js/navigation.js`, `js/content-hub.js`, `js/cdn-fallback.js`, `content/content-manifest.json`, `content/works-metadata.json`, `content/tools-metadata.json`, `content/update-logs-metadata.json`, `scripts/content_pipeline.py`, `UpdateLog/fingerprint-app-update-log.html`, `libs/marked/`, `libs/highlight.js/`, `libs/katex/`, `libs/dompurify/`
-- New files: `public/about.html`(redirect), `public/Works.html`(redirect), `public/timetable.html`(redirect), `public/statement.html`(redirect), `public/markdown-to-html-tool.html`(redirect), `public/styleguide.html`(redirect), `public/blog/*.html`(6 redirects), `public/UpdateLog/fingerprint-app-update-log.html`(redirect)
+- New files: `public/about.html`(redirect), `public/Works.html`(redirect), `public/timetable.html`(redirect → `/works/tools/`), `public/statement.html`(redirect), `public/markdown-to-html-tool.html`(redirect), `public/styleguide.html`(redirect), `public/blog/*.html`(6 redirects), `public/UpdateLog/fingerprint-app-update-log.html`(redirect)
+- New files: `.github/workflows/deploy.yml`
 - Modified files: `.github/workflows/content-check.yml`, `README.md`, `AGENTS.md`
 
 ## ADDED Requirements
@@ -53,15 +55,23 @@ Phase 0-3 已完成所有页面的 Astro 迁移。此阶段删除所有旧文件
 - **THEN** `<link rel="canonical">` 指向新 URL
 
 ### Requirement: CI/CD 更新
-GitHub Actions SHALL 执行 `npm run build` 验证构建。
+GitHub Actions SHALL 通过 Astro 构建流程自动部署到 GitHub Pages，替代 GitHub 自带的简单 Pages 构建（直接部署静态文件，无 build 步骤）。
+
+#### Scenario: Astro 构建部署
+- **WHEN** 推送代码到 `main` 分支
+- **THEN** `deploy.yml` workflow 触发：`npm ci` → `npm run build` → 将 `dist/` 部署到 GitHub Pages，构建失败时部署中止
 
 #### Scenario: 构建验证
-- **WHEN** 推送代码到仓库
-- **THEN** GitHub Actions 运行 `npm ci && npm run build`，构建失败时 workflow 失败
+- **WHEN** 推送代码到仓库（非 main 分支或 PR）
+- **THEN** `content-check.yml` 运行 `npm ci && npm run build`，构建失败时 workflow 失败
 
 #### Scenario: Python 管线移除
 - **WHEN** CI workflow 执行
 - **THEN** 不包含任何 Python 脚本调用
+
+#### Scenario: GitHub Pages 源设置
+- **WHEN** 部署 workflow 配置完成后
+- **THEN** GitHub Pages 源设为 "GitHub Actions" 而非 "Deploy from a branch"
 
 ### Requirement: 全站最终验证
 迁移后的站点 SHALL 与原站功能和视觉一致。

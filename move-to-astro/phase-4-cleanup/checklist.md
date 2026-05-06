@@ -13,7 +13,7 @@
 - [ ] `libs/` 仅保留 `mammoth/mammoth.browser.min.js`
 - [ ] `public/about.html` 重定向到 `/about/`
 - [ ] `public/Works.html` 重定向到 `/works/`
-- [ ] `public/timetable.html` 重定向到 `/tools/`
+- [ ] `public/timetable.html` 重定向到 `/works/tools/`
 - [ ] `public/statement.html` 重定向到 `/articles/`
 - [ ] `public/markdown-to-html-tool.html` 重定向到 `/markdown-tool/`
 - [ ] `public/styleguide.html` 重定向到 `/styleguide/`
@@ -21,6 +21,11 @@
 - [ ] `public/UpdateLog/fingerprint-app-update-log.html` 重定向正确
 - [ ] 每个重定向文件包含 `<link rel="canonical">` 指向新 URL
 - [ ] `.github/workflows/content-check.yml` 已更新为 npm build
+- [ ] `.github/workflows/deploy.yml` 已创建
+- [ ] deploy.yml 包含 checkout → setup-node → npm ci → npm run build → upload artifact → deploy 完整流程
+- [ ] deploy.yml 仅在 push 到 main 时触发
+- [ ] GitHub Pages Source 已设为 "GitHub Actions"
+- [ ] 推送 main 后 deploy workflow 成功完成，站点正常可访问
 - [ ] `README.md` 反映 Astro 工作流
 - [ ] `AGENTS.md` 项目规则已同步（如适用）
 - [ ] `npm run build` 零错误零警告
