@@ -31,13 +31,17 @@
   - [ ] SubTask 6.3.8: 添加测试：过渡脚本导出正确、动画 keyframe 在 CSS 中存在、回退逻辑不破坏现有功能
   - [ ] SubTask 6.3.9: 运行 `npm test` 和 `npm run build` 验证
 
-- [ ] Task 6.4: 阅读量统计（条件实施）
-  - [ ] SubTask 6.4.1: 评估 Cloudflare Pages Function + KV 绑定在 wrangler.jsonc 中的配置方式
-  - [ ] SubTask 6.4.2: 若可行，创建 `functions/api/views/[[slug]].ts`：`GET` 返回当前阅读量，`POST` 增量
-  - [ ] SubTask 6.4.3: 创建前端 `src/scripts/view-counter.js`：在文章详情页加载后异步 fetch 阅读量并渲染
-  - [ ] SubTask 6.4.4: 在 `articles/[...slug].astro` 底部引入 counter 脚本（可选、渐进增强）
-  - [ ] SubTask 6.4.5: 添加测试验证 API 行为
-  - [ ] SubTask 6.4.6: 若 Cloudflare Functions 复杂度过高，降级为方案 D（暂不实施），本文档标记为 Phase 7 或未来里程碑
+- [ ] Task 6.4: 阅读量统计（Workers 入口脚本代理 Umami Cloud API）
+  - [ ] SubTask 6.4.1: 获取 Umami Cloud API Key —— 在 Umami Cloud 控制台 → Settings → API Keys 生成；通过 `wrangler secret put UMAMI_API_KEY` 注入 Workers
+  - [ ] SubTask 6.4.2: 创建 `src/worker.ts` Worker 入口脚本：`export default { async fetch(request, env) { ... } }`，`pathname` 前缀匹配 `/api/views/` 拦截，非匹配请求 `return env.ASSETS.fetch(request)` 透传给 WSA 静态服务
+  - [ ] SubTask 6.4.3: Worker 中实现 Umami API 代理逻辑：构造文章路径 `/articles/{slug}/`，`fetch` Umami `/metrics?type=path` 端点，Headers 携带 `x-umami-api-key: env.UMAMI_API_KEY`，从返回数组中匹配 `x` 字段提取 `y`（pageviews）；设置 `Cache-Control: public, max-age=300` 响应头
+  - [ ] SubTask 6.4.4: Worker 错误处理 —— Umami API 超时/4xx/5xx 返回 `{ slug, views: null }, 200`；无效 slug（含 `..` 或 `/`）返回 `{ error: "invalid slug" }, 400`；`env.UMAMI_API_KEY` 未配置时返回 `{ slug, views: null }, 200` + console.warn
+  - [ ] SubTask 6.4.5: 更新 `wrangler.jsonc`，新增 `"main": "src/worker.ts"` 指向入口脚本（`"assets"` 字段保持不变）
+  - [ ] SubTask 6.4.6: 创建前端 `src/scripts/view-counter.js`：在文章详情页加载后异步 `fetch(/api/views/{slug})`，将浏览量渲染到详情页 meta 区（如 "👁 1,234 次阅读"）
+  - [ ] SubTask 6.4.7: 在 `articles/[...slug].astro` 中引入 `view-counter.js`（`type="module"`、异步加载、渐进增强）；传递 `data-slug` 属性供脚本读取
+  - [ ] SubTask 6.4.8: CSS 样式：`.view-count` 徽章样式，加载中骨架屏（`pending` → 数字淡入）
+  - [ ] SubTask 6.4.9: 添加测试：验证 Worker API 正常返回、Umami 不可用时降级、无效 slug 400、WSA 静态资产透传不受影响
+  - [ ] SubTask 6.4.10: 运行 `npm test` 和 `npm run build` 验证；使用 `wrangler dev` 本地测试 Worker（确保 `/api/views/*` 有响应，其他路径正常服务静态文件）
 
 - [ ] Task 6.5: 集成、验证与文档
   - [ ] SubTask 6.5.1: 运行 `npm test` 确保全量测试通过
@@ -50,5 +54,5 @@
 
 - [Task 6.1] 和 [Task 6.2] 独立，可并行实施
 - [Task 6.3] 依赖 [Task 6.1] 和 [Task 6.2]（需要知道完整的页面结构才能设计过渡）
-- [Task 6.4] 完全独立于其他任务，可在任何时候降级为不实施
+- [Task 6.4] 完全独立于其他任务，可先行实施或最后实施。依赖 Umami Cloud API Key 的就绪和 `wrangler.jsonc` 中 `main` 字段的配置
 - [Task 6.5] 依赖所有前置任务

@@ -13,6 +13,10 @@ function readFile(...segments) {
     return readFileSync(projectPath(...segments), 'utf8');
 }
 
+async function loadSiteSeo() {
+    return import('../src/lib/site-seo.js');
+}
+
 describe('Phase 5 SEO and comments', () => {
     test('package.json lists @astrojs/rss and @astrojs/sitemap as dependencies', () => {
         const pkg = JSON.parse(readFile('package.json'));
@@ -27,12 +31,13 @@ describe('Phase 5 SEO and comments', () => {
         assert.match(rssSource, /from\s+['"]@astrojs\/rss['"]/);
         assert.match(rssSource, /from\s+['"]astro:content['"]/);
         assert.match(rssSource, /getCollection\('blog'/);
-        assert.match(rssSource, /status\s*!==?\s*['"]draft['"]/);
+        assert.match(rssSource, /isPublishedStatus/);
+        assert.match(rssSource, /buildRssItems/);
+        assert.match(rssSource, /createRssChannelCustomData/);
         assert.match(rssSource, /site:/);
         assert.match(rssSource, /title:/);
         assert.match(rssSource, /description:/);
-        assert.match(rssSource, /pubDate:/);
-        assert.match(rssSource, /link:/);
+        assert.doesNotMatch(rssSource, /new Date\(post\.data\.date\)/);
     });
 
     test('RSS endpoint uses APIContext type annotation', () => {
@@ -50,18 +55,131 @@ describe('Phase 5 SEO and comments', () => {
         assert.match(configSource, /filter:/);
     });
 
-    test('sitemap filter excludes new-post page', () => {
+    test('astro config delegates sitemap filtering and serialization to shared SEO helpers', () => {
         const configSource = readFile('astro.config.mjs');
-        assert.match(configSource, /new-post/);
+
+        assert.match(configSource, /shouldIncludeSitemapPage/);
+        assert.match(configSource, /serializeSitemapItem/);
+        assert.match(configSource, /filter:\s*shouldIncludeSitemapPage/);
+        assert.match(configSource, /serialize:\s*serializeSitemapItem/);
+        assert.match(configSource, /namespaces:\s*\{/);
     });
 
-    test('sitemap filter uses endsWith for precise 404 matching', () => {
-        const configSource = readFile('astro.config.mjs');
+    test('site SEO helper builds RSS items with strict dates, categories, and channel metadata', async () => {
+        const {
+            buildRssItems,
+            createRssChannelCustomData,
+            isPublishedStatus,
+        } = await loadSiteSeo();
 
-        assert.match(configSource, /endsWith\('/);
-        assert.match(configSource, /endsWith\('\/404'\)/);
-        assert.match(configSource, /endsWith\('\/404\.html'\)/);
-        assert.doesNotMatch(configSource, /includes\('\/404'\)/);
+        const entries = [
+            {
+                id: '20260411-old',
+                data: {
+                    title: '旧文章',
+                    date: '2026-04-11',
+                    excerpt: '较早的摘要',
+                    category: '技术',
+                    tags: ['AI', '思考'],
+                    status: 'active',
+                },
+            },
+            {
+                id: '20260503-new',
+                data: {
+                    title: '新文章',
+                    date: '2026-05-03',
+                    excerpt: '较新的摘要',
+                    category: '随笔',
+                    tags: ['劳动', '思考'],
+                    status: undefined,
+                },
+            },
+            {
+                id: '20260504-draft',
+                data: {
+                    title: '草稿',
+                    date: '2026-05-04',
+                    excerpt: '不应进入 RSS',
+                    category: '草稿',
+                    tags: ['隐藏'],
+                    status: 'draft',
+                },
+            },
+        ];
+
+        assert.equal(isPublishedStatus('draft'), false);
+        assert.equal(isPublishedStatus('active'), true);
+        assert.equal(isPublishedStatus(undefined), true);
+
+        const items = buildRssItems(entries.filter((entry) => isPublishedStatus(entry.data.status)));
+
+        assert.deepEqual(items.map((item) => item.title), ['新文章', '旧文章']);
+        assert.equal(items[0].link, '/articles/20260503-new/');
+        assert.equal(items[0].pubDate.toISOString(), '2026-05-03T00:00:00.000Z');
+        assert.deepEqual(items[0].categories, ['随笔', '劳动', '思考']);
+        assert.equal(
+            createRssChannelCustomData(items),
+            '<language>zh-CN</language><lastBuildDate>Sun, 03 May 2026 00:00:00 GMT</lastBuildDate>',
+        );
+
+        assert.throws(
+            () =>
+                buildRssItems([
+                    {
+                        id: '20260229-invalid',
+                        data: {
+                            title: '无效日期',
+                            date: '2026-02-29',
+                            excerpt: '不能悄悄进入 RSS',
+                            category: '测试',
+                            tags: [],
+                        },
+                    },
+                ]),
+            /Invalid content date "2026-02-29"/,
+        );
+    });
+
+    test('site SEO helper excludes private sitemap pages and serializes SEO hints', async () => {
+        const { serializeSitemapItem, shouldIncludeSitemapPage } = await loadSiteSeo();
+
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/new-post/'), false);
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/styleguide/'), false);
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/404'), false);
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/404.html'), false);
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/500/'), false);
+        assert.equal(shouldIncludeSitemapPage('https://calvin-xia.cn/articles/20260503-labors-day/'), true);
+
+        assert.deepEqual(serializeSitemapItem({ url: 'https://calvin-xia.cn/' }), {
+            url: 'https://calvin-xia.cn/',
+            changefreq: 'weekly',
+            priority: 1,
+        });
+        assert.deepEqual(serializeSitemapItem({ url: 'https://calvin-xia.cn/articles/20260503-labors-day/' }), {
+            url: 'https://calvin-xia.cn/articles/20260503-labors-day/',
+            changefreq: 'monthly',
+            priority: 0.7,
+            lastmod: '2026-05-03',
+        });
+        assert.deepEqual(serializeSitemapItem({ url: 'https://calvin-xia.cn/works/tools/' }), {
+            url: 'https://calvin-xia.cn/works/tools/',
+            changefreq: 'monthly',
+            priority: 0.7,
+        });
+    });
+
+    test('robots endpoint and helper advertise sitemap while excluding internal pages', async () => {
+        const robotsSource = readFile('src', 'pages', 'robots.txt.ts');
+        const { buildRobotsTxt } = await loadSiteSeo();
+        const robots = buildRobotsTxt(new URL('https://calvin-xia.cn/'));
+
+        assert.match(robotsSource, /buildRobotsTxt/);
+        assert.match(robotsSource, /context\.site/);
+        assert.match(robots, /User-agent: \*/);
+        assert.match(robots, /Disallow: \/new-post\//);
+        assert.match(robots, /Disallow: \/styleguide\//);
+        assert.match(robots, /Sitemap: https:\/\/calvin-xia\.cn\/sitemap-index\.xml/);
     });
 
     test('GiscusComments component renders with correct data attributes', () => {
@@ -150,6 +268,16 @@ describe('Phase 5 SEO and comments', () => {
 
         assert.match(footerSource, /import\.meta\.env\.PROD/);
         assert.match(footerSource, /sitemap-index\.xml/);
+    });
+
+    test('Footer includes Umami share page next to site service links', () => {
+        const footerSource = readFile('src', 'components', 'Footer.astro');
+
+        assert.match(footerSource, /aria-label=['"]站点服务['"]/);
+        assert.match(footerSource, /href=['"]https:\/\/cloud\.umami\.is\/share\/0cUyNR29irh71HZd['"]/);
+        assert.match(footerSource, />Umami</);
+        assert.match(footerSource, /target=['"]_blank['"]/);
+        assert.match(footerSource, /rel=['"]noopener['"]/);
     });
 
     test('CSS defines giscus-fallback style for noscript content', () => {

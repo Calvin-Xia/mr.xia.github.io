@@ -8,7 +8,7 @@ This repository is a static website fully migrated to Astro from root-level HTML
 - Astro client scripts: `src/scripts/`.
 - Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, `libs/mammoth/`, and old-URL redirect files.
 - Astro tool routes: `src/pages/works/tools.astro` (作品体系下的工具集) and `src/pages/markdown-tool.astro` (Markdown 工具独立页).
-- RSS and SEO: `src/pages/rss.xml.ts` (RSS 2.0 feed), `astro.config.mjs` (`@astrojs/sitemap` integration).
+- RSS and SEO: `src/lib/site-seo.js` (shared SEO helpers), `src/pages/rss.xml.ts` (RSS 2.0 feed), `src/pages/robots.txt.ts`, `astro.config.mjs` (`@astrojs/sitemap` integration).
 - Comments: `src/components/GiscusComments.astro` (giscus + GitHub Discussions).
 - Blog reference files: `blog/` (README.md, 移动端适配说明.md, example JSON files).
 - Publishing and local authoring scripts: `scripts/publish-post.js`, `scripts/post-utils.js`, `tools/api-server.js`.

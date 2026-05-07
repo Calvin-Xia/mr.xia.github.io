@@ -13,8 +13,8 @@ mr.xia.github.io/
 │   ├── content/                  # blog / works / tools / updates 内容集合
 │   ├── components/               # Astro 共享组件
 │   ├── layouts/                  # BaseLayout 等布局
-│   ├── lib/                      # 内容转换、排序、Markdown 与文章体验增强工具
-│   ├── pages/                    # Astro 页面与动态路由
+│   ├── lib/                      # 内容转换、排序、SEO、Markdown 与文章体验增强工具
+│   ├── pages/                    # Astro 页面、动态路由、RSS 与 robots.txt
 │   ├── scripts/                  # Astro 客户端脚本和文章运行时
 │   └── styles/global.css         # Astro 全局样式
 ├── scripts/                      # 发布、slug、Markdown、Content-Type 工具
@@ -40,6 +40,8 @@ npm run dev
 - `/`
 - `/articles/`
 - `/articles/20260411-ai-reliance/`
+- `/rss.xml`
+- `/robots.txt`
 - `/works/`
 - `/works/tools/`
 - `/markdown-tool/`

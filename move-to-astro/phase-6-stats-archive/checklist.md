@@ -41,13 +41,20 @@
 - [ ] 过渡时间 ≤ 250ms
 - [ ] 现有功能（灯箱、标题锚点、TOC、评论区）在过渡后正常重新初始化
 
-## 阅读量统计（条件实施）
-- [ ] 若实施：CF Pages Function 正确读写 KV
-- [ ] `GET /api/views/{slug}` 返回 `{ slug, views }` JSON
-- [ ] `POST /api/views/{slug}` 递增计数并返回新值
-- [ ] 前端仅展示数字，不对本地 KV 做多余请求
-- [ ] 隐私合规：不记录 IP/UA/Referer
-- [ ] 若降级为方案 D：Phase 6 文档明确标记阅读量统计推迟
+## 阅读量统计（Workers 入口脚本代理 Umami Cloud API）
+- [ ] `UMAMI_API_KEY` 已通过 `wrangler secret put` 注入 Workers
+- [ ] `wrangler.jsonc` 已新增 `"main": "src/worker.ts"`（`"assets"` 字段保持不变）
+- [ ] `src/worker.ts` 正确拦截 `/api/views/*` 路径并代理到 Umami `/metrics?type=path`
+- [ ] `GET /api/views/{slug}` 返回 `{ slug, views }` JSON（正常情况，HTTP 200）
+- [ ] Umami API 不可用时返回 `{ slug, views: null }`（HTTP 200，非 500）
+- [ ] 无效 slug（含 `..` 或 `/`）返回 400 `{ error: "invalid slug" }`
+- [ ] 响应头包含 `Cache-Control: public, max-age=300`
+- [ ] 非 API 请求（静态页面、CSS、JS 等）正确透传给 `env.ASSETS.fetch(request)`，WSA 行为不受影响
+- [ ] Umami API Key 不出现在前端代码、HTML 或网络响应中
+- [ ] 前端 `view-counter.js` 正常渲染浏览量（如 "👁 1,234 次阅读"）
+- [ ] 浏览量加载中显示骨架屏/占位符，加载完成后淡入
+- [ ] `view-counter.js` 加载失败不影响页面其余功能（渐进增强）
+- [ ] 隐私合规：Worker 不记录 IP/UA/Referer
 
 ## 自动化与构建
 - [ ] `npm test` 通过（覆盖字数统计、归档数据、过渡逻辑）
