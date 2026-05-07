@@ -6,6 +6,7 @@ import {
     isFreshDate,
     parseDateValue,
 } from './shared-content.js';
+import { computeReadingStats, type ReadingStats } from './word-count.js';
 
 export type ContentType = keyof typeof CONTENT_TYPES;
 
@@ -21,11 +22,17 @@ export interface ContentItem {
     featured: boolean;
     externalUrl?: string;
     status?: string;
+    readingStats?: ReadingStats & {
+        isManualReadTime: boolean;
+    };
 }
 
 export { CONTENT_TYPES, TYPE_PRIORITY, compareContentItems, isFreshDate, parseDateValue };
 
 export function blogEntryToItem(entry: CollectionEntry<'blog'>): ContentItem {
+    const automaticStats = computeReadingStats(entry.body);
+    const readTimeDisplay = entry.data.readTime || automaticStats.readTimeDisplay;
+
     return {
         id: entry.id,
         type: 'article',
@@ -37,6 +44,13 @@ export function blogEntryToItem(entry: CollectionEntry<'blog'>): ContentItem {
         category: entry.data.category,
         featured: Boolean(entry.data.featured),
         status: entry.data.status,
+        readingStats: {
+            ...automaticStats,
+            readTimeDisplay,
+            // Keep the legacy alias aligned when frontmatter overrides read time.
+            display: readTimeDisplay,
+            isManualReadTime: Boolean(entry.data.readTime),
+        },
     };
 }
 

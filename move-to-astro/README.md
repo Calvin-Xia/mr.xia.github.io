@@ -26,6 +26,7 @@
 | Phase 3 | 工具页迁移 | 迁移 `/works/tools/`（计时器+随机选择器+Markdown 工具）和 markdown-tool 页面 |
 | Phase 4 | 清理与收尾 | 删除旧文件，旧 URL 重定向，CI/CD 更新，GitHub Actions 自动构建部署，文档更新，全站验证 |
 | Phase 5 | SEO 与评论系统 | RSS feed、sitemap 自动生成、giscus 评论区集成 |
+| Phase 6 | 文章统计与归档 | 字数/阅读时间自动计算、文章归档页、文章列表↔详情过渡增强、Umami 浏览量 Worker 代理 |
 
 ### 执行状态
 
@@ -37,7 +38,8 @@
 | Phase 2.5 | 已完成 | 已完成图片灯箱、标题锚点、侧栏目录、阅读进度、Astro ClientRouter 渐进切换和 KaTeX 服务端渲染 |
 | Phase 3 | 已完成 | 工具入口下沉到 `/works/` 入口卡片，完整工具台位于 `/works/tools/`，Markdown 工具保留独立 `/markdown-tool/` 页面 |
 | Phase 4 | 已完成 | 依赖 Phase 1-3 完成 |
-| Phase 5 | 已完成 | RSS feed、sitemap 自动生成、giscus 评论区（含 code review 修订），97 tests
+| Phase 5 | 已完成 | RSS feed、sitemap 自动生成、giscus 评论区（含 code review 修订），97 tests |
+| Phase 6 | 已完成 | `npm test`、`npm run build` 和桌面/移动浏览器验证通过；生产 `UMAMI_API_KEY` secret 已注入 |
 
 ### 目标目录结构（迁移后）
 
@@ -51,7 +53,7 @@
 ├── src/
 │   ├── content.config.ts         # Astro 6 内容集合 schema 与 loader
 │   ├── content/
-│   │   ├── blog/                 # Markdown 源文件（6 篇）
+│   │   ├── blog/                 # Markdown 源文件（7 篇）
 │   │   ├── works/                # 作品元数据 JSON（4 个）
 │   │   ├── tools/                # 工具元数据 JSON（3 个）
 │   │   └── updates/              # 更新日志元数据 JSON（1 个）
@@ -84,6 +86,7 @@
 │   │   ├── works/
 │   │   │   └── tools.astro
 │   │   ├── articles.astro
+│   │   ├── articles/archive.astro
 │   │   ├── articles/[...slug].astro
 │   │   ├── updates/[...slug].astro
 │   │   ├── rss.xml.ts
@@ -94,6 +97,7 @@
 │   ├── scripts/
 │   │   ├── article-runtime.js
 │   │   ├── article-transitions.js
+│   │   ├── view-counter.js
 │   │   ├── local-cdn-proxy.js
 │   │   ├── time-display.ts
 │   │   ├── page-animations.ts
@@ -101,8 +105,9 @@
 │   │   ├── timer.ts
 │   │   ├── random-selector.ts
 │   │   └── markdown-renderer.ts
-│   └── styles/
-│       └── global.css
+│   ├── styles/
+│   │   └── global.css
+│   └── worker.ts
 ├── scripts/
 │   ├── content-types.js
 │   ├── markdown-utils.js
@@ -143,6 +148,8 @@
 `phase2.5/` 目录用于记录文章阅读体验增强的实施规格、任务和验收结果，仍保持同样的 `spec.md` / `tasks.md` / `checklist.md` 链路。
 
 `phase-5-seo-comments/` 目录记录 RSS feed、sitemap 自动生成和 giscus 评论区的实施规格与验收。
+
+`phase-6-stats-archive/` 目录记录文章统计、归档页、SPA 过渡增强和 Umami 浏览量 Worker 代理的实施规格与验收。
 
 建议按 Phase 0 → 4 顺序执行，每个 Phase 的 `checklist.md` 全部通过后进入下一阶段。
 

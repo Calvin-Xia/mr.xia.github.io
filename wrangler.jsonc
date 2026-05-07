@@ -1,10 +1,13 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
     "name": "mr-xia-site",
+    "main": "src/worker.ts",
     "compatibility_date": "2026-04-28",
     "assets": {
         "directory": "./dist",
-        "not_found_handling": "404-page"
+        "not_found_handling": "404-page",
+        "binding": "ASSETS",
+        "run_worker_first": ["/api/*"]
     },
     "observability": {
         "enabled": true,
@@ -20,5 +23,8 @@
             "persist": true,
             "head_sampling_rate": 1
         }
+    },
+    "secrets": {
+        "required": ["UMAMI_API_KEY"]
     }
 }

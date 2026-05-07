@@ -6,8 +6,9 @@ This repository is a static website fully migrated to Astro from root-level HTML
 - Astro content collections: `src/content.config.ts`, `src/content/blog/`, `src/content/works/`, `src/content/tools/`, `src/content/updates/`.
 - Astro styles: `src/styles/global.css`.
 - Astro client scripts: `src/scripts/`.
+- Workers runtime: `src/worker.ts` and `src/lib/umami-view-counter.js` proxy article view counts through Umami; configure the real key as the `UMAMI_API_KEY` Worker secret.
 - Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, `libs/mammoth/`, and old-URL redirect files.
-- Astro tool routes: `src/pages/works/tools.astro` (作品体系下的工具集) and `src/pages/markdown-tool.astro` (Markdown 工具独立页).
+- Astro tool routes: `src/pages/works/tools.astro` (作品体系下的工具集), `src/pages/markdown-tool.astro` (Markdown 工具独立页), and `src/pages/articles/archive.astro` (文章归档).
 - RSS and SEO: `src/lib/site-seo.js` (shared SEO helpers), `src/pages/rss.xml.ts` (RSS 2.0 feed), `src/pages/robots.txt.ts`, `astro.config.mjs` (`@astrojs/sitemap` integration).
 - Comments: `src/components/GiscusComments.astro` (giscus + GitHub Discussions).
 - Blog reference files: `blog/` (README.md, 移动端适配说明.md, example JSON files).
@@ -27,6 +28,7 @@ When adding new files, keep them in the existing folder conventions and use rela
 - `npm run api`: Start the local new-post API server on `127.0.0.1:4322`.
 - `npm run publish -- --dry-run <obsidian-post-dir>`: Preview an Obsidian→R2 publish plan without writing files or uploading.
 - `npm run publish <obsidian-post-dir>`: Publish an Obsidian post copy into Astro content and upload assets to R2.
+- `npx wrangler secret put UMAMI_API_KEY`: Configure the production Worker secret for article view counts.
 
 ## Coding Style & Naming Conventions
 - Languages: Astro components, TypeScript modules, CSS3, vanilla JavaScript (ES6+).
@@ -77,6 +79,7 @@ After completing a phased milestone or a significant feature:
 
 ## Security & Configuration Tips
 - Do not commit secrets or private credentials.
+- Keep real Worker secrets out of `.env.example`, `.dev.vars.example`, `wrangler.jsonc`, client scripts, and docs. Use `.dev.vars` for local `wrangler dev`; it is gitignored.
 - Modify `.well-known/` files only when domain/certificate verification requires it.
 - Keep the site-wide referrer meta policy at `strict-origin-when-cross-origin`; do not change it to `same-origin` because CDN requests need an origin Referer.
 - For local Astro dev CDN proxy routes (`/__cdn/content` and `/__cdn/assets`), use `https://workers.calvin-xia.cn/` as the proxy `Referer` so CDN assets remain accessible without leaking localhost.

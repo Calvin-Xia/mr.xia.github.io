@@ -1,13 +1,43 @@
 const ARTICLE_TRANSITION_PATHS = ['/articles/', '/updates/'];
 const SWAP_FADE_CLASS = 'is-swap-fade-in';
 const DEFAULT_SWAP_FADE_DURATION_MS = 260;
+const ARTICLE_LIST_SCROLL_KEY = 'article-list-scroll-y';
+
+function normalizePathname(pathname) {
+    const value = String(pathname || '/');
+    return value.endsWith('/') ? value : `${value}/`;
+}
 
 function isHashOnlyUrl(url, locationRef) {
     return url.pathname === locationRef.pathname && url.search === locationRef.search && Boolean(url.hash);
 }
 
 function isAllowedArticleTransitionPath(pathname) {
-    return ARTICLE_TRANSITION_PATHS.some((prefix) => pathname === prefix || pathname.startsWith(prefix));
+    const normalizedPathname = normalizePathname(pathname);
+    return ARTICLE_TRANSITION_PATHS.some((prefix) => normalizedPathname === prefix || normalizedPathname.startsWith(prefix));
+}
+
+function isArticleListPath(pathname) {
+    return normalizePathname(pathname) === '/articles/';
+}
+
+function isArticleDetailPath(pathname) {
+    const normalizedPathname = normalizePathname(pathname);
+    return normalizedPathname.startsWith('/articles/')
+        && normalizedPathname !== '/articles/'
+        && normalizedPathname !== '/articles/archive/';
+}
+
+export function getArticleTransitionDirection(fromPathname, toPathname, fallbackDirection = 'forward') {
+    if (isArticleListPath(fromPathname) && isArticleDetailPath(toPathname)) {
+        return 'forward';
+    }
+
+    if (isArticleDetailPath(fromPathname) && isArticleListPath(toPathname)) {
+        return 'back';
+    }
+
+    return fallbackDirection === 'back' ? 'back' : 'forward';
 }
 
 function getAnchorFromEvent(event) {
@@ -81,6 +111,7 @@ export function markArticleTransitionLinks(root = document, locationRef = window
 
 const clickBoundaryDocuments = new WeakSet();
 const swapFallbackDocuments = new WeakSet();
+const navigationStateDocuments = new WeakSet();
 const swapFadeTimers = new WeakMap();
 
 export function shouldApplySwapFadeFallback(documentRef = document, windowRef = window) {
@@ -131,10 +162,84 @@ export function initSwapFadeFallback(documentRef = document, windowRef = window)
     });
 }
 
+export function saveArticleListScrollPosition(windowRef = window) {
+    if (!isArticleListPath(windowRef.location?.pathname)) {
+        return false;
+    }
+
+    try {
+        windowRef.sessionStorage?.setItem(ARTICLE_LIST_SCROLL_KEY, String(Math.max(0, windowRef.scrollY || 0)));
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+export function restoreArticleListScrollPosition(windowRef = window) {
+    if (!isArticleListPath(windowRef.location?.pathname)) {
+        return false;
+    }
+
+    let storedScrollY = null;
+
+    try {
+        storedScrollY = windowRef.sessionStorage?.getItem(ARTICLE_LIST_SCROLL_KEY) ?? null;
+    } catch {
+        return false;
+    }
+
+    if (storedScrollY === null) {
+        return false;
+    }
+
+    const scrollY = Number.parseInt(storedScrollY, 10);
+    if (!Number.isFinite(scrollY)) {
+        return false;
+    }
+
+    const restore = () => {
+        windowRef.scrollTo?.({ left: 0, top: scrollY, behavior: 'instant' });
+    };
+
+    if (windowRef.requestAnimationFrame) {
+        windowRef.requestAnimationFrame(restore);
+    } else {
+        restore();
+    }
+
+    return true;
+}
+
+export function initArticleNavigationState(documentRef = document, windowRef = window) {
+    if (navigationStateDocuments.has(documentRef) || !documentRef.addEventListener) {
+        return;
+    }
+
+    navigationStateDocuments.add(documentRef);
+    documentRef.addEventListener('astro:before-preparation', (event) => {
+        const fromPathname = event.from?.pathname || windowRef.location?.pathname;
+        const toPathname = event.to?.pathname || windowRef.location?.pathname;
+
+        if (isArticleListPath(fromPathname)) {
+            saveArticleListScrollPosition(windowRef);
+        }
+
+        if (isAllowedArticleTransitionPath(fromPathname) && isAllowedArticleTransitionPath(toPathname)) {
+            // Astro documents direction as writable during astro:before-preparation for custom animations.
+            event.direction = getArticleTransitionDirection(fromPathname, toPathname, event.direction);
+        }
+    });
+
+    documentRef.addEventListener('astro:after-swap', () => {
+        restoreArticleListScrollPosition(windowRef);
+    });
+}
+
 export function initArticleTransitions(root = document, windowRef = window) {
     markArticleTransitionLinks(root, windowRef.location);
     const documentRef = getDocumentForRoot(root, windowRef);
     initSwapFadeFallback(documentRef, windowRef);
+    initArticleNavigationState(documentRef, windowRef);
 
     if (clickBoundaryDocuments.has(documentRef)) {
         return;

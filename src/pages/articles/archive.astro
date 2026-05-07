@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import PageIntro from '../../components/PageIntro.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { createArchiveGroups } from '../../lib/archive.js';
+
+const blogEntries = await getCollection('blog', ({ data }) => data.status !== 'draft');
+const archiveGroups = createArchiveGroups(blogEntries);
+---
+
+<BaseLayout title="文章归档 - Mr.Xia" description="按年份浏览 Mr.Xia 的全部文章。" currentPage="articles">
+    <PageIntro
+        kicker="时间线"
+        title="文章归档"
+        subtitle="按发布时间整理的文章索引。"
+        compact
+    />
+
+    <section class="archive-timeline" aria-label="文章归档时间线">
+        {archiveGroups.map((group) => (
+            <section class="archive-year" aria-labelledby={`archive-year-${group.year}`}>
+                <h2 id={`archive-year-${group.year}`}>{group.year}</h2>
+                <ol class="archive-list">
+                    {group.items.map((item) => (
+                        <li class="archive-item">
+                            <time datetime={item.date}>{item.monthDay}</time>
+                            <a href={item.href}>{item.title}</a>
+                            <span class="blog-card-category archive-category">{item.category}</span>
+                        </li>
+                    ))}
+                </ol>
+            </section>
+        ))}
+    </section>
+
+    <div class="page-return">
+        <a href="/articles/" class="btn btn-secondary" data-history="true" data-title="文章">
+            ← 返回文章列表
+        </a>
+    </div>
+</BaseLayout>

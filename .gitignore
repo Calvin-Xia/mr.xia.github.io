@@ -30,5 +30,7 @@ dist/
 node_modules/
 
 # Local secrets
-.env
-
+.env*
+!.env.example
+.dev.vars*
+!.dev.vars.example

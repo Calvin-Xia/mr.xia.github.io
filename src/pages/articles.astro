@@ -40,6 +40,10 @@ const payload = {
         compact
     />
 
+    <nav class="articles-toolbar" aria-label="文章视图">
+        <a href="/articles/archive/" class="btn btn-outline">文章归档</a>
+    </nav>
+
     <section id="content-search" class="section-stack articles-search-section" aria-label="全站搜索">
         <div class="search-container">
             <div class="search-box">
@@ -116,7 +120,14 @@ const payload = {
                         <span class="blog-card-category">{article.category}</span>
                         {article.tags.map((tag) => <span class="blog-card-tag">{tag}</span>)}
                     </div>
-                    <div class="blog-card-date">{article.date}</div>
+                    <div class="blog-card-date blog-card-date-row">
+                        <span>{article.date}</span>
+                        {article.readingStats && (
+                            <span class="blog-card-reading-stats">
+                                {article.readingStats.wordCountDisplay} · {article.readingStats.readTimeDisplay}
+                            </span>
+                        )}
+                    </div>
                 </article>
             ))}
         </div>
@@ -140,6 +151,7 @@ const payload = {
         const state = {
             currentCategory: 'all',
             currentTag: 'all',
+            searchQuery: '',
             isSearchMode: false,
             debounceTimer: null,
             selectedSuggestionIndex: -1,
@@ -246,6 +258,48 @@ const payload = {
             filterNav.setAttribute('aria-hidden', String(!isVisible));
         }
 
+        function setActiveFilter(container, value) {
+            let normalizedValue = 'all';
+
+            container?.querySelectorAll('.filter-tag').forEach((button) => {
+                if (button.dataset.filter === value) {
+                    normalizedValue = value;
+                }
+            });
+
+            container?.querySelectorAll('.filter-tag').forEach((button) => {
+                const active = button.dataset.filter === normalizedValue;
+                button.classList.toggle('active', active);
+                button.setAttribute('aria-pressed', String(active));
+            });
+
+            return normalizedValue;
+        }
+
+        function updateUrlFromState() {
+            const params = new URLSearchParams(window.location.search);
+
+            params.delete('q');
+            params.delete('category');
+            params.delete('tag');
+
+            if (state.searchQuery) {
+                params.set('q', state.searchQuery);
+            }
+
+            if (state.currentCategory !== 'all') {
+                params.set('category', state.currentCategory);
+            }
+
+            if (state.currentTag !== 'all') {
+                params.set('tag', state.currentTag);
+            }
+
+            const queryString = params.toString();
+            const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ''}${window.location.hash}`;
+            history.replaceState(history.state, '', nextUrl);
+        }
+
         function showSkeletonThen(renderFn) {
             if (!resultsContainer || !skeletons) {
                 renderFn();
@@ -266,6 +320,17 @@ const payload = {
             badge.className = `content-type-badge content-type-badge--${type}`;
             badge.textContent = CONTENT_TYPES[type]?.label || '内容';
             return badge;
+        }
+
+        function appendReadingStats(container, item) {
+            if (!item.readingStats) {
+                return;
+            }
+
+            const stats = document.createElement('span');
+            stats.className = 'blog-card-reading-stats';
+            stats.textContent = `${item.readingStats.wordCountDisplay} · ${item.readingStats.readTimeDisplay}`;
+            container.append(stats);
         }
 
         function createContentCard(item, { mixed = false, index = 0 } = {}) {
@@ -317,8 +382,12 @@ const payload = {
             });
 
             const dateElement = document.createElement('div');
-            dateElement.className = 'blog-card-date';
-            dateElement.textContent = item.date;
+            dateElement.className = 'blog-card-date blog-card-date-row';
+
+            const dateText = document.createElement('span');
+            dateText.textContent = item.date;
+            dateElement.append(dateText);
+            appendReadingStats(dateElement, item);
 
             card.append(meta, dateElement);
             return card;
@@ -401,15 +470,18 @@ const payload = {
 
         function restoreArticleView() {
             state.isSearchMode = false;
+            state.searchQuery = '';
             setFilterVisibility(true);
             setSearchStatus('');
+            updateUrlFromState();
             showSkeletonThen(renderArticleList);
         }
 
-        function performSearch() {
+        function performSearch({ updateUrl = true } = {}) {
             const query = searchInput.value.trim();
             clearTimeout(state.debounceTimer);
             hideSuggestions();
+            state.searchQuery = query;
 
             if (!query) {
                 restoreArticleView();
@@ -420,6 +492,10 @@ const payload = {
             state.isSearchMode = true;
             setFilterVisibility(false);
             setSearchStatus(`搜索 “${query}” 共匹配到 ${results.length} 条内容`);
+
+            if (updateUrl) {
+                updateUrlFromState();
+            }
 
             showSkeletonThen(() => {
                 if (!results.length) {
@@ -514,7 +590,27 @@ const payload = {
                 state.currentTag = filterValue;
             }
 
+            updateUrlFromState();
             showSkeletonThen(renderArticleList);
+        }
+
+        function restoreStateFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const query = (params.get('q') || '').trim();
+
+            state.currentCategory = setActiveFilter(categoryContainer, params.get('category') || 'all');
+            state.currentTag = setActiveFilter(tagContainer, params.get('tag') || 'all');
+            state.searchQuery = query;
+            searchInput.value = query;
+
+            if (query) {
+                performSearch({ updateUrl: false });
+                return;
+            }
+
+            if (state.currentCategory !== 'all' || state.currentTag !== 'all') {
+                renderArticleList();
+            }
         }
 
         function bindEvents() {
@@ -577,6 +673,7 @@ const payload = {
 
         if (searchInput && searchBtn && suggestionsContainer && resultsContainer) {
             bindEvents();
+            restoreStateFromUrl();
 
             if (window.location.hash === '#content-search') {
                 requestAnimationFrame(() => searchInput.focus());
