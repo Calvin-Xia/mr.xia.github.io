@@ -17,7 +17,7 @@ npm run dev
 
 ## 2. 配置本地环境
 
-复制 `.env.example` 为 `.env`。
+复制 `.env.example` 为 `.env`。如需本地调试 Cloudflare Worker，复制 `.dev.vars.example` 为 `.dev.vars`。
 
 关键字段：
 
@@ -27,7 +27,7 @@ npm run dev
 - `NEW_POST_SECRET`
 - `NEW_POST_ALLOWED_ORIGINS`
 
-`.env` 不要提交。
+`.env` 和 `.dev.vars` 不要提交。Worker 配置在 `wrangler.jsonc` 中，本地 Worker 调试用 `npx wrangler dev`。
 
 ## 3. 常用命令
 
@@ -39,6 +39,7 @@ npm run test:coverage
 npm run api
 npm run publish -- --dry-run <obsidian-post-dir>
 npm run publish -- <obsidian-post-dir>
+npx wrangler secret put UMAMI_API_KEY
 ```
 
 ## 4. 最常见修改场景
@@ -90,6 +91,12 @@ git diff --check
 
 ```bash
 npm run test:coverage
+```
+
+首次部署或 Worker secret 变更后，确认生产环境已注入 `UMAMI_API_KEY`：
+
+```bash
+npx wrangler secret list
 ```
 
 ## 6. 接下来读什么

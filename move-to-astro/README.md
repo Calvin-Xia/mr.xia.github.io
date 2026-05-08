@@ -46,6 +46,7 @@
 ```
 ├── astro.config.mjs
 ├── package.json
+├── wrangler.jsonc
 ├── public/
 │   ├── storage/                  # 静态资源（不变）
 │   ├── .well-known/              # 验证文件（不变）
@@ -66,6 +67,7 @@
 │   │   ├── DynamicBackground.astro
 │   │   ├── TransitionIndicator.astro
 │   │   ├── PageIntro.astro
+│   │   ├── NewPostForm.astro
 │   │   ├── TimerWidget.astro
 │   │   ├── RandomSelector.astro
 │   │   ├── MarkdownToolWidget.astro
@@ -74,11 +76,22 @@
 │   │   └── BaseLayout.astro
 │   ├── lib/
 │   │   ├── article-enhancements/
+│   │   │   ├── article-enhancements.js
+│   │   │   ├── heading-index.js
+│   │   │   ├── image-lightbox.js
+│   │   │   ├── reading-progress.js
+│   │   │   └── section-reveals.js
+│   │   ├── archive.js
 │   │   ├── article-image-captions.js
 │   │   ├── content.ts
+│   │   ├── remark-blockquote-breaks.js
 │   │   ├── shared-content.js
 │   │   ├── shared-content.d.ts
-│   │   └── remark-blockquote-breaks.js
+│   │   ├── site-seo.js
+│   │   ├── site-seo.d.ts
+│   │   ├── umami-view-counter.js
+│   │   ├── word-count.js
+│   │   └── word-count.d.ts
 │   ├── pages/
 │   │   ├── index.astro
 │   │   ├── about.astro
@@ -90,6 +103,7 @@
 │   │   ├── articles/[...slug].astro
 │   │   ├── updates/[...slug].astro
 │   │   ├── rss.xml.ts
+│   │   ├── robots.txt.ts
 │   │   ├── new-post.astro
 │   │   ├── markdown-tool.astro
 │   │   ├── styleguide.astro
@@ -122,36 +136,30 @@
 │   ├── article-image-captions.test.js
 │   ├── article-lightbox.test.js
 │   ├── article-progress.test.js
-│   ├── blockquote-rendering.test.js
+│   ├── article-reveals.test.js
+│   ├── article-transitions.test.js
+│   ├── blockquote-breaks.test.js
 │   ├── phase-2-5-integration.test.js
 │   ├── phase-2-content.test.js
+│   ├── phase-3-tools.test.js
 │   ├── phase-5-seo-comments.test.js
+│   ├── phase-6-stats-archive.test.js
 │   ├── post-utils.test.js
 │   ├── publish-post.test.js
 │   └── shared-content.test.js
-└── .github/workflows/
-    ├── deploy.yml                     # Astro 构建 + GitHub Pages 部署
-    ├── phase-2-content-check.yml
-    └── astro-build-check.yml
+├── .github/workflows/
+│   ├── deploy.yml
+│   ├── content-check.yml
+│   ├── phase-2-content-check.yml
+│   └── astro-build-check.yml
+├── .env.example
+├── .dev.vars.example
+└── .gitattributes
 ```
 
 ### 如何阅读本目录
 
-每个 Phase 子目录包含三个文件：
-
-| 文件 | 用途 |
-|---|---|
-| `spec.md` | 详细需求规格（Why / What / Impact / Requirements + Scenarios） |
-| `tasks.md` | 可执行的任务清单（含 Subtask 和依赖关系），适合自动化代理执行 |
-| `checklist.md` | 验收检查清单，人工或自动化验证 |
-
-`phase2.5/` 目录用于记录文章阅读体验增强的实施规格、任务和验收结果，仍保持同样的 `spec.md` / `tasks.md` / `checklist.md` 链路。
-
-`phase-5-seo-comments/` 目录记录 RSS feed、sitemap 自动生成和 giscus 评论区的实施规格与验收。
-
-`phase-6-stats-archive/` 目录记录文章统计、归档页、SPA 过渡增强和 Umami 浏览量 Worker 代理的实施规格与验收。
-
-建议按 Phase 0 → 4 顺序执行，每个 Phase 的 `checklist.md` 全部通过后进入下一阶段。
+每个 Phase 子目录包含一份 `spec.md`（详细需求规格），记录 Why / What / Impact / Requirements + Scenarios、架构方案和 Resolved Decisions。所有 Phase 已执行完毕，spec 作为设计决策存档保留。
 
 ### 关键文件参考
 

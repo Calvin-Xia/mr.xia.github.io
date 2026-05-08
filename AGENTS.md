@@ -5,12 +5,14 @@ This repository is a static website fully migrated to Astro from root-level HTML
 - Astro config and source: `package.json`, `astro.config.mjs`, `tsconfig.json`, `src/`.
 - Astro content collections: `src/content.config.ts`, `src/content/blog/`, `src/content/works/`, `src/content/tools/`, `src/content/updates/`.
 - Astro styles: `src/styles/global.css`.
-- Astro client scripts: `src/scripts/`.
+- Astro client scripts: `src/scripts/` (article runtime, view counter, timer, random-selector, markdown-renderer, page-animations, CDN proxy, etc.).
 - Workers runtime: `src/worker.ts` and `src/lib/umami-view-counter.js` proxy article view counts through Umami; configure the real key as the `UMAMI_API_KEY` Worker secret.
+- Worker config: `wrangler.jsonc` (Worker entry, ASSETS binding), `.dev.vars.example` (local Worker secret template).
 - Astro static assets: `public/` mirrors deployable static assets such as `storage/`, `.well-known/`, `libs/mammoth/`, and old-URL redirect files.
 - Astro tool routes: `src/pages/works/tools.astro` (作品体系下的工具集), `src/pages/markdown-tool.astro` (Markdown 工具独立页), and `src/pages/articles/archive.astro` (文章归档).
 - RSS and SEO: `src/lib/site-seo.js` (shared SEO helpers), `src/pages/rss.xml.ts` (RSS 2.0 feed), `src/pages/robots.txt.ts`, `astro.config.mjs` (`@astrojs/sitemap` integration).
 - Comments: `src/components/GiscusComments.astro` (giscus + GitHub Discussions).
+- Article content: `src/lib/word-count.js` (字数 & 阅读时间), `src/lib/archive.js` (归档分组), `src/lib/article-enhancements/` (图片灯箱、标题锚点、目录、阅读进度、逐段渐显).
 - Blog reference files: `blog/` (README.md, 移动端适配说明.md, example JSON files).
 - Publishing and local authoring scripts: `scripts/publish-post.js`, `scripts/post-utils.js`, `tools/api-server.js`.
 - Other assets: `storage/`, `.well-known/`.
@@ -29,6 +31,7 @@ When adding new files, keep them in the existing folder conventions and use rela
 - `npm run publish -- --dry-run <obsidian-post-dir>`: Preview an Obsidian→R2 publish plan without writing files or uploading.
 - `npm run publish <obsidian-post-dir>`: Publish an Obsidian post copy into Astro content and upload assets to R2.
 - `npx wrangler secret put UMAMI_API_KEY`: Configure the production Worker secret for article view counts.
+- `npx wrangler dev`: Start local Wrangler dev server to test the Worker API routes (uses `.dev.vars` for secrets).
 
 ## Coding Style & Naming Conventions
 - Languages: Astro components, TypeScript modules, CSS3, vanilla JavaScript (ES6+).
@@ -72,7 +75,7 @@ Recent history shows short, task-focused commit subjects (English or Chinese). F
 
 ## Documentation Synchronization
 After completing a phased milestone or a significant feature:
-- Update affected spec files, task lists, and checklists to reflect the new state (mark completed items, remove stale entries, add follow-up work).
+- Update affected spec files to reflect the new state (mark completed items, remove stale entries, add follow-up work).
 - If a plan document exists (under `.trae/documents/`), update its status and progress summary.
 - Review `AGENTS.md` and `README.md` and update them if the project structure, build commands, or conventions have changed.
 - For Astro blog or content changes, ensure `src/content/` entries match their collection schema and related phase docs are updated.
