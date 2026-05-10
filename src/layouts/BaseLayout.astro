@@ -51,6 +51,7 @@ const enableLocalCdnProxy = import.meta.env.DEV;
         <TransitionIndicator />
         <script>
             import '../scripts/article-runtime.js';
+            import '../scripts/view-counter.js';
         </script>
         {enableLocalCdnProxy && <script type="module" src={localCdnProxyScriptUrl}></script>}
     </body>

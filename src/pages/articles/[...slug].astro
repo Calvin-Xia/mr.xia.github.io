@@ -6,7 +6,6 @@ import GiscusComments from '../../components/GiscusComments.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { isFreshDate } from '../../lib/content';
 import { computeReadingStats } from '../../lib/word-count.js';
-import viewCounterScriptUrl from '../../scripts/view-counter.js?url';
 
 export async function getStaticPaths() {
     const posts = await getCollection('blog', ({ data }) => data.status !== 'draft');
@@ -61,5 +60,3 @@ const readTimeDisplay = post.data.readTime || readingStats.readTimeDisplay;
         <GiscusComments />
     </article>
 </BaseLayout>
-
-<script type="module" src={viewCounterScriptUrl}></script>

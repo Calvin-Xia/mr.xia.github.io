@@ -216,9 +216,34 @@ describe('Phase 6 Umami view counter Worker', () => {
             slug: '20260411-ai-reliance',
             views: 1234,
         });
-        assert.match(calls[0].url, /https:\/\/cloud\.umami\.is\/api\/websites\/d5b9f90c-e82b-4b57-ade7-ff6a3e5d8062\/metrics/);
+        assert.match(calls[0].url, /https:\/\/api\.umami\.is\/v1\/websites\/d5b9f90c-e82b-4b57-ade7-ff6a3e5d8062\/metrics/);
         assert.match(calls[0].url, /type=path/);
         assert.equal(calls[0].init.headers['x-umami-api-key'], 'test-secret');
+    });
+
+    test('sums matching article path metrics after normalizing query strings and hashes', async () => {
+        const encodedSlug = '20260315-%E4%B8%A4%E5%B0%8F%E6%97%B6%EF%BC%8C%E7%8E%AF%E7%BA%BF%EF%BC%8C%E6%85%A2%E8%A1%8C';
+        const response = await handleViewCounterRequest(
+            new Request(`https://calvin-xia.cn/api/views/${encodedSlug}`),
+            {
+                UMAMI_API_KEY: 'test-secret',
+                ASSETS: { fetch: () => new Response('asset') },
+            },
+            {
+                fetch: async () => Response.json([
+                    { x: `/articles/${encodedSlug}/`, y: 4 },
+                    { x: `/articles/${encodedSlug}/?utm_source=rss`, y: 5 },
+                    { x: '/articles/20260315-两小时，环线，慢行/#section', y: 6 },
+                    { x: '/articles/20260315-两小时，环线，慢行/?utm_source=feed#section', y: 7 },
+                    { x: '/articles/other/', y: 100 },
+                ]),
+            },
+        );
+
+        assert.deepEqual(await response.json(), {
+            slug: '20260315-两小时，环线，慢行',
+            views: 22,
+        });
     });
 
     test('degrades to null views when Umami is unavailable or the secret is missing', async () => {
@@ -358,12 +383,14 @@ describe('Phase 6 rendered integration points', () => {
     test('article cards and detail pages render reading stats and view counter hooks', () => {
         const articleIndex = readSource('src', 'pages', 'articles.astro');
         const detailPage = readSource('src', 'pages', 'articles', '[...slug].astro');
+        const layout = readSource('src', 'layouts', 'BaseLayout.astro');
 
         assert.match(articleIndex, /readingStats/);
         assert.match(articleIndex, /blog-card-reading-stats/);
         assert.match(detailPage, /computeReadingStats\(post\.body/);
-        assert.match(detailPage, /view-counter/);
         assert.match(detailPage, /data-slug=\{post\.id\}/);
+        assert.match(layout, /import\s+['"]\.\.\/scripts\/view-counter\.js['"]/);
+        assert.doesNotMatch(detailPage, /viewCounterScriptUrl|view-counter\.js\?url/);
     });
 
     test('article filters and search state are serialized to URL search parameters', () => {

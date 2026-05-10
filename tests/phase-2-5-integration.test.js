@@ -79,7 +79,8 @@ describe('Phase 2.5 article experience integration', () => {
         const layout = readProjectFile('src', 'layouts', 'BaseLayout.astro');
 
         assert.match(layout, /import\s+\{\s*ClientRouter\s*\}\s+from\s+['"]astro:transitions['"]/);
-        assert.match(layout, /<script>\s*import\s+['"]\.\.\/scripts\/article-runtime\.js['"];\s*<\/script>/s);
+        assert.match(layout, /<script>[\s\S]*import\s+['"]\.\.\/scripts\/article-runtime\.js['"];[\s\S]*<\/script>/);
+        assert.equal(layout.match(/article-runtime\.js/g)?.length, 1);
         assert.doesNotMatch(layout, /article-runtime\.js\?url/);
         assert.doesNotMatch(layout, /articleRuntimeScriptUrl/);
         assert.match(layout, /<ClientRouter\s+fallback="swap"\s*\/>/);
